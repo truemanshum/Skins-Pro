@@ -161,11 +161,12 @@ export class SkinsProCardEditor extends HTMLElement {
         <button class="sp-del" data-del-path="${path}" data-del-index="${i}">✕</button>
       </div>
     `).join('');
+    const addBtn = arr.length >= (max ?? Infinity) ? '' : `<button class="sp-add" data-add-path="${path}" data-add-max="${max ?? ''}">+</button>`;
     return `
       <label>
         <span>${label}</span>
         <div class="sp-list">${rows}</div>
-        <button class="sp-add" data-add-path="${path}" data-add-max="${max ?? ''}">${arr.length >= (max ?? Infinity) ? '' : '+'}</button>
+        ${addBtn}
       </label>
     `;
   }
@@ -184,9 +185,10 @@ export class SkinsProCardEditor extends HTMLElement {
         <button class="sp-del" data-del-area-path="home_selection.rooms" data-del-area-index="${i}">✕</button>
       </div>
     `).join('');
+    const addBtn = arr.length >= (max ?? Infinity) ? '' : `<button class="sp-add" data-add-area-path="home_selection.rooms" data-add-max="${max ?? ''}">+</button>`;
     return `
       <div class="sp-list">${rows}</div>
-      <button class="sp-add" data-add-area-path="home_selection.rooms" data-add-max="${max ?? ''}">${arr.length >= (max ?? Infinity) ? '' : '+'}</button>
+      ${addBtn}
     `;
   }
 
