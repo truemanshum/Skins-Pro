@@ -887,7 +887,7 @@ export class MinecraftDashboardCard extends LitElement {
   }
 
   private renderRoomsPage(language: 'zh-CN' | 'en', translate: (key: TranslationKey) => string): TemplateResult {
-    const roomsMarkup = this.renderAreaRooms(language, true);
+    const roomsMarkup = this.renderAreaRooms(language, true, undefined, [], false);
     const roomCount = this._areas?.length || 0;
     const roomPageClass = roomCount > 8 ? 'rooms-page rooms-page-dense' : (roomCount > 4 ? 'rooms-page rooms-page-medium' : 'rooms-page');
 
@@ -1181,7 +1181,7 @@ export class MinecraftDashboardCard extends LitElement {
     })}`;
   }
 
-  private renderAreaRooms(language: 'zh-CN' | 'en', requireRealAreas: boolean, limit?: number, selectedRooms: string[] = []): TemplateResult | typeof nothing {
+  private renderAreaRooms(language: 'zh-CN' | 'en', requireRealAreas: boolean, limit?: number, selectedRooms: string[] = [], showSummary = true): TemplateResult | typeof nothing {
     if (!this._areas || this._areas.length === 0) {
       return nothing;
     }
@@ -1211,19 +1211,30 @@ export class MinecraftDashboardCard extends LitElement {
     }
 
     return html`${rooms.map((room) => {
+      if (showSummary) {
+        return html`
+          <button class="room">
+            ${this.renderImage(room.image || 'room_living', room.name, '')}
+            <div class="room-label">
+              <h3>${room.name}</h3>
+              <p class="muted">${room.summary}</p>
+            </div>
+          </button>
+        `;
+      }
       const countLabel = language === 'zh-CN'
         ? `${room.counts.devices} 设备 · ${room.counts.entities} 实体`
         : `${room.counts.devices} devices · ${room.counts.entities} entities`;
       return html`
-      <button class="room">
-        ${this.renderImage(room.image || 'room_living', room.name, '')}
-        <div class="room-label">
-          <h3>${room.name}</h3>
-          <p class="muted">${room.summary}</p>
-          <p class="room-stats">${countLabel}</p>
-        </div>
-      </button>
-    `;
+        <button class="room">
+          ${this.renderImage(room.image || 'room_living', room.name, '')}
+          <div class="room-label">
+            <h3>${room.name}</h3>
+            <p class="muted">${room.summary}</p>
+            <p class="room-stats">${countLabel}</p>
+          </div>
+        </button>
+      `;
     })}`;
   }
 
@@ -1299,64 +1310,72 @@ export class MinecraftDashboardCard extends LitElement {
       return language === 'zh-CN' ? 'Home Assistant Area' : 'Home Assistant Area';
     }
 
-    const entityIds = (this._entityRegistry || [])
-      .filter((entry) => entry.area_id === areaId && !entry.hidden_by && !entry.disabled_by)
-      .map((entry) => entry.entity_id);
+    const areaDeviceIds = new Set(
+      (this._deviceRegistry || [])
+        .filter((d) => d.area_id === areaId && !d.disabled_by)
+        .map((d) => d.id)
+    );
 
-    if (entityIds.length === 0) {
+    const entries = (this._entityRegistry || [])
+      .filter((entry) => {
+        if (entry.hidden_by || entry.disabled_by) return false;
+        return entry.area_id === areaId || (entry.device_id && areaDeviceIds.has(entry.device_id));
+      })
+      .map((e) => e.entity_id);
+
+    if (entries.length === 0) {
       return language === 'zh-CN' ? '暂无实体' : 'No entities';
     }
 
-    const lowerIds = entityIds.map((entityId) => entityId.toLowerCase());
-    const hasGardenLike = lowerIds.some((entityId) => /garden|outdoor|yard|balcony|terrace/.test(entityId));
-    const presenceEntity = entityIds.find((entityId) => /^(binary_sensor)\./.test(entityId) && /presence|occupancy|motion|pir/.test(entityId.toLowerCase()));
-    const temperatureEntity = entityIds.find((entityId) => /^(sensor)\./.test(entityId) && /temperature|temp/.test(entityId.toLowerCase()));
-    const humidityEntity = entityIds.find((entityId) => /^(sensor)\./.test(entityId) && /humidity/.test(entityId.toLowerCase()));
-    const illuminanceEntity = entityIds.find((entityId) => /^(sensor)\./.test(entityId) && /illuminance|lux/.test(entityId.toLowerCase()));
-    const lightEntity = entityIds.find((entityId) => /^(light)\./.test(entityId));
-    const outdoorHumidity = entityIds.find((entityId) => /^(sensor)\./.test(entityId) && /outdoor.*humidity|humidity.*outdoor/.test(entityId.toLowerCase()));
+    const byClass = (cls: string) =>
+      entries.find((eid) => this._hass?.states[eid]?.attributes?.device_class === cls);
 
     const parts: string[] = [];
 
-    if (presenceEntity) {
-      const occupied = this.stateValue(presenceEntity) === 'on';
+    const presence = byClass('presence') || byClass('occupancy') || byClass('motion');
+    if (presence) {
+      const occupied = this.stateValue(presence) === 'on';
       parts.push(language === 'zh-CN' ? (occupied ? '有人' : '无人') : (occupied ? 'Occupied' : 'Empty'));
     }
 
-    if (temperatureEntity) {
-      parts.push(`${this.formatNumber(this.stateValue(temperatureEntity), 1)}°C`);
+    const temp = byClass('temperature');
+    if (temp) {
+      parts.push(`${this.formatNumber(this.stateValue(temp), 1)}°C`);
     }
 
-    if (humidityEntity) {
-      parts.push(`${this.formatNumber(this.stateValue(humidityEntity), 0)}%`);
+    const hum = byClass('humidity');
+    if (hum) {
+      parts.push(`${this.formatNumber(this.stateValue(hum), 0)}%`);
     }
 
-    if (!temperatureEntity && illuminanceEntity) {
-      parts.push(`${this.formatNumber(this.stateValue(illuminanceEntity), 0)}lx`);
-    }
-
-    if (hasGardenLike && lightEntity) {
-      const lightOn = this.stateValue(lightEntity) === 'on';
-      parts.push(language === 'zh-CN' ? (lightOn ? '灯带开' : '灯带关') : (lightOn ? 'Light on' : 'Light off'));
-    }
-
-    if (hasGardenLike && outdoorHumidity) {
-      parts.push(`${this.formatNumber(this.stateValue(outdoorHumidity), 0)}%`);
+    if (!temp) {
+      const illum = byClass('illuminance');
+      if (illum) {
+        parts.push(`${this.formatNumber(this.stateValue(illum), 0)}lx`);
+      }
     }
 
     if (parts.length > 0) {
       return parts.join(' · ');
     }
 
-    return language === 'zh-CN' ? `${entityIds.length} 个实体` : `${entityIds.length} entities`;
+    return language === 'zh-CN' ? `${entries.length} 个实体` : `${entries.length} entities`;
   }
 
   private areaCounts(areaId: string): { devices: number; entities: number } {
     if (!areaId) return { devices: 0, entities: 0 };
-    const entities = (this._entityRegistry || [])
-      .filter((entry) => entry.area_id === areaId && !entry.hidden_by && !entry.disabled_by);
-    const deviceIds = new Set(entities.map((e) => e.device_id).filter(Boolean));
-    return { devices: deviceIds.size, entities: entities.length };
+
+    const areaDevices = (this._deviceRegistry || [])
+      .filter((d) => d.area_id === areaId && !d.disabled_by);
+    const deviceIds = new Set(areaDevices.map((d) => d.id));
+
+    const areaEntities = (this._entityRegistry || [])
+      .filter((e) => {
+        if (e.hidden_by || e.disabled_by) return false;
+        return e.area_id === areaId || (e.device_id && deviceIds.has(e.device_id));
+      });
+
+    return { devices: deviceIds.size, entities: areaEntities.length };
   }
 
   private getRealDevicesForRender(): Array<{
