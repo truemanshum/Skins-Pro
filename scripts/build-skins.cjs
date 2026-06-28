@@ -21,7 +21,7 @@ function getResizeOptions(filename) {
   if (name.startsWith('decor-')) {
     return { width: 800 };
   }
-  if (name.startsWith('base-') || name.startsWith('stage-')) {
+  if (name.startsWith('base-') || name.startsWith('stage-') || name.startsWith('background.')) {
     return { width: 2560 };
   }
   return { width: 1200 };
