@@ -20,7 +20,7 @@
     "kiosk-mode"
   ],
   "author": "Skins Pro Contributors",
-  "license": "UNLICENSED",
+  "license": "LicenseRef-Custom-NonCommercial",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
