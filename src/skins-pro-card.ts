@@ -906,7 +906,7 @@ export class MinecraftDashboardCard extends LitElement {
   }
 
   private renderScenesPage(language: 'zh-CN' | 'en', translate: (key: TranslationKey) => string): TemplateResult {
-    const scenes = this.renderRealScenes(language, Number.MAX_SAFE_INTEGER);
+    const scenes = this.renderRealScenes(Number.MAX_SAFE_INTEGER);
     return this.renderPageShell(
       translate('scenes'),
       translate('modes'),
@@ -1146,7 +1146,7 @@ export class MinecraftDashboardCard extends LitElement {
   private renderHomeScenes(language: 'zh-CN' | 'en', translate: (key: TranslationKey) => string): TemplateResult {
     const limit = this._config?.home_limits?.scenes || 6;
     const selectedScenes = this._config?.home_selection?.scenes || [];
-    const scenes = this.renderRealScenes(language, limit, selectedScenes);
+    const scenes = this.renderRealScenes(limit, selectedScenes);
     if (scenes !== nothing) {
       return scenes;
     }
@@ -1485,7 +1485,7 @@ export class MinecraftDashboardCard extends LitElement {
     `)}`;
   }
 
-  private renderRealScenes(language: 'zh-CN' | 'en', limit = 12, selectedScenes: string[] = []): TemplateResult | typeof nothing {
+  private renderRealScenes(limit = 12, selectedScenes: string[] = []): TemplateResult | typeof nothing {
     if (!this._hass) {
       return nothing;
     }
