@@ -75,6 +75,8 @@ jobs:
         uses: Desmond-Dong/actions/bilingual-changelog@v1
         with:
           llm-api-key: ${{ secrets.LLM_API_KEY }}
+          llm-api-url: ${{ secrets.LLM_API_URL }}
+          llm-model: ${{ secrets.LLM_MODEL }}
 
       - name: Create Release
         if: steps.version.outputs.changed == 'true'
