@@ -1,0 +1,10 @@
+# Only dist/ is needed at runtime. Exclude everything else from release archives.
+/.github         export-ignore
+/src             export-ignore
+/scripts         export-ignore
+/skins-pro       export-ignore
+/node_modules    export-ignore
+/.gitignore      export-ignore
+/tsconfig.json   export-ignore
+/rollup.config.js export-ignore
+/package-lock.json export-ignore
