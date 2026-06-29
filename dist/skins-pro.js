@@ -21,18 +21,21 @@ function e(e,t,s,i){var n,r=arguments.length,a=r<3?t:null===i?i=Object.getOwnPro
           <main class="stage">
             ${this.renderStageContent(e,t,i,n,r,o,c,h)}
           </main>
+          <nav class="mobile-nav">${this.renderNav(e)}</nav>
         </div>
       </ha-card>
     `}renderStageContent(e,t,s,i,n,r,a,o){return"devices"===this._view?this.renderDevicesPage(e,t):"rooms"===this._view?this.renderRoomsPage(e,t):"scenes"===this._view?this.renderScenesPage(t):"automations"===this._view?this.renderAutomationsPage(e,t):"security"===this._view?this.renderSecurityPage(e,t):"energy"===this._view?this.renderEnergyPage(e,t,n,r,a,o):j`
       <div class="stage-grid">
-        <section class="welcome" data-section="home">
-          <h1>${this._config?.title||this.localizedText(void 0,this._config?.title_zh||this.skinString("title_zh"),this._config?.title_en||this.skinString("title_en"),e)}</h1>
-          <p class="quote">${i}</p>
+        <div class="welcome-group">
+          <section class="welcome" data-section="home">
+            <h1>${this._config?.title||this.localizedText(void 0,this._config?.title_zh||this.skinString("title_zh"),this._config?.title_en||this.skinString("title_en"),e)}</h1>
+            <p class="quote">${i}</p>
+          </section>
           <div class="weather-row" @click=${()=>this.moreInfo(this._config?.weather?.entity||"")}>
             <div class="weather-state-icon"><ha-icon icon="${s}"></ha-icon></div>
             <div class="weather-text">${this.weatherDisplayText(this._config?.weather?.entity)} ${this.weatherTemperature(this._config?.weather?.entity)}</div>
           </div>
-        </section>
+        </div>
         <section class="bottom-stack">
           <section class="bottom-block bottom-devices">
             <div class="section-title"><h2>${t("devices")}</h2><p class="muted">${t("quickControl")}</p></div>

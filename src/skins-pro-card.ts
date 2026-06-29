@@ -678,6 +678,7 @@ export class MinecraftDashboardCard extends LitElement {
           <main class="stage">
             ${this.renderStageContent(language, translate, weatherIcon, quote, energyValue, energyUnit, compareValue, energyBars)}
           </main>
+          <nav class="mobile-nav">${this.renderNav(language)}</nav>
         </div>
       </ha-card>
     `;
@@ -719,14 +720,16 @@ export class MinecraftDashboardCard extends LitElement {
 
     return html`
       <div class="stage-grid">
-        <section class="welcome" data-section="home">
-          <h1>${this._config?.title || this.localizedText(undefined, this._config?.title_zh || this.skinString('title_zh'), this._config?.title_en || this.skinString('title_en'), language)}</h1>
-          <p class="quote">${quote}</p>
+        <div class="welcome-group">
+          <section class="welcome" data-section="home">
+            <h1>${this._config?.title || this.localizedText(undefined, this._config?.title_zh || this.skinString('title_zh'), this._config?.title_en || this.skinString('title_en'), language)}</h1>
+            <p class="quote">${quote}</p>
+          </section>
           <div class="weather-row" @click=${() => this.moreInfo(this._config?.weather?.entity || '')}>
             <div class="weather-state-icon"><ha-icon icon="${weatherIcon}"></ha-icon></div>
             <div class="weather-text">${this.weatherDisplayText(this._config?.weather?.entity)} ${this.weatherTemperature(this._config?.weather?.entity)}</div>
           </div>
-        </section>
+        </div>
         <section class="bottom-stack">
           <section class="bottom-block bottom-devices">
             <div class="section-title"><h2>${translate('devices')}</h2><p class="muted">${translate('quickControl')}</p></div>
