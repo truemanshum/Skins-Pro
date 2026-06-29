@@ -225,10 +225,17 @@ button { font:inherit; }
   .mc-app[data-view="scenes"] .scenes-page { grid-template-columns:repeat(4,minmax(0,1fr)); }
 }
 @media (max-width: 760px) {
+  :host {
+    --sp-font-xxl:24px; --sp-font-xl:20px; --sp-font-lg:16px; --sp-font-md:13px;
+    --sp-font-sm:12px; --sp-font-xs:11px; --sp-font-2xs:10px; --sp-font-3xs:9px; --sp-font-4xs:8px;
+    --sp-space-xl:16px; --sp-space-lg:12px; --sp-space-md:8px; --sp-space-sm:6px;
+    --sp-space-xs:4px; --sp-space-2xs:3px; --sp-space-3xs:2px;
+    --sp-app-padding:10px;
+  }
   .mc-app { grid-template-columns:1fr; height:auto !important; min-height:100vh !important; padding:var(--sp-space-sm); overflow:visible; }
   .sidebar { display:none; }
   .stage { height:auto; overflow:visible; }
-  .stage-grid,.page-shell { height:auto; padding:14px; overflow:visible; }
+  .stage-grid,.page-shell { height:auto; padding:var(--sp-space-lg); overflow:visible; }
   .side { height:auto; grid-template-rows:auto; overflow:visible; }
   .page-header { flex-direction:column; align-items:stretch; }
   .bottom-stack { gap:var(--sp-space-xs); }
@@ -239,9 +246,24 @@ button { font:inherit; }
   .mc-app[data-view="rooms"] .side { display:none; }
   .mc-app[data-view="scenes"] .bottom-stack,
   .mc-app[data-view="energy"] .bottom-stack { display:none; }
+  .profile-img { width:40px; height:40px; }
+  .item-img,.item-icon { width:40px; height:40px; }
+  .device { min-height:120px; }
+  .room { min-height:110px; }
 }
 @media (max-width: 520px) {
+  :host {
+    --sp-font-xxl:20px; --sp-font-xl:17px; --sp-font-lg:14px; --sp-font-md:12px;
+    --sp-font-sm:11px; --sp-font-xs:10px; --sp-font-2xs:9px; --sp-font-3xs:8px; --sp-font-4xs:7px;
+    --sp-space-xl:12px; --sp-space-lg:10px; --sp-space-md:6px; --sp-space-sm:4px;
+    --sp-space-xs:3px; --sp-space-2xs:2px; --sp-space-3xs:2px;
+    --sp-app-padding:6px;
+  }
   .devices,.rooms,.scene-grid,.devices-page-grid,.rooms-page,.rooms-page-medium,.rooms-page-dense,.scenes-page,.security-grid { grid-template-columns:1fr; }
+  .profile-img { width:36px; height:36px; }
+  .item-img,.item-icon { width:36px; height:36px; }
+  .device { min-height:90px; }
+  .room { min-height:85px; }
 }
 .sp-strategy-info { padding:var(--sp-space-xl); line-height:1.6; color:var(--sp-text-muted); }
 .sp-wrap { display:grid; gap:var(--sp-space-lg); padding:var(--sp-space-xl); background:var(--sp-app-overlay); min-height:100%; box-sizing:border-box; }
