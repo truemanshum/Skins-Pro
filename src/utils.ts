@@ -81,7 +81,12 @@ export function stateValue(hass: HomeAssistant | undefined, entityId?: string): 
   if (!entityId || !hass) {
     return '';
   }
-  return hass.states[entityId]?.state || '';
+  const raw = hass.states[entityId]?.state || '';
+  const num = Number(raw);
+  if (Number.isFinite(num)) {
+    return parseFloat(num.toFixed(2)).toString();
+  }
+  return raw.replace(/\.\d+/, '');
 }
 
 export function timeText(hass: HomeAssistant | undefined, language: Language): string {
