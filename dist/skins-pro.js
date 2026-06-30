@@ -143,7 +143,7 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
             <div class="tag-stack"><div class="status">${i}</div></div>
           </div>
           <div class="device-copy"><p class="device-name">${t.name}</p><p class="muted">${t.subtitle}</p></div>
-          <div class="control-row"><span class="state-word">${t.detail}</span><span class="switch${s?" on":""}"></span></div>
+          <div class="control-row"><span class="state-word">${t.detail}</span>${"toggle"===c?K`<span class="switch${s?" on":""}"></span>`:""}</div>
         </button>
       `})}renderWeather(e){const t=this._config?.weather?.entity||"",i=function(e,t){if(!t||!e)return"--";const i=e.states[t];return String(i?.state||"--")}(this._hass,t),s=function(e,t){if(!t||!e)return"";const i=e.states[t]?.attributes?.temperature;if(null!=i){const e=Number(i);return Number.isFinite(e)?`${Math.round(e)}°`:""}return""}(this._hass,t);if(!t)return K``;const n=this._weatherForecast||[],r=n.slice(0,5),a=n[0],o=this._hass?.locale?.language||this._hass?.language||"en",c={weekday:"short"},l=null!=a?.temperature?`${Math.round(Number(a.temperature))}°`:"",h=null!=a?.templow?`${Math.round(Number(a.templow))}°`:"",d=null!=a?.precipitation?`${Math.round(Number(a.precipitation))}mm`:"";return K`
       <div class="weather-block" @click=${()=>this.moreInfo(t)}>
@@ -205,14 +205,14 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
       <section class="device-group">
         <div class="section-title"><h2>${t}</h2><p class="muted">${String(i.length)}</p></div>
         <div class="devices devices-page-grid">
-          ${i.map(t=>{const i=Le(t.state,e),s=["on","playing","cool","heat","armed","locked","open"].includes(t.state),r=s?`device-on-${t.color}`:"unavailable"===t.state?"device-unavailable":"device-off",a=ze(n,t.entityId.split(".")[0]||"sensor");return K`
-              <button class="device ${r}" @click=${()=>this.handleAction(t.entityId,Ke.has(t.detail)?"toggle":"more-info")}>
+          ${i.map(t=>{const i=Le(t.state,e),s=["on","playing","cool","heat","armed","locked","open"].includes(t.state),r=s?`device-on-${t.color}`:"unavailable"===t.state?"device-unavailable":"device-off",a=ze(n,t.entityId.split(".")[0]||"sensor"),o=Ke.has(t.detail);return K`
+              <button class="device ${r}" @click=${()=>this.handleAction(t.entityId,o?"toggle":"more-info")}>
                 <div class="device-top">
                   ${this.renderImage(a,t.name,"item-img")}
                   <div class="tag-stack"><div class="status">${i}</div></div>
                 </div>
                 <div class="device-copy"><p class="device-name">${t.name}</p><p class="muted">${t.subtitle}</p></div>
-                <div class="control-row"><span class="state-word">${t.detail}</span><span class="switch${s?" on":""}"></span></div>
+                <div class="control-row"><span class="state-word">${t.detail}</span>${o?K`<span class="switch${s?" on":""}"></span>`:""}</div>
               </button>
             `})}
         </div>

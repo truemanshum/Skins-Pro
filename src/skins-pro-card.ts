@@ -676,7 +676,7 @@ export class MinecraftDashboardCard extends LitElement {
             <div class="tag-stack"><div class="status">${stateLabel}</div></div>
           </div>
           <div class="device-copy"><p class="device-name">${device.name}</p><p class="muted">${device.subtitle}</p></div>
-          <div class="control-row"><span class="state-word">${device.detail}</span><span class="switch${active ? ' on' : ''}"></span></div>
+          <div class="control-row"><span class="state-word">${device.detail}</span>${action === 'toggle' ? html`<span class="switch${active ? ' on' : ''}"></span>` : ''}</div>
         </button>
       `;
     });
@@ -1082,14 +1082,15 @@ export class MinecraftDashboardCard extends LitElement {
             const active = ['on', 'playing', 'cool', 'heat', 'armed', 'locked', 'open'].includes(device.state);
             const statusClass = active ? `device-on-${device.color}` : (device.state === 'unavailable' ? 'device-unavailable' : 'device-off');
             const assetKey = assetKeyForDomain(skin, device.entityId.split('.')[0] || 'sensor');
+            const canToggle = CONTROLLABLE_DOMAINS.has(device.detail);
             return html`
-              <button class="device ${statusClass}" @click=${() => this.handleAction(device.entityId, CONTROLLABLE_DOMAINS.has(device.detail) ? 'toggle' : 'more-info')}>
+              <button class="device ${statusClass}" @click=${() => this.handleAction(device.entityId, canToggle ? 'toggle' : 'more-info')}>
                 <div class="device-top">
                   ${this.renderImage(assetKey, device.name, 'item-img')}
                   <div class="tag-stack"><div class="status">${stateLabel}</div></div>
                 </div>
                 <div class="device-copy"><p class="device-name">${device.name}</p><p class="muted">${device.subtitle}</p></div>
-                <div class="control-row"><span class="state-word">${device.detail}</span><span class="switch${active ? ' on' : ''}"></span></div>
+                <div class="control-row"><span class="state-word">${device.detail}</span>${canToggle ? html`<span class="switch${active ? ' on' : ''}"></span>` : ''}</div>
               </button>
             `;
           })}
