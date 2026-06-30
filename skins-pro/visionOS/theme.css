@@ -956,8 +956,9 @@ button {
 }
 
 .camera-preview {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 3 / 2;
   background: var(--sp-camera-bg);
+  min-height: 100px;
 }
 
 .camera-preview img {
@@ -972,7 +973,7 @@ button {
   justify-content: space-between;
   align-items: center;
   gap: var(--sp-space-md);
-  padding: 14px;
+  padding: 10px;
 }
 
 /* ==========================================================================
