@@ -649,6 +649,8 @@ button {
   backdrop-filter: var(--sp-blur-sm);
   -webkit-backdrop-filter: var(--sp-blur-sm);
   font-weight: var(--sp-font-weight-medium);
+  font-size: var(--sp-font-xs);
+  box-sizing: border-box;
   transition:
     background var(--sp-duration-fast) var(--sp-ease-glass),
     color var(--sp-duration-fast) var(--sp-ease-glass),
@@ -697,6 +699,7 @@ button {
   outline: none;
   cursor: pointer;
   min-width: 120px;
+  box-sizing: border-box;
 }
 
 .filter-select option {
@@ -706,6 +709,7 @@ button {
 
 .action-btn {
   min-height: 36px;
+  box-sizing: border-box;
   border: var(--sp-border-w) solid var(--sp-border-glass);
   border-radius: var(--sp-radius-infinite);
   padding: 0 14px;

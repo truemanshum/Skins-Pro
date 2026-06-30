@@ -476,13 +476,9 @@ export class MinecraftDashboardCard extends LitElement {
       translate('devices'),
       translate('quickControl'),
       html`
-        <div class="chip-group">
+        <div class="filter-bar">
           <button class="chip${this._deviceGrouping === 'area' ? ' active' : ''}" @click=${() => { this._deviceGrouping = 'area'; }}>${translate('byArea')}</button>
           <button class="chip${this._deviceGrouping === 'domain' ? ' active' : ''}" @click=${() => { this._deviceGrouping = 'domain'; }}>${translate('byType')}</button>
-        </div>
-      `,
-      html`
-        <div class="filter-bar">
           <select class="filter-select" @change=${(e: Event) => { this._filterRoom = (e.target as HTMLSelectElement).value; }}>
             <option value="">${translate('allRooms')}</option>
             ${rooms.map((r) => html`<option value="${r}" .selected=${r === this._filterRoom}>${r}</option>`)}
@@ -494,6 +490,8 @@ export class MinecraftDashboardCard extends LitElement {
           <button class="action-btn" @click=${() => this.batchControl('on', translate)}>${translate('turnOnAll')}</button>
           <button class="action-btn" @click=${() => this.batchControl('off', translate)}>${translate('turnOffAll')}</button>
         </div>
+      `,
+      html`
         <div class="page-scroll themed-scrollbar">
           ${this.renderRealDeviceGroups(language, translate)}
         </div>
@@ -998,8 +996,10 @@ export class MinecraftDashboardCard extends LitElement {
 
   private areaNameForEntity(entityId: string): string {
     const entry = this._entityRegistry?.find((item) => item.entity_id === entityId);
-    if (!entry?.area_id) return '';
-    return this._areas?.find((area) => area.area_id === entry.area_id)?.name || '';
+    if (!entry) return '';
+    const areaId = entry.area_id || this._deviceRegistry?.find((d) => d.id === entry.device_id)?.area_id || '';
+    if (!areaId) return '';
+    return this._areas?.find((area) => area.area_id === areaId)?.name || '';
   }
 
   // ─── Device list for render ─────────────────────────────
