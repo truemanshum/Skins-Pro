@@ -240,15 +240,16 @@ button { font:inherit; }
 .mc-app[data-view="energy"] .side { justify-self:end; align-self:stretch; width:100%; max-width:360px; height:100%; grid-template-rows:max-content minmax(0,1fr); }
 .mc-app[data-view="energy"] .panel-energy { display:block; min-height:0; height:auto; }
 @media (max-width: 1180px) {
-  .mc-app { grid-template-columns:80px minmax(0,1fr); }
+  .mc-app { grid-template-columns:80px minmax(0,1fr); height:auto; min-height:100vh; overflow:visible; }
   .profile .meta,.nav-button span,.sidebar-art { display:none; }
+  .stage { height:auto; overflow:visible; }
   .stage-grid { grid-template-columns:1fr; grid-template-areas:"welcome" "bottom" "side"; grid-template-rows:auto minmax(0,1fr) auto; }
   .side { height:auto; grid-template-rows:auto; overflow:visible; }
   .devices { grid-template-columns:repeat(3,minmax(0,1fr)); }
-  .devices-page-grid,.scenes-page { grid-template-columns:repeat(4,1fr); }
+  .devices-page-grid,.scenes-page { grid-template-columns:repeat(3,1fr); }
   .mc-app[data-view="devices"] .devices,
   .mc-app[data-view="rooms"] .rooms,
-  .mc-app[data-view="scenes"] .scenes-page { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .mc-app[data-view="scenes"] .scenes-page { grid-template-columns:repeat(3,minmax(0,1fr)); }
 }
 @media (max-width: 760px) {
   :host {

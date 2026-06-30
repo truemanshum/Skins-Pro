@@ -1555,12 +1555,20 @@ button {
 @media (max-width: 1180px) {
   .mc-app {
     grid-template-columns: 80px minmax(0, 1fr);
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
   }
 
   .profile .meta,
   .nav-button span,
   .sidebar-art {
     display: none;
+  }
+
+  .stage {
+    height: auto;
+    overflow: visible;
   }
 
   .stage-grid {
@@ -1584,13 +1592,13 @@ button {
 
   .devices-page-grid,
   .scenes-page {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .mc-app[data-view="devices"] .devices,
   .mc-app[data-view="rooms"] .rooms,
   .mc-app[data-view="scenes"] .scenes-page {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
