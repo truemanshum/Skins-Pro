@@ -288,10 +288,10 @@ export class MinecraftDashboardCard extends LitElement {
       this._config.language === 'auto' ? this._hass.language : this._config.language,
     );
     const translate = getTranslate(language);
-    const weatherIconName = weatherIcon(stateValue(this._hass, this._config.weather?.entity));
-    const quote = stateValue(this._hass, this._config.info?.entity) || translate('loadingQuote');
+    const weatherIconName = weatherIcon(stateValue(this._hass, this._config.weather?.entity, language));
+    const quote = stateValue(this._hass, this._config.info?.entity, language) || translate('loadingQuote');
     const energyEntityId = this._config.energy?.entity || '';
-    const energyValue = this._config.energy?.entity ? formatNumber(stateValue(this._hass, this._config.energy.entity), 1) : '--';
+    const energyValue = this._config.energy?.entity ? formatNumber(stateValue(this._hass, this._config.energy.entity, language), 1) : '--';
     const energyUnit = (this._hass?.states[energyEntityId]?.attributes?.unit_of_measurement as string | undefined) || this._config.energy?.unit || 'kWh';
     const compareValue = this._energyYesterday || '';
     const energyBars = this.renderBars(this._energyHistory || []);
@@ -753,7 +753,7 @@ export class MinecraftDashboardCard extends LitElement {
     if (rooms.length === 0) return nothing;
     return html`${rooms.map((room) => {
       const imageKey = room.image || 'room_living';
-      const info = room.info_entity ? stateValue(this._hass, room.info_entity) : '';
+      const info = room.info_entity ? stateValue(this._hass, room.info_entity, language) : '';
       const fallbackInfo = this._areas?.length ? this.areaFallbackInfo(room, language) : '--';
       const displayName = room.name || '--';
       return html`
@@ -902,24 +902,24 @@ export class MinecraftDashboardCard extends LitElement {
 
     const presence = byClass('presence') || byClass('occupancy') || byClass('motion');
     if (presence) {
-      const occupied = stateValue(this._hass, presence) === 'on';
+      const occupied = stateValue(this._hass, presence, language) === 'on';
       parts.push(language === 'zh-CN' ? (occupied ? '有人' : '无人') : (occupied ? 'Occupied' : 'Empty'));
     }
 
     const temp = byClass('temperature');
     if (temp) {
-      parts.push(`${formatNumber(stateValue(this._hass, temp), 1)}°C`);
+      parts.push(`${formatNumber(stateValue(this._hass, temp, language), 1)}°C`);
     }
 
     const hum = byClass('humidity');
     if (hum) {
-      parts.push(`${formatNumber(stateValue(this._hass, hum), 0)}%`);
+      parts.push(`${formatNumber(stateValue(this._hass, hum, language), 0)}%`);
     }
 
     if (!temp) {
       const illum = byClass('illuminance');
       if (illum) {
-        parts.push(`${formatNumber(stateValue(this._hass, illum), 0)}lx`);
+        parts.push(`${formatNumber(stateValue(this._hass, illum, language), 0)}lx`);
       }
     }
 
@@ -1252,7 +1252,7 @@ export class MinecraftDashboardCard extends LitElement {
       <div class="env-row">
         <div class="dot ${metric.variant || 'temp'}"><ha-icon icon=${metric.icon || 'mdi:circle'}></ha-icon></div>
         <div class="muted">${this._hass?.states[metric.entity]?.attributes?.friendly_name || metric.label || metric.entity}</div>
-        <div class="env-value">${stateValue(this._hass, metric.entity) || '--'}${metric.unit || ''}</div>
+        <div class="env-value">${stateValue(this._hass, metric.entity, _language) || '--'}${metric.unit || ''}</div>
       </div>
     `);
   }

@@ -45,11 +45,29 @@ export function deviceStateLabel(state: string, language: Language): string {
   if (state === 'off' || state === 'idle' || state === 'standby') {
     return STRINGS[language].off;
   }
-  const num = Number(state);
+  return formatRawState(state, language);
+}
+
+function formatRawState(raw: string, language: Language): string {
+  const num = Number(raw);
   if (Number.isFinite(num)) {
     return parseFloat(num.toFixed(2)).toString();
   }
-  return state.replace(/\.\d+/, '') || '--';
+  if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
+    const d = new Date(raw);
+    if (!isNaN(d.getTime())) {
+      const locale = language === 'zh-CN' ? 'zh-CN' : 'en';
+      const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(raw);
+      if (isDateOnly) {
+        return new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+      }
+      return new Intl.DateTimeFormat(locale, {
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit',
+      }).format(d);
+    }
+  }
+  return raw.replace(/\.\d+/, '') || '--';
 }
 
 export function getTranslate(language: Language): (key: TranslationKey) => string {
@@ -77,16 +95,11 @@ export function formatNumber(value: string, decimals: number): string {
   return Number.isFinite(parsed) ? parsed.toFixed(decimals) : '--';
 }
 
-export function stateValue(hass: HomeAssistant | undefined, entityId?: string): string {
+export function stateValue(hass: HomeAssistant | undefined, entityId?: string, language?: Language): string {
   if (!entityId || !hass) {
     return '';
   }
-  const raw = hass.states[entityId]?.state || '';
-  const num = Number(raw);
-  if (Number.isFinite(num)) {
-    return parseFloat(num.toFixed(2)).toString();
-  }
-  return raw.replace(/\.\d+/, '');
+  return formatRawState(hass.states[entityId]?.state || '', language || 'en');
 }
 
 export function timeText(hass: HomeAssistant | undefined, language: Language): string {
