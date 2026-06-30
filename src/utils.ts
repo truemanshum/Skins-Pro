@@ -138,7 +138,7 @@ export function assetKeyForDomain(skin: string, domain: string): string {
   if (map[domain]) {
     return map[domain]!;
   }
-  const pool = ['light', 'switch', 'button', 'climate', 'water_heater', 'humidifier', 'fan', 'speaker', 'remote', 'lock', 'camera'];
+  const pool = ['light', 'switch', 'button', 'climate', 'water_heater', 'humidifier', 'fan', 'speaker', 'remote', 'lock', 'camera', 'cover', 'valve', 'automation', 'media_player', 'vacuum', 'sensor', 'binary_sensor', 'update', 'device_tracker', 'person'];
   let hash = 0;
   for (let i = 0; i < domain.length; i += 1) {
     hash = ((hash << 5) - hash + domain.charCodeAt(i)) | 0;

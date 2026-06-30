@@ -15,6 +15,14 @@ Skins Pro 是一款社区 Lovelace 卡片，采用多皮肤架构，内置 **mod
 
 > Note<br>说明<br>All current theme image assets are AI-generated, so some images may contain AI watermarks or similar generation artifacts.<br>当前所有主题图片资源均由 AI 生成，因此部分图片中可能会出现 AI 水印或类似生成痕迹。
 
+## Philosophy / 设计理念
+
+Keep it simple, keep it easy.  
+
+There are already plenty of dashboards out there that are complex, feature-rich, and visually stunning — and that's great. Skins Pro doesn't aim to compete with them. Instead, it focuses on being **simple**, **easy to use**, and **just working** with minimal setup. Install it from HACS, pick a skin, tweak a few settings in the card editor, and you're done. No endless configuration, no deep learning curve.
+
+市面上已经有很多功能丰富、视觉效果精美的仪表盘了，这很好。Skins Pro 不打算跟它们比复杂。它的目标就是 **简单、好用**，简单配置即可上手。从 HACS 安装，选个皮肤，在卡片编辑器里调几个设置，完事。不需要无尽的配置，也不需要学习成本。
+
 ## Installation / 安装
 
 [![Open your Home Assistant instance and add this repository in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ha-china&repository=Skins-Pro&category=plugin)
