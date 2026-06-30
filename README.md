@@ -1,111 +1,111 @@
 # Skins Pro — **Next-Gen Home Assistant Dashboard**
 
-**下一代 Home Assistant 仪表盘**——多皮肤、沉浸式、开箱即用。  
-**Next-Gen Home Assistant Dashboard** — Multi-skin, immersive, plug-and-play.
+**Next-Gen Home Assistant Dashboard** — Multi-skin, immersive, plug-and-play.  
+**下一代 Home Assistant 仪表盘**——多皮肤、沉浸式、开箱即用。
 
-Skins Pro 是一款社区 Lovelace 卡片，采用多皮肤架构，内置 **modern**、**AEON** 和 **minecraft** 三套精美皮肤，自带中英文双语，从 HACS 安装后无需配置即可使用。  
-Skins Pro is a community Lovelace card with a multi-skin architecture featuring **modern**, **AEON**, and **minecraft** skins. Bilingual (CN/EN) — install from HACS and it just works.
+Skins Pro is a community Lovelace card with a multi-skin architecture featuring **modern**, **AEON**, and **minecraft** skins. Bilingual (CN/EN) — install from HACS and it just works.  
+Skins Pro 是一款社区 Lovelace 卡片，采用多皮肤架构，内置 **modern**、**AEON** 和 **minecraft** 三套精美皮肤，自带中英文双语，从 HACS 安装后无需配置即可使用。
 
-- 从 HACS Community Dashboards 直接添加 / Add directly from HACS Community Dashboards
-- 多皮肤自由切换 / Switch between skins freely
-- 全屏 Kiosk 模式，沉浸式体验 / Fullscreen Kiosk mode for immersive experience
-- 构建时自动处理图片（缩放、转 JPG）/ Auto image processing on build (resize, JPG convert)
-- 按房间区域展示设备 / Area-based room display
-- 设备自动按 domain 匹配对应图标 / Auto icon matching by entity domain
+- Add directly from HACS Community Dashboards / 从 HACS Community Dashboards 直接添加
+- Switch between skins freely / 多皮肤自由切换
+- Fullscreen Kiosk mode for immersive experience / 全屏 Kiosk 模式，沉浸式体验
+- Auto image processing on build (resize, JPG convert) / 构建时自动处理图片（缩放、转 JPG）
+- Area-based room display / 按房间区域展示设备
+- Auto icon matching by entity domain / 设备自动按 domain 匹配对应图标
 
-> 说明 / Note: 当前所有主题图片资源均由 AI 生成，因此部分图片中可能会出现 AI 水印或类似生成痕迹。  
+> Note / 说明: 当前所有主题图片资源均由 AI 生成，因此部分图片中可能会出现 AI 水印或类似生成痕迹。  
 > All current theme image assets are AI-generated, so some images may contain AI watermarks or similar generation artifacts.
 
-## 安装 / Installation
+## Installation / 安装
 
 [![Open your Home Assistant instance and add this repository in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ha-china&repository=Skins-Pro&category=plugin)
 
-点上面的按钮一键添加，或者手动操作：  
-Click the button above, or manually:
+Click the button above, or manually:  
+点上面的按钮一键添加，或者手动操作：
 
-1. HACS → Custom Repositories → 添加 `https://github.com/ha-china/Skins-Pro`，类别选 Dashboard
-2. 安装 Skins Pro / Install Skins Pro
-3. 刷新 Home Assistant 前端 / Refresh Home Assistant frontend
-4. 设置 → 仪表盘 → 添加新仪表盘 → 选 "Skins Pro" / Settings → Dashboards → Add Dashboard → Select "Skins Pro"
+1. HACS → Custom Repositories → Add `https://github.com/ha-china/Skins-Pro`, category: Dashboard
+2. Install Skins Pro / 安装 Skins Pro
+3. Refresh Home Assistant frontend / 刷新 Home Assistant 前端
+4. Settings → Dashboards → Add Dashboard → Select "Skins Pro" / 设置 → 仪表盘 → 添加新仪表盘 → 选 "Skins Pro"
 
-## 内置皮肤 / Built-in Skins
+## Built-in Skins / 内置皮肤
 
-| 皮肤 / Skin | 风格 / Style | 特点 / Features |
+| Skin / 皮肤 | Style / 风格 | Features / 特点 |
 |---|---|---|
-| **modern**（默认 / default） | 白色玻璃 / White glassmorphism | 毛玻璃效果，高分辨率图片，温润蓝白配色 / Frosted glass, high-res images, clean blue-white palette |
-| **AEON** | 暗色奢华 / Dark luxury | 深邃黑底，蓝色辉光，毛玻璃卡片，影院级阴影 / Deep blacks, blue glow, glassmorphism, cinematic shadows |
-| **visionOS** | 毛玻璃 / Frosted glass | Apple VisionOS 灵感，纯平玻璃，白色文字，沉浸式模糊 / Apple VisionOS-inspired, flat glass, white text, immersive blur |
-| **minecraft** | Minecraft 主题 / Minecraft theme | 深色纹理背景，暖色调，Steve 头像 / Dark textured background, warm tones, Steve avatar |
+| **modern**（default / 默认） | White glassmorphism / 白色玻璃 | Frosted glass, high-res images, clean blue-white palette / 毛玻璃效果，高分辨率图片，温润蓝白配色 |
+| **AEON** | Dark luxury / 暗色奢华 | Deep blacks, blue glow, glassmorphism, cinematic shadows / 深邃黑底，蓝色辉光，毛玻璃卡片，影院级阴影 |
+| **visionOS** | Frosted glass / 毛玻璃 | Apple VisionOS-inspired, flat glass, white text, immersive blur / Apple VisionOS 灵感，纯平玻璃，白色文字，沉浸式模糊 |
+| **minecraft** | Minecraft theme / Minecraft 主题 | Dark textured background, warm tones, Steve avatar / 深色纹理背景，暖色调，Steve 头像 |
 
-在卡片编辑器的「皮肤 / Skin」字段切换。  
-Switch via the "Skin" field in the card editor.
+Switch via the "Skin" field in the card editor.  
+在卡片编辑器的「皮肤 / Skin」字段切换。
 
-## 预览 / Preview
+## Preview / 预览
 
 | modern | AEON | visionOS | minecraft |
 |---|---|---|---|
 | ![modern](screenshots/modern.png) | ![AEON](screenshots/AEON.png) | ![visionOS](screenshots/visionOS.png) | ![minecraft](screenshots/minecraft.png) |
 
-### 皮肤切换演示 / Skin Switching Demo
+### Skin Switching Demo / 皮肤切换演示
 
 <video src="https://github.com/ha-china/Skins-Pro/raw/master/screenshots/skin.mp4" controls width="100%" preload="metadata"></video>
 [⬇ Download MP4](screenshots/skin.mp4)
 
-## 功能 / Features
+## Features / 功能
 
-- ☀️ 天气与问候 / Weather & greeting
-- 💬 信息展示 / Info display
-- 📱 设备控制面板（按房间或按类型）/ Device controls (by area or by type)
-- 🚪 房间快照 / Room snapshots
-- 🎬 场景按钮 / Scene buttons
-- ⚡ 今日用电（含昨日对比）/ Energy usage today (with vs yesterday)
-- 🛡️ 安全页面（摄像头、门锁、布撤防）/ Security page (cameras, locks, arming)
-- 🌐 中英文自动切换 / Auto CN/EN language switching
-- ↔️ 全屏 Kiosk 模式 / Kiosk mode
-- 🖼️ 使用 HA 区域图片作为房间背景 / Use HA area pictures as room backgrounds
+- ☀️ Weather & greeting / 天气与问候
+- 💬 Info display / 信息展示
+- 📱 Device controls (by area or by type) / 设备控制面板（按房间或按类型）
+- 🚪 Room snapshots / 房间快照
+- 🎬 Scene buttons / 场景按钮
+- ⚡ Energy usage today (with vs yesterday) / 今日用电（含昨日对比）
+- 🛡️ Security page (cameras, locks, arming) / 安全页面（摄像头、门锁、布撤防）
+- 🌐 Auto CN/EN language switching / 中英文自动切换
+- ↔️ Kiosk mode / 全屏 Kiosk 模式
+- 🖼️ Use HA area pictures as room backgrounds / 使用 HA 区域图片作为房间背景
 
-首次添加时会自动扫描你的 Home Assistant，按区域和设备类型组织页面。  
-On first add, it automatically scans your Home Assistant and organizes content by area and device type.
+On first add, it automatically scans your Home Assistant and organizes content by area and device type.  
+首次添加时会自动扫描你的 Home Assistant，按区域和设备类型组织页面。
 
-## 皮肤开发 / Skin Development
+## Skin Development / 皮肤开发
 
-皮肤是一个文件夹放在 `skins-pro/<皮肤名>/` 下，包含图片、CSS 和文本配置。`npm run build` 会自动发现、处理图片并生成代码。  
-A skin is a folder under `skins-pro/<skin-name>/` containing images, CSS, and strings. `npm run build` auto-discovers, processes images, and generates code.
+A skin is a folder under `skins-pro/<skin-name>/` containing images, CSS, and strings. `npm run build` auto-discovers, processes images, and generates code.  
+皮肤是一个文件夹放在 `skins-pro/<皮肤名>/` 下，包含图片、CSS 和文本配置。`npm run build` 会自动发现、处理图片并生成代码。
 
-### 目录结构 / Directory Structure
+### Directory Structure / 目录结构
 
 ```
 skins-pro/
   your-skin-name/
-    theme.css               # 样式（必须）/ Styles (required)
-    strings.json            # 皮肤文本 + icon_map（可选）/ Strings + icon_map (optional)
-    avatar.jpg              # 头像，建议 ≥ 300×300 / Avatar, recommended ≥ 300×300
-    background.jpg          # 主区域背景，建议宽 ≥ 2560px / Background, recommended width ≥ 2560px
-    decoration.jpg          # 侧边装饰图，建议宽 ≥ 800px / Side decoration, recommended width ≥ 800px
-    base-texture.jpg        # 背景纹理，建议宽 ≥ 2560px / Base texture, recommended width ≥ 2560px
-    stage-*.jpg             # 阶段/过渡图，建议宽 ≥ 2560px / Stage image, recommended width ≥ 2560px
-    room-*.jpg              # 房间图，建议宽 ≥ 1200px / Room image, recommended width ≥ 1200px
-    icon-*.jpg              # 设备图标，建议最长边 ≥ 300px / Device icon, recommended longest edge ≥ 300px
+    theme.css               # Styles (required) / 样式（必须）
+    strings.json            # Strings + icon_map (optional) / 皮肤文本 + icon_map（可选）
+    avatar.jpg              # Avatar, recommended ≥ 300×300 / 头像，建议 ≥ 300×300
+    background.jpg          # Background, recommended width ≥ 2560px / 主区域背景，建议宽 ≥ 2560px
+    decoration.jpg          # Side decoration, recommended width ≥ 800px / 侧边装饰图，建议宽 ≥ 800px
+    base-texture.jpg        # Base texture, recommended width ≥ 2560px / 背景纹理，建议宽 ≥ 2560px
+    stage-*.jpg             # Stage image, recommended width ≥ 2560px / 阶段/过渡图，建议宽 ≥ 2560px
+    room-*.jpg              # Room image, recommended width ≥ 1200px / 房间图，建议宽 ≥ 1200px
+    icon-*.jpg              # Device icon, recommended longest edge ≥ 300px / 设备图标，建议最长边 ≥ 300px
 ```
 
-### 构建时图片处理 / Image Processing
+### Image Processing on Build / 构建时图片处理
 
-| 文件名 / Pattern | 建议源尺寸 / Recommended source | 说明 / Notes |
+| Pattern / 文件名 | Recommended source / 建议源尺寸 | Notes / 说明 |
 |---|---|---|
-| `room-*` | 宽 ≥ 1200px / width | 保持比例，缩放至 1200px / Maintain ratio, downscale to 1200px |
-| `icon-*` | 最长边 ≥ 300px / longest edge | 保持比例，缩放至 300px / Maintain ratio, downscale to 300px |
-| `avatar.*` | 最长边 ≥ 300px / longest edge | 保持比例，缩放至 300px / Maintain ratio, downscale to 300px |
-| `decoration.*` | 宽 ≥ 800px / width | 保持比例，缩放至 800px / Maintain ratio, downscale to 800px |
-| `background.*`, `base-*`, `stage-*` | 宽 ≥ 2560px / width | 保持比例，缩放至 2560px / Maintain ratio, downscale to 2560px |
-| 其他 / others | 宽 ≥ 1200px / width | 保持比例，缩放至 1200px / Maintain ratio, downscale to 1200px |
+| `room-*` | width ≥ 1200px / 宽 ≥ 1200px | Maintain ratio, downscale to 1200px / 保持比例，缩放至 1200px |
+| `icon-*` | longest edge ≥ 300px / 最长边 ≥ 300px | Maintain ratio, downscale to 300px / 保持比例，缩放至 300px |
+| `avatar.*` | longest edge ≥ 300px / 最长边 ≥ 300px | Maintain ratio, downscale to 300px / 保持比例，缩放至 300px |
+| `decoration.*` | width ≥ 800px / 宽 ≥ 800px | Maintain ratio, downscale to 800px / 保持比例，缩放至 800px |
+| `background.*`, `base-*`, `stage-*` | width ≥ 2560px / 宽 ≥ 2560px | Maintain ratio, downscale to 2560px / 保持比例，缩放至 2560px |
+| others / 其他 | width ≥ 1200px / 宽 ≥ 1200px | Maintain ratio, downscale to 1200px / 保持比例，缩放至 1200px |
 
-源文件支持 PNG / JPG / BMP / WebP，一律输出 JPG，不大于原图。  
-Supports PNG / JPG / BMP / WebP input, outputs JPG. Never upscales.
+Supports PNG / JPG / BMP / WebP input, outputs JPG. Never upscales.  
+源文件支持 PNG / JPG / BMP / WebP，一律输出 JPG，不大于原图。
 
 ### theme.css
 
-所有样式通过 `:host` 上的 CSS 变量自定义。每个皮肤独立的 `theme.css` 文件。参考 `skins-pro/modern/theme.css` 查看所有变量。  
-All styles are customized via CSS variables on `:host`. Each skin has its own `theme.css`. See `skins-pro/modern/theme.css` for the full variable list.
+All styles are customized via CSS variables on `:host`. Each skin has its own `theme.css`. See `skins-pro/modern/theme.css` for the full variable list.  
+所有样式通过 `:host` 上的 CSS 变量自定义。每个皮肤独立的 `theme.css` 文件。参考 `skins-pro/modern/theme.css` 查看所有变量。
 
 ### strings.json + icon_map
 
@@ -123,52 +123,52 @@ All styles are customized via CSS variables on `:host`. Each skin has its own `t
 }
 ```
 
-`icon_map` 定义实体域→图标图片的映射，未覆盖的域自动 fallback。  
-Maps entity domains to icon image filenames. Unmapped domains fall back automatically.
+Maps entity domains to icon image filenames. Unmapped domains fall back automatically.  
+`icon_map` 定义实体域→图标图片的映射，未覆盖的域自动 fallback。
 
-## 开发 / Development
+## Development / 开发
 
 ```bash
 git clone https://github.com/ha-china/Skins-Pro.git
 cd Skins-Pro
 npm install
-npm run build       # 构建 / Build
-npm run watch       # 开发模式自动构建 / Watch mode
-npm run type-check  # TypeScript 类型检查 / Type check
+npm run build       # Build / 构建
+npm run watch       # Watch mode / 开发模式自动构建
+npm run type-check  # Type check / TypeScript 类型检查
 ```
 
-构建产物在 `dist/`：  
-Build output: `dist/`
+Build output: `dist/`  
+构建产物在 `dist/`：
 
-- `dist/skins-pro.js` — 核心 JS / Core JS bundle
-- `dist/<皮肤名>/` — 各皮肤素材和 CSS / Per-skin assets and CSS
+- `dist/skins-pro.js` — Core JS bundle / 核心 JS
+- `dist/<skin-name>/` — Per-skin assets and CSS / 各皮肤素材和 CSS
 
-### 在 HA 中测试 / Testing in HA
+### Testing in HA / 在 HA 中测试
 
 1. `npm run build`
-2. 将 `dist/` 复制到 HA 的 `www/community/skins-pro/` / Copy `dist/` to HA's `www/community/skins-pro/`
-3. 硬刷新浏览器（Ctrl+Shift+R）/ Hard refresh
+2. Copy `dist/` to HA's `www/community/skins-pro/` / 将 `dist/` 复制到 HA 的 `www/community/skins-pro/`
+3. Hard refresh (Ctrl+Shift+R) / 硬刷新浏览器（Ctrl+Shift+R）
 
-## 贡献主题 / Contributing a Skin
+## Contributing a Skin / 贡献主题
 
-欢迎提交你的皮肤到 Skins Pro！需满足以下要求：  
-We welcome skin contributions! Requirements:
+We welcome skin contributions! Requirements:  
+欢迎提交你的皮肤到 Skins Pro！需满足以下要求：
 
-1. 在 `skins-pro/<皮肤名>/` 下创建皮肤目录 / Create a folder under `skins-pro/<skin-name>/`
-2. 提供 `theme.css`（全部样式通过 CSS 变量定义）/ Provide `theme.css` (all styles via CSS variables)
-3. 提供 `strings.json`（含标题、问候语、`icon_map`）/ Provide `strings.json` with greeting text and `icon_map`
-4. 提供至少 `avatar.jpg`、`background.jpg`、`decoration.jpg` 三张图片 / Provide at least avatar, background, and decoration images
-5. 在 `screenshots/` 添加一张 <皮肤名>.png 预览图（.png, 1920×1080 为宜）/ Add a `<skin-name>.png` screenshot in `screenshots/`
-6. PR 提交到本仓库 / Submit a PR to this repo
+1. Create a folder under `skins-pro/<skin-name>/` / 在 `skins-pro/<皮肤名>/` 下创建皮肤目录
+2. Provide `theme.css` (all styles via CSS variables) / 提供 `theme.css`（全部样式通过 CSS 变量定义）
+3. Provide `strings.json` with greeting text and `icon_map` / 提供 `strings.json`（含标题、问候语、`icon_map`）
+4. Provide at least avatar, background, and decoration images / 提供至少 `avatar.jpg`、`background.jpg`、`decoration.jpg` 三张图片
+5. Add a `<skin-name>.png` screenshot in `screenshots/` (.png, 1920×1080 recommended) / 在 `screenshots/` 添加一张 <皮肤名>.png 预览图（.png, 1920×1080 为宜）
+6. Submit a PR to this repo / PR 提交到本仓库
 
-构建时会自动处理图片，无需手动压缩。  
-Images are auto-processed on build — no manual optimization needed.
+Images are auto-processed on build — no manual optimization needed.  
+构建时会自动处理图片，无需手动压缩。
 
-## 致谢 / Credits
+## Credits / 致谢
 
-- 架构启发自 [dwains-dashboard-next](https://github.com/dwainscheeren/dwains-dashboard-next) / Architecture inspired by dwains-dashboard-next
-- 设计启发自 [html-card-pro Discussions](https://github.com/ha-china/html-card-pro/discussions/11) / Design inspired by html-card-pro
-- 全屏模式启发自 [kiosk-mode](https://github.com/NemesisRE/kiosk-mode) / Kiosk mode inspired by kiosk-mode
-- 核心渲染框架 [Lit](https://lit.dev/) / Core rendering by Lit
-- 图片处理 [sharp](https://sharp.pixelplumbing.com/) / Image processing by sharp
-- 零运行时依赖，保持精简 / Zero runtime dependencies, lean and fast
+- Architecture inspired by [dwains-dashboard-next](https://github.com/dwainscheeren/dwains-dashboard-next) / 架构启发自 dwains-dashboard-next
+- Design inspired by [html-card-pro Discussions](https://github.com/ha-china/html-card-pro/discussions/11) / 设计启发自 html-card-pro
+- Kiosk mode inspired by [kiosk-mode](https://github.com/NemesisRE/kiosk-mode) / 全屏模式启发自 kiosk-mode
+- Core rendering by [Lit](https://lit.dev/) / 核心渲染框架 Lit
+- Image processing by [sharp](https://sharp.pixelplumbing.com/) / 图片处理 sharp
+- Zero runtime dependencies, lean and fast / 零运行时依赖，保持精简
