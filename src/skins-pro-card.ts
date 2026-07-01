@@ -380,12 +380,13 @@ export class MinecraftDashboardCard extends LitElement {
             <div class="section-title"><h2>${translate('environment')}</h2></div>
             <div class="env-list">${this.renderEnvironment(language)}</div>
           </section>
+          ${this._config?.energy?.entity ? html`
           <section class="glass-card panel-energy">
             <div class="section-title"><h2>${translate('todayEnergy')}</h2></div>
             <div class="energy-value">${energyValue}<small> ${energyUnit}</small></div>
             <div class="bars">${energyBars}</div>
             <div class="energy-footer"><span class="muted">${localizedText(this._config?.energy?.compare_text, this._config?.energy?.compare_text_zh, this._config?.energy?.compare_text_en, language, translate('compareYesterday'))}</span><span class="down">${compareValue || '--'}</span></div>
-          </section>
+          </section>` : ''}
           ${this.renderMediaPlayer(language, translate)}
           ${this.renderMaintenanceCard(language, translate)}
           <section class="glass-card panel-scenes" data-section="scenes">

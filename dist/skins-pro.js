@@ -56,12 +56,13 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
             <div class="section-title"><h2>${t("environment")}</h2></div>
             <div class="env-list">${this.renderEnvironment(e)}</div>
           </section>
+          ${this._config?.energy?.entity?Q`
           <section class="glass-card panel-energy">
             <div class="section-title"><h2>${t("todayEnergy")}</h2></div>
             <div class="energy-value">${n}<small> ${r}</small></div>
             <div class="bars">${o}</div>
             <div class="energy-footer"><span class="muted">${Me(this._config?.energy?.compare_text,this._config?.energy?.compare_text_zh,this._config?.energy?.compare_text_en,e,t("compareYesterday"))}</span><span class="down">${a||"--"}</span></div>
-          </section>
+          </section>`:""}
           ${this.renderMediaPlayer(e,t)}
           ${this.renderMaintenanceCard(e,t)}
           <section class="glass-card panel-scenes" data-section="scenes">
