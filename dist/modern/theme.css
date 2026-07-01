@@ -320,6 +320,19 @@ button { font:inherit; }
   text-align: right;
 }
 
+.media-off-state {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-space-xs);
+  margin-top: var(--sp-space-sm);
+  color: var(--sp-text-tertiary);
+  font-size: var(--sp-font-xs);
+}
+
+.media-off-state ha-icon {
+  --mdc-icon-size: 18px;
+}
+
 .panel-scenes { min-height:0; height:100%; overflow:hidden; display:flex; flex-direction:column; }
 .panel-scenes .scene-grid { min-height:0; flex:1; align-content:start; }
 .time-card { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-space-md); }

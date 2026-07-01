@@ -1390,6 +1390,19 @@ button {
   text-align: right;
 }
 
+.media-off-state {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-space-xs);
+  margin-top: var(--sp-space-sm);
+  color: var(--sp-text-tertiary);
+  font-size: var(--sp-font-xs);
+}
+
+.media-off-state ha-icon {
+  --mdc-icon-size: 18px;
+}
+
 .energy-value {
   font-size: var(--sp-font-xxl);
   line-height: 1;

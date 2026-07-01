@@ -620,7 +620,16 @@ export class MinecraftDashboardCard extends LitElement {
     const stateObj = this._hass?.states?.[entityId];
     if (!stateObj) return nothing;
     const state = stateObj.state;
-    if (state === 'off' || state === 'unavailable') return nothing;
+    const isOff = state === 'off' || state === 'unavailable' || state === 'idle';
+    if (isOff) {
+      const name = (stateObj.attributes?.friendly_name as string) || entityId;
+      return html`
+        <section class="glass-card panel-media">
+          <div class="section-title"><h2>${translate('mediaPlayer')}</h2></div>
+          <div class="media-off-state"><ha-icon icon="mdi:power-standby"></ha-icon><span>${name}</span></div>
+        </section>
+      `;
+    }
     const attrs = stateObj.attributes || {};
     const title = (attrs.media_title as string) || (attrs.friendly_name as string) || entityId;
     const artist = attrs.media_artist as string | undefined;

@@ -127,7 +127,12 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
             `})}
           ${this.renderMaintenanceCard(e,t)}
         </div>
-      `)}renderSecurityPage(e,t){const i=this.renderSecurityCards(e);return this.renderPageShell(t("security"),t("securityOverview"),Q``,i!==X?Q`<div class="page-scroll themed-scrollbar"><div class="devices security-grid">${i}</div></div>`:Q`<div class="empty-state">${t("offline")}</div>`)}renderMediaPlayer(e){const t=this._config?.media_player?.entity;if(!t)return X;const i=this._hass?.states?.[t];if(!i)return X;const s=i.state;if("off"===s||"unavailable"===s)return X;const n=i.attributes||{},r=n.media_title||n.friendly_name||t,a=n.media_artist,o=n.entity_picture,c=n.app_name||n.source||"",d="playing"===s,l=n.volume_level,h=n.is_volume_muted,u=void 0!==l?Math.round(100*l):void 0;return Q`
+      `)}renderSecurityPage(e,t){const i=this.renderSecurityCards(e);return this.renderPageShell(t("security"),t("securityOverview"),Q``,i!==X?Q`<div class="page-scroll themed-scrollbar"><div class="devices security-grid">${i}</div></div>`:Q`<div class="empty-state">${t("offline")}</div>`)}renderMediaPlayer(e){const t=this._config?.media_player?.entity;if(!t)return X;const i=this._hass?.states?.[t];if(!i)return X;const s=i.state;if("off"===s||"unavailable"===s||"idle"===s){const s=i.attributes?.friendly_name||t;return Q`
+        <section class="glass-card panel-media">
+          <div class="section-title"><h2>${e("mediaPlayer")}</h2></div>
+          <div class="media-off-state"><ha-icon icon="mdi:power-standby"></ha-icon><span>${s}</span></div>
+        </section>
+      `}const n=i.attributes||{},r=n.media_title||n.friendly_name||t,a=n.media_artist,o=n.entity_picture,c=n.app_name||n.source||"",d="playing"===s,l=n.volume_level,h=n.is_volume_muted,u=void 0!==l?Math.round(100*l):void 0;return Q`
       <section class="glass-card panel-media">
         <div class="section-title"><h2>${e("mediaPlayer")}</h2></div>
         <div class="media-content">
