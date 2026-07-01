@@ -39,6 +39,8 @@ Click the button above, or manually:
 
 ![New Dashboard](screenshots/add_dashboard.png)
 
+![Settings](screenshots/settings.png)
+
 ## Built-in Skins / 内置皮肤
 
 | Skin<br>皮肤 | Style<br>风格 | Features<br>特点 |
