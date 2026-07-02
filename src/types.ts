@@ -12,6 +12,7 @@ export interface HomeAssistant {
     date_format?: 'DMY' | 'MDY' | 'YMD';
     number_format?: string;
   };
+  user?: { id?: string; name?: string; is_owner?: boolean; is_admin?: boolean };
   states: Record<string, HassEntity | undefined>;
   callService: (domain: string, service: string, data?: Record<string, unknown>) => Promise<unknown>;
   callApi?: (method: string, path: string, body?: unknown) => Promise<unknown>;
@@ -164,8 +165,6 @@ export interface DashboardConfig {
   subtitle_zh?: string;
   subtitle_en?: string;
   profile_name?: string;
-  profile_name_zh?: string;
-  profile_name_en?: string;
   profile_subtitle?: string;
   profile_subtitle_zh?: string;
   profile_subtitle_en?: string;

@@ -308,7 +308,7 @@ export class MinecraftDashboardCard extends LitElement {
             <div class="profile" @click=${() => this.toggleKioskFullscreen()}>
               ${this.renderImage('avatar', 'Avatar', 'profile-img')}
               <div class="meta">
-                <h2>${this._config.profile_name || localizedText(undefined, this._config.profile_name_zh || skinString(selectedSkin(this._config), 'profile_name_zh'), this._config.profile_name_en || skinString(selectedSkin(this._config), 'profile_name_en'), language)}</h2>
+                <h2>${this._config.profile_name || this._hass?.user?.name || ''}</h2>
                 <p class="muted">${this._config.profile_subtitle || localizedText(undefined, this._config.profile_subtitle_zh || skinString(selectedSkin(this._config), 'profile_subtitle_zh'), this._config.profile_subtitle_en || skinString(selectedSkin(this._config), 'profile_subtitle_en'), language)}</p>
               </div>
             </div>
