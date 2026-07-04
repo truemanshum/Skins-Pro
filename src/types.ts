@@ -58,7 +58,7 @@ export interface NavItemConfig {
   label_en?: string;
   icon?: string;
   target?: string;
-  enabled?: boolean;
+  enabled: boolean;
 }
 
 export interface DeviceConfig {

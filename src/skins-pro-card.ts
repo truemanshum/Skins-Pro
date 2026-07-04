@@ -418,7 +418,7 @@ export class MinecraftDashboardCard extends LitElement {
             <div class="section-title"><h2>${translate('environment')}</h2></div>
             <div class="env-list">${this.renderEnvironment(language)}</div>
           </section>`}
-          ${this._config?.energy?.entity ? html`
+          ${this._config?.energy?.entity && (!window.matchMedia('(orientation: portrait)').matches || energyValue !== '--') ? html`
           <section class="glass-card panel-energy">
             <div class="section-title"><h2>${translate('todayEnergy')}</h2></div>
             <div class="energy-value">${energyValue}<small> ${energyUnit}</small></div>
@@ -442,7 +442,7 @@ export class MinecraftDashboardCard extends LitElement {
     const host = this.shadowRoot?.host as HTMLElement | undefined;
     if (!host) return;
 
-    if (window.innerWidth <= 760) {
+    if (window.matchMedia('(orientation: portrait)').matches) {
       host.style.setProperty('--sp-runtime-height', 'auto');
       host.style.setProperty('--sp-runtime-min-height', '100vh');
       return;
@@ -499,7 +499,7 @@ export class MinecraftDashboardCard extends LitElement {
   // ─── Navigation ─────────────────────────────────────────
 
   private renderNav(language: Language): TemplateResult {
-    return html`${(this._config?.nav || []).filter(item => item.enabled !== false).map((item, index) => {
+    return html`${(this._config?.nav || []).filter(item => item.enabled).map((item, index) => {
       const label = localizedText(item.label, item.label_zh, item.label_en, language, STRINGS[language][(item.key as TranslationKey) || 'home'] || item.key || '');
       const target = item.target || item.key || 'home';
       const isActive = target === this._view || (index === 0 && this._view === 'home' && target === 'home');
@@ -1109,7 +1109,7 @@ export class MinecraftDashboardCard extends LitElement {
       })
       .map((e) => e.entity_id);
 
-    const readonlyDomains = new Set(['sensor', 'binary_sensor', 'remote']);
+    const readonlyDomains = new Set(['sensor', 'binary_sensor', 'remote', 'automation']);
     const active = entries.filter((eid) => {
       const state = this._hass?.states[eid]?.state;
       if (!state || state !== 'on') return false;

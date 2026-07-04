@@ -35,13 +35,13 @@ export const DEFAULT_ASSETS: Record<string, string> = {
 };
 
 export const DEFAULT_NAV: NavItemConfig[] = [
-  { key: 'home', icon: 'mdi:home' },
-  { key: 'devices', icon: 'mdi:devices' },
-  { key: 'scenes', icon: 'mdi:palette-swatch' },
-  { key: 'automations', icon: 'mdi:robot' },
-  { key: 'rooms', icon: 'mdi:door' },
-  { key: 'security', icon: 'mdi:shield-home' },
-  { key: 'energy', icon: 'mdi:lightning-bolt' },
+  { key: 'home', icon: 'mdi:home', enabled: true },
+  { key: 'devices', icon: 'mdi:devices', enabled: true },
+  { key: 'scenes', icon: 'mdi:palette-swatch', enabled: true },
+  { key: 'automations', icon: 'mdi:robot', enabled: true },
+  { key: 'rooms', icon: 'mdi:door', enabled: true },
+  { key: 'security', icon: 'mdi:shield-home', enabled: true },
+  { key: 'energy', icon: 'mdi:lightning-bolt', enabled: true },
 ];
 
 export const DEFAULT_DEVICES: DeviceConfig[] = [

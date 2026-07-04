@@ -200,7 +200,7 @@ export class SkinsProCardEditor extends HTMLElement {
   private _navItemChecked(key: string): boolean {
     const navItems: NavItemConfig[] = this._config?.nav ?? [];
     const item = navItems.find(n => n.key === key);
-    return item ? item.enabled !== false : true;
+    return item ? item.enabled : true;
   }
 
   private _renderNavDialog(): string {
@@ -448,7 +448,7 @@ export class SkinsProCardEditor extends HTMLElement {
           if (!checked) allEnabled = false;
           const existingItem = existingNav.find(n => n.key === key);
           const defaultItem = DEFAULT_NAV.find(d => d.key === key);
-          dialogNav.push({ key, icon: existingItem?.icon || defaultItem?.icon, ...(checked ? {} : { enabled: false }) });
+          dialogNav.push({ key, icon: existingItem?.icon || defaultItem?.icon, enabled: checked });
         });
         const customNav = existingNav.filter(n => !DEFAULT_NAV.some(d => d.key === n.key));
         const mergedNav = [...dialogNav, ...customNav];

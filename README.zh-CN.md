@@ -4,6 +4,8 @@
 
 **下一代 Home Assistant 仪表盘**——多皮肤、沉浸式、开箱即用。
 
+如果你不喜欢AI生成的图片，设置里可以自由的上传你的背景图和你Home Assistant里设置的房间图片。
+
 Skins Pro 是一款社区 Lovelace 卡片，采用多皮肤架构，内置 **modern**、**AEON**、**AEON_glass**、**visionOS** 和 **minecraft** 五套精美皮肤，自带中英文双语，从 HACS 安装后无需配置即可使用。
 
 - 从 HACS 自定义仓库添加
