@@ -637,8 +637,8 @@ export class MinecraftDashboardCard extends LitElement {
     const skin = selectedSkin(this._config);
     const items = scenes.map((scene, index) => {
       const name = String(scene.attributes?.friendly_name || scene.entity_id);
-      const lastActivated = scene.attributes?.last_activated
-        ? formatRelativeTime(new Date(scene.attributes.last_activated as string), language)
+      const lastActivated = scene.state && scene.state !== 'unavailable' && scene.state !== 'unknown'
+        ? formatRelativeTime(new Date(scene.state), language)
         : (language === 'zh-CN' ? '未激活' : 'Not activated');
       const assetKey = assetKeyForDomain(skin, 'scene');
       const tones: Array<'green' | 'blue' | 'purple' | 'yellow'> = ['green', 'blue', 'purple', 'yellow'];
@@ -660,7 +660,7 @@ export class MinecraftDashboardCard extends LitElement {
       translate('scenes'),
       translate('modes'),
       html``,
-      html`<div class="page-scroll themed-scrollbar"><div class="devices-page-grid automations-grid">${items}</div></div>`
+      html`<div class="page-scroll themed-scrollbar"><div class="devices devices-page-grid automations-grid">${items}</div></div>`
     );
   }
 
@@ -879,8 +879,8 @@ export class MinecraftDashboardCard extends LitElement {
           ? formatRelativeTime(new Date(stateObj.attributes.last_triggered as string), language)
           : undefined;
       } else if (domain === 'scene') {
-        lastTime = stateObj?.attributes?.last_activated
-          ? formatRelativeTime(new Date(stateObj.attributes.last_activated as string), language)
+        lastTime = stateObj?.state && stateObj.state !== 'unavailable' && stateObj.state !== 'unknown'
+          ? formatRelativeTime(new Date(stateObj.state), language)
           : undefined;
       } else if (stateObj) {
         lastTime = formatRelativeTime(new Date(stateObj.last_changed), language);
@@ -1444,8 +1444,8 @@ export class MinecraftDashboardCard extends LitElement {
                 ? formatRelativeTime(new Date(stateObj.attributes.last_triggered as string), language)
                 : undefined;
             } else if (domain === 'scene') {
-              lastTime = stateObj?.attributes?.last_activated
-                ? formatRelativeTime(new Date(stateObj.attributes.last_activated as string), language)
+              lastTime = stateObj?.state && stateObj.state !== 'unavailable' && stateObj.state !== 'unknown'
+                ? formatRelativeTime(new Date(stateObj.state), language)
                 : undefined;
             } else if (stateObj) {
               lastTime = formatRelativeTime(new Date(stateObj.last_changed), language);
@@ -1484,8 +1484,8 @@ export class MinecraftDashboardCard extends LitElement {
     return html`${scenes.map((scene, index) => {
       const tones: Array<'morning' | 'night' | 'movie' | 'game'> = ['morning', 'night', 'movie', 'game'];
       const name = String(scene.attributes?.friendly_name || scene.entity_id);
-      const lastActivated = scene.attributes?.last_activated
-        ? formatRelativeTime(new Date(scene.attributes.last_activated as string), language)
+      const lastActivated = scene.state && scene.state !== 'unavailable' && scene.state !== 'unknown'
+        ? formatRelativeTime(new Date(scene.state), language)
         : undefined;
       return html`
         <button class="scene ${tones[index % tones.length]}" @click=${() => this.runScene(scene.entity_id)}>
