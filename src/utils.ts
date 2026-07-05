@@ -127,8 +127,8 @@ export function formatRelativeTime(isoDate: Date, language: Language): string {
   const now = new Date();
   const diff = now.getTime() - isoDate.getTime();
   const seconds = Math.floor(diff / 1000);
-  if (seconds < 0) return language === 'zh-CN' ? '刚刚' : 'just now';
   const rtf = new Intl.RelativeTimeFormat(language === 'zh-CN' ? 'zh-CN' : 'en', { numeric: 'auto' });
+  if (seconds < 0) return rtf.format(0, 'seconds');
   if (seconds < 60) return rtf.format(-seconds, 'seconds');
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return rtf.format(-minutes, 'minutes');
