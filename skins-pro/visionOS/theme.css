@@ -465,21 +465,8 @@ button {
   min-width: 0;
   text-align: right;
 }
-
-.welcome-time {
-  display: flex;
-  align-items: baseline;
-  gap: var(--sp-space-sm);
-  font-size: var(--sp-font-lg);
-  font-weight: var(--sp-font-weight-semibold);
-  color: var(--sp-text-primary);
-}
-
-.welcome-time .time-sub {
-  font-size: var(--sp-font-xs);
-  font-weight: var(--sp-font-weight-regular);
-  color: var(--sp-text-secondary);
-}
+
+
 
 .env-list-inline {
   display: flex;
@@ -751,11 +738,7 @@ button {
 /* ==========================================================================
    12. Chips / Filter Tabs
    ========================================================================== */
-
-.chip-group {
-  display: flex;
-  gap: var(--sp-space-xs);
-}
+
 
 .chip {
   min-height: 36px;
@@ -1018,8 +1001,7 @@ button {
   min-width: 0;
 }
 
-.status,
-.count-tag {
+.status {
   min-height: 22px;
   border-radius: var(--sp-radius-infinite);
   display: grid;
@@ -1766,6 +1748,13 @@ button {
   padding: var(--sp-space-sm);
 }
 
+.scene.morning { border-top: 3px solid var(--sp-accent); }
+.scene.night { border-top: 3px solid rgba(255,255,255,0.4); }
+.scene.movie { border-top: 3px solid rgba(255,180,160,0.5); }
+.scene.game { border-top: 3px solid rgba(180,160,220,0.5); }
+
+.page-body.single-column > .maintenance-card { flex:1 1 200px; max-width:400px; min-width:200px; }
+
 /* ==========================================================================
    18. View Visibility Rules
    ========================================================================== */
@@ -1773,8 +1762,6 @@ button {
 /* ---- Devices View ---- */
 
 .mc-app[data-view="devices"] .welcome-group,
-.mc-app[data-view="devices"] .panel-rooms,
-.mc-app[data-view="devices"] .panel-environment,
 .mc-app[data-view="devices"] .panel-energy,
 .mc-app[data-view="devices"] .panel-scenes,
 .mc-app[data-view="devices"] .side {
@@ -1798,7 +1785,6 @@ button {
 
 .mc-app[data-view="rooms"] .welcome-group,
 .mc-app[data-view="rooms"] .panel-devices,
-.mc-app[data-view="rooms"] .panel-environment,
 .mc-app[data-view="rooms"] .panel-energy,
 .mc-app[data-view="rooms"] .panel-scenes,
 .mc-app[data-view="rooms"] .side {
@@ -1828,7 +1814,6 @@ button {
 .mc-app[data-view="scenes"] .welcome-group,
 .mc-app[data-view="scenes"] .bottom-stack,
 .mc-app[data-view="scenes"] .time-card,
-.mc-app[data-view="scenes"] .panel-environment,
 .mc-app[data-view="scenes"] .panel-energy,
 .mc-app[data-view="scenes"] .panel-media,
 .mc-app[data-view="scenes"] .panel-camera {
@@ -2224,12 +2209,7 @@ button {
 /* ==========================================================================
    22. Editor / Strategy Dialog
    ========================================================================== */
-
-.sp-strategy-info {
-  padding: var(--sp-space-xl);
-  line-height: 1.6;
-  color: var(--sp-text-secondary);
-}
+
 
 .sp-wrap {
   display: grid;
@@ -2308,24 +2288,9 @@ button {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--sp-space-md);
 }
-
-.sp-card-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--sp-space-md);
-  align-items: end;
-}
-
-.sp-card-row .sp-field {
-  display: grid;
-  gap: var(--sp-space-2xs);
-}
-
-.sp-card-row .sp-field span {
-  font-size: var(--sp-font-2xs);
-  font-weight: var(--sp-font-weight-medium);
-  color: var(--sp-text-secondary);
-}
+
+
+
 
 .sp-card button {
   min-height: 38px;
@@ -2348,12 +2313,7 @@ button {
   background: rgba(255,255,255,0.16);
   transform: translateY(-1px);
 }
-
-.sp-grid {
-  display: grid;
-  gap: var(--sp-space-md);
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-}
+
 
 .sp-list {
   display: grid;
