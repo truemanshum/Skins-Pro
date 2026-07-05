@@ -1067,7 +1067,6 @@ export class MinecraftDashboardCard extends LitElement {
           ${room.activeCounts.map((g) => html`
             <button class="room-active-chip" @click=${(e: Event) => { e.stopPropagation(); this.turnOffAreaType(g.entityIds); }}>
               <span>${g.label} ${g.count}</span>
-              <span class="room-active-close">&times;</span>
             </button>
           `)}
         </div>
