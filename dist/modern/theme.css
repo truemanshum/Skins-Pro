@@ -362,7 +362,7 @@ button { font:inherit; }
 .panel-camera { width:100%; max-width:100%; min-width:0; justify-self:stretch; align-self:stretch; min-height:0; cursor:pointer; }
 .panel-camera .camera-preview { margin-top:var(--sp-space-xs); }
 .panel-scenes { min-height:0; height:100%; overflow:hidden; display:flex; flex-direction:column; }
-.panel-scenes .scene-grid { min-height:0; flex:1; align-content:start; overflow-y:auto; }
+.panel-scenes .scene-grid { min-height:0; flex:1; align-content:start; overflow:hidden; }
 .time-card { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-space-md); }
 .time-main { font-size:var(--sp-font-xl); line-height:1; font-weight:700; color:var(--sp-text-main); }
 .time-sub { margin-top:var(--sp-space-3xs); color:var(--sp-text-muted-dim); font-size:var(--sp-font-3xs); }

@@ -1619,7 +1619,7 @@ button {
   min-height: 0;
   flex: 1;
   align-content: start;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 /* ---- Maintenance ---- */
