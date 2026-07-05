@@ -153,6 +153,7 @@ button { font:inherit; }
 .action-btn:hover { background:var(--sp-accent-green-alpha); border-color:var(--sp-accent-green-border); color:var(--sp-text-main); }
 .device-group { display:grid; gap:var(--sp-space-md); margin-bottom:var(--sp-space-lg); }
 .devices-page-grid { grid-template-columns:repeat(auto-fill,minmax(var(--sp-card-min-width),1fr)); gap:var(--sp-space-sm); }
+.automations-grid { grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
 .settings-grid { display:grid; gap:var(--sp-space-md); grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; }
 .settings-grid > div { display:grid; gap:var(--sp-space-xs); }
 .settings-grid > div > span { font-size:var(--sp-font-2xs); font-weight:700; color:var(--sp-text-muted-bright); }

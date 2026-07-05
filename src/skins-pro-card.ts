@@ -640,7 +640,7 @@ export class MinecraftDashboardCard extends LitElement {
       language === 'zh-CN' ? 'Home Assistant 自动化' : 'Home Assistant automations',
       html``,
       automations !== nothing
-        ? html`<div class="page-scroll themed-scrollbar"><div class="devices devices-page-grid">${automations}</div></div>`
+        ? html`<div class="page-scroll themed-scrollbar"><div class="devices devices-page-grid automations-grid">${automations}</div></div>`
         : html`<div class="empty-state">${translate('noAutomations')}</div>`
     );
   }

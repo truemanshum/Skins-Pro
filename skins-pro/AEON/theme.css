@@ -132,6 +132,7 @@ button { font:inherit; }
 .action-btn:hover { transform:translateY(-2px); box-shadow:0 0 24px var(--sp-accent-alpha); border-color:var(--sp-accent-border); background:var(--sp-accent-alpha); }
 .device-group { display:grid; gap:var(--sp-space-md); margin-bottom:var(--sp-space-lg); }
 .devices-page-grid { grid-template-columns:repeat(auto-fill,minmax(var(--sp-card-min-width),1fr)); gap:var(--sp-space-sm); }
+.automations-grid { grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
 .section-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-space-sm); }
 .devices { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--sp-space-md); }
 .security-grid { display:flex; flex-direction:column; gap:var(--sp-space-sm); }
