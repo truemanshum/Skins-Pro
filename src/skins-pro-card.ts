@@ -365,7 +365,7 @@ export class MinecraftDashboardCard extends LitElement {
   ): TemplateResult {
     if (this._view === 'devices') return this.renderDevicesPage(language, translate);
     if (this._view === 'rooms') return this.renderRoomsPage(language, translate);
-    if (this._view === 'scenes') return this.renderScenesPage(translate);
+    if (this._view === 'scenes') return this.renderScenesPage(language, translate);
     if (this._view === 'automations') return this.renderAutomationsPage(language, translate);
     if (this._view === 'security') return this.renderSecurityPage(language, translate);
     if (this._view === 'energy') return this.renderEnergyPage(language, translate, energyValue, energyUnit, compareValue, energyBars);
@@ -448,7 +448,7 @@ export class MinecraftDashboardCard extends LitElement {
           ${this.renderMaintenanceCard(language, translate)}
           <section class="glass-card panel-scenes" data-section="scenes">
             <div class="section-title"><h2>${translate('scenes')}</h2><p class="muted">${translate('modes')}</p></div>
-            <div class="scene-grid">${this.renderHomeScenes(translate)}</div>
+            <div class="scene-grid">${this.renderHomeScenes(language, translate)}</div>
           </section>
         </aside>
       </div>
@@ -619,8 +619,8 @@ export class MinecraftDashboardCard extends LitElement {
 
   // ─── Scenes page ────────────────────────────────────────
 
-  private renderScenesPage(translate: (key: TranslationKey) => string): TemplateResult {
-    const scenes = this.renderRealScenes(Number.MAX_SAFE_INTEGER);
+  private renderScenesPage(language: Language, translate: (key: TranslationKey) => string): TemplateResult {
+    const scenes = this.renderRealScenes(language, Number.MAX_SAFE_INTEGER);
     return this.renderPageShell(
       translate('scenes'),
       translate('modes'),
@@ -903,10 +903,10 @@ export class MinecraftDashboardCard extends LitElement {
 
   // ─── Home: scenes ──────────────────────────────────────
 
-  private renderHomeScenes(translate: (key: TranslationKey) => string): TemplateResult {
+  private renderHomeScenes(language: Language, translate: (key: TranslationKey) => string): TemplateResult {
     const limit = this._config?.home_limits?.scenes || 6;
     const selectedScenes = this._config?.home_selection?.scenes || [];
-    const scenes = this.renderRealScenes(limit, selectedScenes);
+    const scenes = this.renderRealScenes(language, limit, selectedScenes);
     if (scenes !== nothing) return scenes;
     return html`<div class="empty-state compact-empty">${translate('noScenes')}</div>`;
   }
@@ -1411,7 +1411,7 @@ export class MinecraftDashboardCard extends LitElement {
 
   // ─── Real scenes ────────────────────────────────────────
 
-  private renderRealScenes(limit = 12, selectedScenes: string[] = []): TemplateResult | typeof nothing {
+  private renderRealScenes(language: Language, limit = 12, selectedScenes: string[] = []): TemplateResult | typeof nothing {
     if (!this._hass) return nothing;
 
     const scenes = Object.values(this._hass.states)
@@ -1424,10 +1424,13 @@ export class MinecraftDashboardCard extends LitElement {
     return html`${scenes.map((scene, index) => {
       const tones: Array<'morning' | 'night' | 'movie' | 'game'> = ['morning', 'night', 'movie', 'game'];
       const name = String(scene.attributes?.friendly_name || scene.entity_id);
+      const lastActivated = scene.attributes?.last_activated
+        ? formatRelativeTime(new Date(scene.attributes.last_activated as string), language)
+        : undefined;
       return html`
         <button class="scene ${tones[index % tones.length]}" @click=${() => this.runScene(scene.entity_id)}>
-          <ha-icon icon="mdi:creation"></ha-icon>
           <strong>${name}</strong>
+          ${lastActivated ? html`<p class="muted">${lastActivated}</p>` : nothing}
         </button>
       `;
     })}`;
