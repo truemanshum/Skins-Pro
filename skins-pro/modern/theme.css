@@ -60,7 +60,7 @@ h1 { font-size:var(--sp-font-lg); line-height:1.15; font-weight:700; color:var(-
 h2 { font-size:var(--sp-font-md); font-weight:700; color:var(--sp-text-main); }
 h3 { font-size:var(--sp-font-sm); font-weight:700; color:var(--sp-text-main); }
 button { font:inherit; }
-.muted { color:var(--sp-text-muted); font-size:var(--sp-font-3xs); }
+.muted { color:var(--sp-text-muted); font-size:var(--sp-font-3xs); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sidebar { background:var(--sp-glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-radius:var(--sp-radius-xl); border:var(--sp-border-width) solid var(--sp-border-glass); padding:var(--sp-space-md) var(--sp-space-sm); display:flex; flex-direction:column; min-height:0; height:100%; overflow:hidden; box-sizing:border-box; box-shadow:var(--sp-shadow-md); }
 .profile { display:flex; align-items:center; gap:var(--sp-space-md); margin:2px 0 var(--sp-space-lg); padding:0 var(--sp-space-xs); }
 .profile-img,.sidebar-art img,.item-img,.room img { display:block; object-fit:cover; }
@@ -171,7 +171,6 @@ button { font:inherit; }
 .room-label h3 { color:inherit; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .room-label .muted { color:rgba(255,255,255,.7); font-size:var(--sp-font-xs); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .room-label .room-stats { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.room-label .muted { color:rgba(255,255,255,.7); font-size:var(--sp-font-xs); }
 .room-stats { margin:2px 0 0; font-size:var(--sp-font-2xs); color:rgba(255,255,255,.55); }
 .room-scenes { position:absolute; top:10px; right:10px; z-index:2; display:flex; flex-direction:column; gap:4px; align-items:flex-end; pointer-events:none; }
 .room-scene-chip { pointer-events:auto; border:1px solid rgba(255,255,255,.2); border-radius:var(--sp-radius-pill); padding:4px 14px; background:rgba(0,0,0,.45); color:#fff; cursor:pointer; font-size:var(--sp-font-sm); font-weight:600; white-space:nowrap; text-align:right; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); transition:background .2s; max-width:140px; overflow:hidden; text-overflow:ellipsis; }

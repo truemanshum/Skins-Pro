@@ -37,6 +37,7 @@ import {
   getTranslate,
   iconForDomain,
   localizedText,
+  formatRelativeTime,
   normalizeLanguage,
   selectedSkin,
   skinString,
@@ -1448,7 +1449,7 @@ export class MinecraftDashboardCard extends LitElement {
       const tones: Array<'green' | 'blue' | 'purple' | 'yellow'> = ['green', 'blue', 'purple', 'yellow'];
       const statusClass = active ? `device-on-${tones[index % tones.length]}` : 'device-off';
       const lastTriggered = automation.attributes?.last_triggered
-        ? String(automation.attributes.last_triggered)
+        ? formatRelativeTime(new Date(automation.attributes.last_triggered as string), language)
         : (language === 'zh-CN' ? '未触发' : 'Not triggered');
       const skin = selectedSkin(this._config);
       const assetKey = assetKeyForDomain(skin, 'automation');

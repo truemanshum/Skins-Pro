@@ -82,7 +82,7 @@ h1 { font-size:var(--sp-font-lg); line-height:1.12; font-weight:900; color:var(-
 h2 { font-size:var(--sp-font-md); font-weight:900; color:var(--sp-text-main); }
 h3 { font-size:var(--sp-font-sm); font-weight:900; color:var(--sp-text-main); }
 button { font:inherit; }
-.muted { color:var(--sp-text-muted); font-size:var(--sp-font-3xs); }
+.muted { color:var(--sp-text-muted); font-size:var(--sp-font-3xs); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sidebar { padding:var(--sp-space-md) var(--sp-space-2xs); display:flex; flex-direction:column; min-height:0; height:100%; overflow:hidden; box-sizing:border-box; }
 .profile { display:flex; align-items:center; gap:var(--sp-space-md); margin:2px 0 var(--sp-space-xl); padding:0 var(--sp-space-xs); }
 .profile-img,.sidebar-art img,.item-img,.room img { display:block; object-fit:cover; }

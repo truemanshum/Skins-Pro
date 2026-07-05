@@ -60,7 +60,7 @@ h1 { font-size:var(--sp-font-lg); line-height:1.15; font-weight:700; color:var(-
 h2 { font-size:var(--sp-font-md); font-weight:700; color:var(--sp-text-primary); }
 h3 { font-size:var(--sp-font-sm); font-weight:700; color:var(--sp-text-primary); }
 button { font:inherit; }
-.muted { color:var(--sp-text-muted); font-size:var(--sp-font-3xs); }
+.muted { color:var(--sp-text-muted); font-size:var(--sp-font-3xs); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sidebar { background:var(--sp-glass-bg); backdrop-filter:blur(28px) saturate(180%); -webkit-backdrop-filter:blur(28px) saturate(180%); border-radius:var(--sp-radius-xl); border:var(--sp-border-width) solid var(--sp-border-glass); padding:var(--sp-space-md) var(--sp-space-sm); display:flex; flex-direction:column; min-height:0; height:100%; overflow:hidden; box-sizing:border-box; box-shadow:var(--sp-shadow-md),inset 0 1px 0 rgba(255,255,255,.03); transition:all .18s ease; }
 .sidebar:hover { border-color:var(--sp-accent-border); box-shadow:var(--sp-shadow-md),0 0 30px var(--sp-accent-alpha),inset 0 1px 0 rgba(255,255,255,.03); }
 .profile { display:flex; align-items:center; gap:var(--sp-space-md); margin:2px 0 var(--sp-space-lg); padding:0 var(--sp-space-xs); }

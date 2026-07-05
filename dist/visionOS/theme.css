@@ -2377,6 +2377,9 @@ button {
   color: var(--sp-text-secondary);
   font-size: var(--sp-font-3xs);
   letter-spacing: var(--sp-letter-spacing-wide);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration:0.01ms !important; animation-duration:0.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
