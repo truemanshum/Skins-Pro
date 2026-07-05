@@ -635,20 +635,23 @@ export class MinecraftDashboardCard extends LitElement {
     }
 
     const skin = selectedSkin(this._config);
-    const items = scenes.map((scene) => {
+    const items = scenes.map((scene, index) => {
       const name = String(scene.attributes?.friendly_name || scene.entity_id);
       const lastActivated = scene.attributes?.last_activated
         ? formatRelativeTime(new Date(scene.attributes.last_activated as string), language)
-        : undefined;
+        : (language === 'zh-CN' ? '未激活' : 'Not activated');
       const assetKey = assetKeyForDomain(skin, 'scene');
+      const tones: Array<'green' | 'blue' | 'purple' | 'yellow'> = ['green', 'blue', 'purple', 'yellow'];
+      const statusClass = `device device-on-${tones[index % tones.length]}`;
 
       return html`
-        <button class="device" @click=${() => this.runScene(scene.entity_id)}>
-          ${this.renderImage(assetKey, 'Scene', 'item-img')}
-          <div class="device-copy">
-            <p class="device-name">${name}</p>
-            ${lastActivated ? html`<p class="muted">${lastActivated}</p>` : nothing}
+        <button class="${statusClass}" @click=${() => this.runScene(scene.entity_id)}>
+          <div class="device-top">
+            ${this.renderImage(assetKey, name, 'item-img')}
+            <div class="tag-stack"><div class="status">${translate('scenes')}</div></div>
           </div>
+          <div class="device-copy"><p class="device-name">${name}</p><p class="muted">${lastActivated}</p></div>
+          <div class="control-row"><span class="state-word">${language === 'zh-CN' ? '执行' : 'Run'}</span></div>
         </button>
       `;
     });

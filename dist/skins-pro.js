@@ -134,13 +134,14 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
         <div class="rooms-page-wrap">
           ${a!==ee?X`<div class="rooms ${o}">${a}</div>`:X`<div class="empty-state">${"zh-CN"===e?"没有读取到 Home Assistant 房间":"No Home Assistant areas found"}</div>`}
         </div>
-      `)}renderScenesPage(e,t){if(!this._hass)return X``;const i=Object.values(this._hass.states).filter(e=>Boolean(e?.entity_id?.startsWith("scene.")));if(0===i.length)return this.renderPageShell(t("scenes"),t("modes"),X``,X`<div class="empty-state">${t("noScenes")}</div>`);const s=Ue(this._config),n=i.map(t=>{const i=String(t.attributes?.friendly_name||t.entity_id),n=t.attributes?.last_activated?Ie(new Date(t.attributes.last_activated),e):void 0,a=Fe(s,"scene");return X`
-        <button class="device" @click=${()=>this.runScene(t.entity_id)}>
-          ${this.renderImage(a,"Scene","item-img")}
-          <div class="device-copy">
-            <p class="device-name">${i}</p>
-            ${n?X`<p class="muted">${n}</p>`:ee}
+      `)}renderScenesPage(e,t){if(!this._hass)return X``;const i=Object.values(this._hass.states).filter(e=>Boolean(e?.entity_id?.startsWith("scene.")));if(0===i.length)return this.renderPageShell(t("scenes"),t("modes"),X``,X`<div class="empty-state">${t("noScenes")}</div>`);const s=Ue(this._config),n=i.map((i,n)=>{const a=String(i.attributes?.friendly_name||i.entity_id),r=i.attributes?.last_activated?Ie(new Date(i.attributes.last_activated),e):"zh-CN"===e?"未激活":"Not activated",o=Fe(s,"scene"),c=["green","blue","purple","yellow"];return X`
+        <button class="${`device device-on-${c[n%c.length]}`}" @click=${()=>this.runScene(i.entity_id)}>
+          <div class="device-top">
+            ${this.renderImage(o,a,"item-img")}
+            <div class="tag-stack"><div class="status">${t("scenes")}</div></div>
           </div>
+          <div class="device-copy"><p class="device-name">${a}</p><p class="muted">${r}</p></div>
+          <div class="control-row"><span class="state-word">${"zh-CN"===e?"执行":"Run"}</span></div>
         </button>
       `});return this.renderPageShell(t("scenes"),t("modes"),X``,X`<div class="page-scroll themed-scrollbar"><div class="devices-page-grid automations-grid">${n}</div></div>`)}renderAutomationsPage(e,t){const i=this.renderRealAutomations(e);return this.renderPageShell(t("automations"),"zh-CN"===e?"Home Assistant 自动化":"Home Assistant automations",X``,i!==ee?X`<div class="page-scroll themed-scrollbar"><div class="devices devices-page-grid automations-grid">${i}</div></div>`:X`<div class="empty-state">${t("noAutomations")}</div>`)}renderEnergyPage(e,t,i,s,n,a){const r=this._energySources.length>0?this._energySources:"--"!==i?[{key:"todayEnergy",entityId:this._config?.energy?.entity||"",icon:"mdi:lightning-bolt",unit:this._config?.energy?.unit||"kWh",history:this._energyHistory||[],yesterday:n||void 0,today:i}]:[];return this.renderPageShell(t("energy"),t("todayEnergy"),X``,X`
         <div class="page-body single-column energy-detail-page">
