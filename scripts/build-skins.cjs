@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+const archiver = require('archiver');
 
 const src = 'skins-pro';
 const dest = 'dist';
@@ -19,7 +20,7 @@ function getResizeOptions(filename) {
     return { width: 300, height: 300, fit: 'inside' };
   }
   if (name.startsWith('decor')) {
-    return { width: 800 };
+    return { height: 400, fit: 'inside' };
   }
   if (name.startsWith('base-') || name.startsWith('stage-') || name.startsWith('background.')) {
     return { width: 2560 };
@@ -29,7 +30,7 @@ function getResizeOptions(filename) {
 
 function getOutputFormat(filename) {
   const name = path.basename(filename).toLowerCase();
-  if (name.startsWith('icon-') || name.startsWith('avatar') || name.startsWith('decor')) return 'png';
+  if (name.startsWith('icon-') || name.startsWith('avatar')) return 'png';
   return 'jpg';
 }
 
@@ -84,6 +85,28 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
     }
 
     await Promise.all(jobs);
+  }
+
+  // Pack non-modern themes into store/ zips and remove from dist/
+  const storeDir = 'store';
+  fs.mkdirSync(storeDir, { recursive: true });
+  const storePackages = [];
+  for (const dir of dirs) {
+    if (dir === 'modern') continue;
+    const themeDir = path.join(dest, dir);
+    if (!fs.existsSync(themeDir)) continue;
+    const zipPath = path.join(storeDir, `${dir}.zip`);
+    await new Promise((resolve, reject) => {
+      const output = fs.createWriteStream(zipPath);
+      const archive = archiver('zip', { zlib: { level: 9 } });
+      output.on('close', resolve);
+      archive.on('error', reject);
+      archive.pipe(output);
+      archive.directory(themeDir, dir);
+      archive.finalize();
+    });
+    fs.rmSync(themeDir, { recursive: true, force: true });
+    storePackages.push(dir);
   }
 
   // Generate skin list + strings + icon maps for compile-time injection
@@ -163,7 +186,7 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
     JSON.stringify(registry, null, 2),
   );
 
-  console.log(`Build complete: ${dirs.length} skin(s) processed, ${i18nFiles.length} locale(s) detected, ${registry.length} thumbnail(s) generated`);
+  console.log(`Build complete: ${dirs.length} skin(s) processed, ${i18nFiles.length} locale(s) detected, ${registry.length} thumbnail(s) generated, ${storePackages.length} store package(s) packed`);
 })().catch(err => {
   console.error('Build failed:', err);
   process.exit(1);
