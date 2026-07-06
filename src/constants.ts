@@ -5,7 +5,7 @@ export const DEFAULT_ASSETS: Record<string, string> = {
   stage: 'background.jpg',
   theme_css: 'theme.css',
   avatar: 'avatar.png',
-  decor: 'decoration.png',
+  decor: 'decoration.jpg',
   light: 'icon-light.png',
   switch: 'icon-switch.png',
   button: 'icon-button.png',
