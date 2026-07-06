@@ -5,6 +5,8 @@ const archiver = require('archiver');
 
 const src = 'skins-pro';
 const dest = 'dist';
+const store = 'store';
+const stage = '__stage';
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'];
 
@@ -63,11 +65,17 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
   .map(d => d.name);
 
 (async () => {
+  fs.mkdirSync(dest, { recursive: true });
+  fs.mkdirSync(store, { recursive: true });
+
+  const storePackages = [];
+
   for (const dir of dirs) {
     const srcDir = path.join(src, dir);
-    const destDir = path.join(dest, dir);
+    const isModern = dir === 'modern';
+    const outDir = isModern ? path.join(dest, dir) : path.join(stage, dir);
 
-    fs.mkdirSync(destDir, { recursive: true });
+    fs.mkdirSync(outDir, { recursive: true });
 
     const entries = fs.readdirSync(srcDir, { withFileTypes: true });
     const jobs = [];
@@ -76,39 +84,36 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
       const srcFile = path.join(srcDir, entry.name);
 
       if (entry.isFile() && IMAGE_EXTENSIONS.includes(path.extname(entry.name).toLowerCase())) {
-        jobs.push(processImage(srcFile, destDir));
+        jobs.push(processImage(srcFile, outDir));
       } else if (entry.isFile()) {
-        fs.copyFileSync(srcFile, path.join(destDir, entry.name));
+        fs.copyFileSync(srcFile, path.join(outDir, entry.name));
       } else if (entry.isDirectory()) {
-        fs.cpSync(srcFile, path.join(destDir, entry.name), { recursive: true, force: true });
+        fs.cpSync(srcFile, path.join(outDir, entry.name), { recursive: true, force: true });
       }
     }
 
     await Promise.all(jobs);
+
+    if (!isModern) {
+      // Zip non-modern directly into store/<dir>.zip, then clean up staging
+      const zipPath = path.join(store, `${dir}.zip`);
+      await new Promise((resolve, reject) => {
+        const output = fs.createWriteStream(zipPath);
+        const archive = archiver('zip', { zlib: { level: 9 } });
+        output.on('close', resolve);
+        archive.on('error', reject);
+        archive.pipe(output);
+        archive.directory(outDir, dir);
+        archive.finalize();
+      });
+      fs.rmSync(outDir, { recursive: true, force: true });
+      storePackages.push(dir);
+    }
   }
 
-  // Pack non-modern themes into store/ zips + individual files, remove from dist/
-  const storeDir = 'store';
-  fs.mkdirSync(storeDir, { recursive: true });
-  const storePackages = [];
-  for (const dir of dirs) {
-    if (dir === 'modern') continue;
-    const themeDir = path.join(dest, dir);
-    if (!fs.existsSync(themeDir)) continue;
-    // Keep in dist/ for CDN individual file access
-    // Also create zip for offline self-hosting
-    const zipPath = path.join(storeDir, `${dir}.zip`);
-    await new Promise((resolve, reject) => {
-      const output = fs.createWriteStream(zipPath);
-      const archive = archiver('zip', { zlib: { level: 9 } });
-      output.on('close', resolve);
-      archive.on('error', reject);
-      archive.pipe(output);
-      archive.directory(themeDir, dir);
-      archive.finalize();
-    });
-    fs.rmSync(themeDir, { recursive: true, force: true });
-    storePackages.push(dir);
+  // Clean up staging directory
+  if (fs.existsSync(stage)) {
+    fs.rmSync(stage, { recursive: true, force: true });
   }
 
   // Generate skin list + strings + icon maps for compile-time injection
