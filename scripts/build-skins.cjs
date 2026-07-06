@@ -159,6 +159,7 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
   );
 
   // Generate theme registry + thumbnails for skin store
+  const PKG_CDN = 'https://cdn.jsdelivr.net/gh/ha-china/Skins-Pro@master';
   const screenshotsDir = 'screenshots';
   const thumbsDir = path.join(screenshotsDir, 'thumbnails');
   const registry = [];
@@ -166,6 +167,7 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
   fs.mkdirSync(thumbsDir, { recursive: true });
 
   for (const dir of dirs) {
+    if (dir === 'modern') continue;
     const found = IMAGE_EXTENSIONS.map(ext => path.join(screenshotsDir, `${dir}${ext}`)).find(p => fs.existsSync(p));
     const thumbDest = path.join(thumbsDir, `${dir}.jpg`);
     if (found) {
@@ -178,6 +180,7 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
       name: dir,
       author: stringsData.author || '',
       thumbnail: `screenshots/thumbnails/${dir}.jpg`,
+      package: `${PKG_CDN}/store/${dir}.zip`,
     });
   }
 
