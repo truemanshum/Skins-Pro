@@ -262,6 +262,7 @@ export type TranslationKey =
   | 'editorSkinStoreClose'
   | 'editorSkinStoreLoadFailed'
   | 'editorSkinStoreDownload'
+  | 'editorSkinStoreRemove'
   | 'editorEnergy'
   | 'editorMediaPlayer'
   | 'editorCamera'

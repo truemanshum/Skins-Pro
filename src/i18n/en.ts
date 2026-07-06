@@ -48,6 +48,7 @@ const en: Record<TranslationKey, string> = {
   editorSkinStoreClose: 'Close',
   editorSkinStoreLoadFailed: 'Failed to load, please check your network',
   editorSkinStoreDownload: 'Download',
+  editorSkinStoreRemove: 'Remove',
   editorEnergy: 'Energy',
   editorMediaPlayer: 'Media Player',
   editorCamera: 'Camera',

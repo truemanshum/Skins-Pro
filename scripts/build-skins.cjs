@@ -87,7 +87,7 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
     await Promise.all(jobs);
   }
 
-  // Pack non-modern themes into store/ zips and remove from dist/
+  // Pack non-modern themes into store/ zips + individual files, remove from dist/
   const storeDir = 'store';
   fs.mkdirSync(storeDir, { recursive: true });
   const storePackages = [];
@@ -95,6 +95,8 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
     if (dir === 'modern') continue;
     const themeDir = path.join(dest, dir);
     if (!fs.existsSync(themeDir)) continue;
+    // Keep in dist/ for CDN individual file access
+    // Also create zip for offline self-hosting
     const zipPath = path.join(storeDir, `${dir}.zip`);
     await new Promise((resolve, reject) => {
       const output = fs.createWriteStream(zipPath);
