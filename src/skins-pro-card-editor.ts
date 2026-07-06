@@ -291,10 +291,6 @@ export class SkinsProCardEditor extends HTMLElement {
                 ${((c.downloaded_skins || []) as string[]).filter((s: string) => !SKINS.includes(s)).map((s: string) => `<option value="${s}"${s === (c.resource_pack?.skin || 'modern') ? ' selected' : ''}>${s} (Downloaded)</option>`).join('')}
               </select>
             </label>
-            <label class="sp-field" style="flex:1;min-width:120px">
-              <span>Downloaded Skins</span>
-              <input type="text" data-text-path="downloaded_skins" placeholder="theme1,theme2" value="${(c.downloaded_skins || []).join(',')}" style="min-height:36px;padding:0 8px">
-            </label>
             <label class="sp-field" style="min-width:120px;display:grid;justify-items:center;align-content:center">
               <span>${this._loc('editorUseAreaPictures')}</span>
               <input type="checkbox" data-path="use_area_pictures"${c.use_area_pictures ? ' checked' : ''} style="width:18px;height:18px;margin:0">
@@ -399,10 +395,6 @@ export class SkinsProCardEditor extends HTMLElement {
           next.resource_pack.base_path = '__AUTO__';
           this._config = next;
           fire(this, this._config);
-          return;
-        }
-        if (path === 'downloaded_skins') {
-          this.setField(path, value ? value.split(',').map((s: string) => s.trim()).filter(Boolean) : []);
           return;
         }
         this.setField(path, value);
