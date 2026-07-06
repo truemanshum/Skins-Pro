@@ -221,7 +221,7 @@ export class SkinsProCardEditor extends HTMLElement {
         <div class="store-card" data-store-theme="${t.id}">
           <img src="${CDN_BASE}/${t.thumbnail}" alt="${t.name}" class="store-thumb" loading="lazy">
           <div class="store-info">
-            <span class="store-name">${t.name}${t.author ? `<a href="https://github.com/${t.author.replace('@','')}" target="_blank" rel="noopener noreferrer" class="store-author">${t.author}</a>` : ''}</span>
+            <span class="store-name">${t.name}${t.author ? `<a href="https://github.com/${t.author}" target="_blank" rel="noopener noreferrer" class="store-author">${t.author}</a>` : ''}</span>
             <button class="store-download" data-store-download="${t.id}">${this._loc('editorSkinStoreDownload')}</button>
           </div>
         </div>
