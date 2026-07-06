@@ -29,9 +29,7 @@ function getResizeOptions(filename) {
 }
 
 function getOutputFormat(filename) {
-  const name = path.basename(filename).toLowerCase();
-  if (name.startsWith('icon-') || name.startsWith('avatar')) return 'png';
-  return 'jpg';
+  return 'png';
 }
 
 async function processImage(srcPath, destDir) {
