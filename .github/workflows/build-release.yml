@@ -101,12 +101,7 @@ jobs:
           mv "$STORE_DIR/thumbnails"/* screenshots/thumbnails/
           mv "$STORE_DIR/registry.json" screenshots/registry.json
 
-          cat > README.md << 'EOF'
-# Skins Pro — Store Assets
-
-This branch contains build artifacts for the skin store.
-Pushed automatically by CI. Do not edit manually.
-EOF
+          printf '%s\n' '# Skins Pro — Store Assets' '' 'This branch contains build artifacts for the skin store.' 'Pushed automatically by CI. Do not edit manually.' > README.md
           git add .
           git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
             commit -m "Update store artifacts [skip ci]" --allow-empty
