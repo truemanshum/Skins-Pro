@@ -4,7 +4,7 @@ import type { AreaRegistryEntry, HomeAssistant, TranslationKey, NavItemConfig } 
 import { DEFAULT_NAV } from './constants';
 import { assetHref, normalizeLanguage } from './utils';
 
-const CDN_BASE = 'https://cdn.jsdelivr.net/gh/ha-china/Skins-Pro@master';
+const CDN_STORE = 'https://cdn.jsdelivr.net/gh/ha-china/Skins-Pro@store';
 
 type DashboardConfigRecord = Record<string, any>;
 
@@ -217,7 +217,7 @@ export class SkinsProCardEditor extends HTMLElement {
         const installed = downloaded.includes(t.id);
         return `
         <div class="store-card ${installed ? 'store-installed' : ''}" data-store-theme="${t.id}">
-          <img src="${CDN_BASE}/${t.thumbnail}" alt="${t.name}" class="store-thumb" loading="lazy">
+          <img src="${CDN_STORE}/${t.thumbnail}" alt="${t.name}" class="store-thumb" loading="lazy">
           <div class="store-info">
             <span class="store-name">${t.name}${t.author ? `<a href="https://github.com/${t.author}" target="_blank" rel="noopener noreferrer" class="store-author">${t.author}</a>` : ''}</span>
             ${installed
@@ -470,7 +470,7 @@ export class SkinsProCardEditor extends HTMLElement {
         this._skinStoreError = '';
         this.render();
         try {
-          const res = await fetch(`${CDN_BASE}/screenshots/registry.json`);
+          const res = await fetch(`${CDN_STORE}/screenshots/registry.json`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json() as Array<{ id: string; name: string; thumbnail: string }>;
           this._skinStoreThemes = Array.isArray(data) ? data : [];

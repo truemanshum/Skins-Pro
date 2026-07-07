@@ -49,12 +49,41 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit dist assets
+      - name: Push store assets to store branch
+        run: |
+          # Collect store artifacts
+          STORE_DIR="$(mktemp -d)"
+          mkdir -p "$STORE_DIR/store" "$STORE_DIR/screenshots"
+          cp store/*.zip "$STORE_DIR/store/"
+          cp -r screenshots/thumbnails "$STORE_DIR/screenshots/thumbnails"
+          cp screenshots/registry.json "$STORE_DIR/screenshots/registry.json"
+
+          # Create store branch with only store artifacts
+          git checkout --orphan _store_push
+          git rm -rf . 2>/dev/null || true
+
+          cp -r "$STORE_DIR/store" ./store
+          cp -r "$STORE_DIR/screenshots" ./screenshots
+          cat > README.md << 'EOF'
+# Skins Pro — Store Assets
+
+This branch contains build artifacts for the skin store.
+Pushed automatically by CI. Do not edit manually.
+EOF
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+            commit -m "Update store artifacts [skip ci]" --allow-empty
+          git push origin _store_push:store --force
+
+          # Return to working branch
+          git checkout "${{ github.ref_name }}"
+
+      - name: Commit dist assets (master only)
         if: steps.version.outputs.changed == 'false'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add -f store/ screenshots/thumbnails/ dist/ screenshots/registry.json
+          git add dist/
           git diff --staged --quiet || git commit -m "chore: build dist assets [skip ci]"
           git push
 
@@ -72,7 +101,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add -f store/ screenshots/thumbnails/ dist/ screenshots/registry.json
+          git add dist/
           git diff --staged --quiet || git commit -m "chore: build v${{ steps.version.outputs.new }} [skip ci]"
           git tag "v${{ steps.version.outputs.new }}"
           git push origin --tags
@@ -91,4 +120,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Purge jsdelivr cache
-        run: curl -s https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@master/screenshots/registry.json
+        run: |
+          curl -s https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/registry.json
