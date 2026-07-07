@@ -1,4 +1,4 @@
-import type { HomeAssistant, WeatherForecastDay } from './types';
+import type { HomeAssistant, WeatherForecastDay } from '../types';
 
 export async function loadWeatherForecast(
   hass: HomeAssistant,

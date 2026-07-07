@@ -1,5 +1,7 @@
-import type { DashboardConfig, HomeAssistant, HassEntity } from './types';
+import type { DashboardConfig, HomeAssistant, HassEntity } from '../types';
 import { DEFAULT_CONFIG, DEFAULT_DEVICES, DEFAULT_ENVIRONMENT, DEFAULT_SCENES } from './constants';
+
+export * from './constants';
 
 export function mergeConfig(config: DashboardConfig): DashboardConfig {
   return {

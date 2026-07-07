@@ -1,4 +1,4 @@
-import type { DashboardConfig, DeviceConfig, EnvironmentMetricConfig, NavItemConfig, RoomConfig, SceneConfig } from './types';
+import type { DashboardConfig, DeviceConfig, EnvironmentMetricConfig, NavItemConfig, RoomConfig, SceneConfig } from '../types';
 
 export const DEFAULT_ASSETS: Record<string, string> = {
   base: 'base-texture.jpg',

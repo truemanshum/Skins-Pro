@@ -1,13 +1,15 @@
-import type { HomeAssistant, DashboardConfig, TranslationKey } from './types';
-import type { Language } from './i18n.generated';
-import { SKINS, DEFAULT_SKIN, SKIN_STRINGS, SKIN_ICON_MAPS } from './skins.generated';
-import { DEFAULT_ASSETS } from './constants';
-import { STRINGS } from './i18n.generated';
+import type { HomeAssistant, DashboardConfig, TranslationKey } from '../types';
+import type { Language } from '../i18n';
+import { SKINS, DEFAULT_SKIN, SKIN_STRINGS, SKIN_ICON_MAPS } from '../skins/generated';
+import { DEFAULT_ASSETS } from '../config';
+import { STRINGS } from '../i18n';
 
 export const BUNDLED_SKINS: readonly string[] = SKINS;
 
-export type { Language } from './i18n.generated';
-export type { TranslationKey } from './types';
+export type { Language } from '../i18n';
+export type { TranslationKey } from '../types';
+
+export * from './actions';
 
 export function normalizeLanguage(language?: string): Language {
   if ((language || '').toLowerCase().startsWith('zh')) {
@@ -75,6 +77,20 @@ function formatRawState(raw: string, language: Language): string {
 
 export function getTranslate(language: Language): (key: TranslationKey) => string {
   return (key: TranslationKey): string => STRINGS[language][key];
+}
+
+export function t(
+  language: Language,
+  key: TranslationKey,
+  params?: Record<string, string | number>,
+): string {
+  let str: string = STRINGS[language][key];
+  if (params) {
+    for (const [name, value] of Object.entries(params)) {
+      str = str.replace(new RegExp(`\\{${name}\\}`, 'g'), String(value));
+    }
+  }
+  return str;
 }
 
 export function defaultResourceBasePath(): string {
