@@ -52,17 +52,17 @@ jobs:
       - name: Push store assets to store branch
         run: |
           STORE_DIR="$(mktemp -d)"
-          cp store/*.zip "$STORE_DIR/"
-          cp -r screenshots/thumbnails "$STORE_DIR/thumbnails"
-          cp screenshots/registry.json "$STORE_DIR/registry.json"
+          mv store/*.zip "$STORE_DIR/"
+          mv screenshots/thumbnails "$STORE_DIR/thumbnails"
+          mv screenshots/registry.json "$STORE_DIR/registry.json"
 
           git checkout --orphan _store_push
           find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
 
           mkdir -p store screenshots/thumbnails
-          cp "$STORE_DIR"/*.zip store/
-          cp "$STORE_DIR/thumbnails"/* screenshots/thumbnails/
-          cp "$STORE_DIR/registry.json" screenshots/registry.json
+          mv "$STORE_DIR"/*.zip store/
+          mv "$STORE_DIR/thumbnails"/* screenshots/thumbnails/
+          mv "$STORE_DIR/registry.json" screenshots/registry.json
 
           cat > README.md << 'EOF'
 # Skins Pro — Store Assets
