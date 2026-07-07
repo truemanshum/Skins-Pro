@@ -1,4 +1,4 @@
-import type { HomeAssistant, MaintenanceItem } from './types';
+import type { HomeAssistant, MaintenanceItem } from '../types';
 
 const NON_BATTERY_UNITS = new Set([
   'v', 'mv', 'kv', 'volt', 'volts',

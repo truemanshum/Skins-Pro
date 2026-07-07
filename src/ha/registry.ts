@@ -1,4 +1,4 @@
-import type { AreaRegistryEntry, DeviceRegistryEntry, EntityRegistryEntry, FloorRegistryEntry, HomeAssistant } from './types';
+import type { AreaRegistryEntry, DeviceRegistryEntry, EntityRegistryEntry, FloorRegistryEntry, HomeAssistant } from '../types';
 
 export interface RegistryResult {
   areas: AreaRegistryEntry[];
