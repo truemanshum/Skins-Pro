@@ -4,7 +4,7 @@
 
 **Next-Gen Home Assistant Dashboard** — Multi-skin, immersive, plug-and-play.
 
-Skins Pro is a community Lovelace card with a multi-skin architecture featuring **modern**, **AEON**, **AEON_glass**, **visionOS**, and **minecraft** skins. Bilingual (CN/EN) — install from HACS and it just works.
+Skins Pro is a community Lovelace card with a multi-skin architecture. It ships with the **modern** skin and offers **AEON**, **AEON_glass**, **visionOS**, **minecraft**, and community-contributed skins via the built-in skin store. Bilingual (CN/EN) — install from HACS and it just works.
 
 - Add via HACS custom repository
 - Switch between skins freely
@@ -36,20 +36,27 @@ Click the button above, or manually:
 
 ![Settings](screenshots/settings.png)
 
-## Built-in Skins
+## Skin Store
+
+Beyond the built-in skins, download additional community skins directly from the card editor:
+
+![Skin Store](screenshots/Advanced_Feature.png)
+
+The store fetches available skins from the [store branch](https://github.com/ha-china/Skins-Pro/tree/store) via CDN. When you click **Download**, the card calls the [`skins-pro-hass`](https://github.com/ha-china/skins-pro-hass) integration to fetch the skin package and extract it to your HA `www/` directory — no browser upload, no YAML config.
+
+> You must install the [skins-pro-hass integration](https://github.com/ha-china/skins-pro-hass) for downloading to work.
+
+## Built-in Skin
 
 | Skin | Style | Features |
 |---|---|---|
 | **modern** (default) | White glassmorphism | Frosted glass, high-res images, clean blue-white palette |
-| **AEON** | Dark luxury | Deep blacks, blue glow, glassmorphism, cinematic shadows |
-| **visionOS** | Frosted glass | Apple VisionOS-inspired, flat glass, white text, immersive blur |
-| **minecraft** | Minecraft theme | Dark textured background, warm tones, Steve avatar |
 
-Switch via the "Skin" field in the card editor.
+> All other skins (AEON, AEON_glass, visionOS, minecraft, and community submissions) are available via the **Skin Store** built into the card editor. Click the store button to browse and download.
 
 ## Preview
 
-| modern | AEON | visionOS | minecraft |
+| modern (built-in) | AEON (store) | visionOS (store) | minecraft (store) |
 |---|---|---|---|
 | ![modern](screenshots/modern.png) | ![AEON](screenshots/AEON.png) | ![visionOS](screenshots/visionOS.png) | ![minecraft](screenshots/minecraft.png) |
 
@@ -78,7 +85,7 @@ Switch via the "Skin" field in the card editor.
 - 🖼️ Use HA area pictures as room backgrounds
 - 🎨 Custom background image upload
 - 📱 Mobile responsive layout
-- 🎭 Multi-skin architecture — 5 built-in skins
+- 🎭 Multi-skin architecture — download community skins from the built-in store
 
 On first add, it automatically scans your Home Assistant and organizes content by area and device type.
 
@@ -163,16 +170,36 @@ Build output: `dist/`:
 
 ## Contributing a Skin
 
-We welcome skin contributions! Requirements:
+We welcome skin contributions! Here's how the workflow works:
 
-1. Create a folder under `skins-pro/<skin-name>/`
-2. Provide `theme.css` (all styles via CSS variables)
-3. Provide `strings.json` with greeting text and `icon_map`
-4. Provide at least avatar, background, and decoration images
-5. Add a `<skin-name>.png` screenshot in `screenshots/` (.png, 1920×1080 recommended)
-6. Submit a PR to this repo
+1. **Create a skin folder** under `skins-pro/<skin-name>/` with the required files
+2. **Add a preview screenshot** `screenshots/<skin-name>.png` (1920×1080 recommended)
+3. **Submit a PR** — CI will validate your submission and, once merged, automatically:
+   - Build and commit the card JS to `master`
+   - Package your skin to `store/<skin-name>.zip` and push to the [`store` branch](https://github.com/ha-china/Skins-Pro/tree/store)
+   - Make your skin available in the card editor's skin store
 
-Images are auto-processed on build — no manual optimization needed.
+### Required Files
+
+| File | Purpose |
+|---|---|
+| `theme.css` | All styles via CSS variables on `:host`. See `skins-pro/modern/theme.css` |
+| `strings.json` | Greeting text + `icon_map`. Must include a non-empty `"author"` field |
+| `avatar.*` (png/jpg) | Avatar image, recommended ≥ 300×300 |
+| `background.*` (png/jpg) | Main background, recommended width ≥ 2560px |
+| `screenshots/<skin-name>.png` | Store preview image. **Filename must match the skin folder name exactly** |
+
+### Validation Rules (enforced by CI)
+
+- Skin folder name (`skins-pro/<name>/`) must match preview filename (`screenshots/<name>.png`)
+- `strings.json` must contain a non-empty `author` field (your GitHub username, without `@`)
+- `theme.css` must be present
+
+### Tips
+
+- Use [`skins-pro/visionOS/`](skins-pro/visionOS/) as the reference — it has the most complete `icon_map` and assets
+- Images are auto-processed on build (resize, JPG output) — no manual optimization needed
+- `icon_map` in `strings.json` maps entity domains to icon filenames; unmapped domains fall back automatically
 
 ## Credits
 
