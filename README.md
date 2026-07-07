@@ -4,7 +4,7 @@
 
 **Next-Gen Home Assistant Dashboard** — Multi-skin, immersive, plug-and-play.
 
-Skins Pro is a community Lovelace card with a multi-skin architecture. It ships with the **modern** skin and offers **AEON**, **AEON_glass**, **visionOS**, **minecraft**, and community-contributed skins via the built-in skin store. Bilingual (CN/EN) — install from HACS and it just works.
+Skins Pro is a community Lovelace card with a multi-skin architecture. It ships with the **modern** skin and offers additional skins via the built-in skin store. Bilingual (CN/EN) — install from HACS and it just works.
 
 - Add via HACS custom repository
 - Switch between skins freely
@@ -38,13 +38,9 @@ Click the button above, or manually:
 
 ## Skin Store
 
-Beyond the built-in skins, download additional community skins directly from the card editor:
+Download additional skins directly from the card editor. Clicking **Download** fetches the skin package from the [store branch](https://github.com/ha-china/Skins-Pro/tree/store) via CDN and installs it to your HA `www/` directory via the [`skins-pro-hass`](https://github.com/ha-china/skins-pro-hass) integration.
 
-![Skin Store](screenshots/Advanced_Feature.png)
-
-The store fetches available skins from the [store branch](https://github.com/ha-china/Skins-Pro/tree/store) via CDN. When you click **Download**, the card calls the [`skins-pro-hass`](https://github.com/ha-china/skins-pro-hass) integration to fetch the skin package and extract it to your HA `www/` directory — no browser upload, no YAML config.
-
-> You must install the [skins-pro-hass integration](https://github.com/ha-china/skins-pro-hass) for downloading to work.
+> Requires the [skins-pro-hass integration](https://github.com/ha-china/skins-pro-hass) to be installed.
 
 ## Built-in Skin
 
@@ -56,9 +52,7 @@ The store fetches available skins from the [store branch](https://github.com/ha-
 
 ## Preview
 
-| modern (built-in) | AEON (store) | visionOS (store) | minecraft (store) |
-|---|---|---|---|
-| ![modern](screenshots/modern.png) | ![AEON](screenshots/AEON.png) | ![visionOS](screenshots/visionOS.png) | ![minecraft](screenshots/minecraft.png) |
+![modern](screenshots/modern.png)
 
 ![Advanced Feature](screenshots/Advanced_Feature.png)
 
@@ -85,7 +79,7 @@ The store fetches available skins from the [store branch](https://github.com/ha-
 - 🖼️ Use HA area pictures as room backgrounds
 - 🎨 Custom background image upload
 - 📱 Mobile responsive layout
-- 🎭 Multi-skin architecture — download community skins from the built-in store
+- 🎭 Multi-skin architecture with built-in skin store
 
 On first add, it automatically scans your Home Assistant and organizes content by area and device type.
 
