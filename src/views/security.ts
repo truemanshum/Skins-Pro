@@ -4,6 +4,7 @@ import type { TemplateResult } from 'lit';
 import type { HassEntity, RenderedDevice } from '../types';
 import type { RenderContext } from '../render/context';
 import { renderPageShell } from '../components/page-shell';
+import { cameraUsesLiveStream, renderCameraPreview } from '../components/camera-stream';
 import { renderImage } from '../render/context';
 import { assetKeyForDomain, deviceStateLabel, selectedSkin, t } from '../utils';
 
@@ -39,22 +40,17 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
 
   const cameraCards = cameras.map(entity => {
     const stateLabel = deviceStateLabel(entity.state, ctx.language);
-    const stateObj = ctx.hass.states?.[entity.entity_id];
-    const entityPicture = String(stateObj?.attributes?.entity_picture || '');
-    const accessToken = String(stateObj?.attributes?.access_token || '');
-    const baseUrl = entityPicture
-      || (accessToken
-        ? `/api/camera_proxy/${entity.entity_id}?token=${encodeURIComponent(accessToken)}`
-        : '');
-    const sep = baseUrl.includes('?') ? '&' : '?';
-    const snapshotUrl = baseUrl ? `${baseUrl}${sep}ts=${Date.now()}` : '';
+    const cameraName = String(entity.attributes?.friendly_name || entity.entity_id);
+    const previewLabel = cameraUsesLiveStream(entity)
+      ? (ctx.language?.startsWith('zh') ? '实时监控' : 'Live stream')
+      : t(ctx.language, 'snapshot');
     return html`
       <button class="camera-card" @click=${() => ctx.onHandleAction(entity.entity_id, 'more-info')}>
-        <div class="camera-preview"><img alt=${String(entity.attributes?.friendly_name || entity.entity_id)} src=${snapshotUrl}></div>
+        ${renderCameraPreview(ctx.hass, entity, cameraName)}
         <div class="camera-meta">
           <div>
-            <p class="device-name">${String(entity.attributes?.friendly_name || entity.entity_id)}</p>
-            <p class="muted">${t(ctx.language, 'snapshot')}</p>
+            <p class="device-name">${cameraName}</p>
+            <p class="muted">${previewLabel}</p>
           </div>
           <div class="status">${stateLabel}</div>
         </div>
