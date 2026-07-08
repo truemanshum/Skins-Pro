@@ -44,7 +44,7 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
     const liveLabel = ctx.language?.startsWith('zh') ? '实时监控' : 'Live stream';
     return html`
       <button class="camera-card" @click=${() => ctx.onHandleAction(entity.entity_id, 'more-info')}>
-        ${renderLiveCameraPreview(ctx.hass, entity, cameraName)}
+        ${renderLiveCameraPreview(ctx.hass, entity)}
         <div class="camera-meta">
           <div>
             <p class="device-name">${cameraName}</p>

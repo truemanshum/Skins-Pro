@@ -53,7 +53,7 @@ export function renderHomeView(
     return html`
       <section class="glass-card panel-camera" @click=${() => ctx.onHandleAction(cameraEntityId, 'more-info')}>
         <div class="section-title"><h2>${cameraName}</h2></div>
-        ${renderLiveCameraPreview(ctx.hass, cameraState!, cameraName)}
+        ${renderLiveCameraPreview(ctx.hass, cameraState!)}
       </section>
     `;
   })() : nothing;
