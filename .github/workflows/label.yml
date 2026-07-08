@@ -3,6 +3,8 @@ name: Label PR
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, edited]
+    paths-ignore:
+      - '.github/workflows/**'
 
 permissions:
   pull-requests: write
