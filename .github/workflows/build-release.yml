@@ -3,6 +3,8 @@ name: Build and Release Skins Pro
 on:
   push:
     branches: [main, master]
+    paths-ignore:
+      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
