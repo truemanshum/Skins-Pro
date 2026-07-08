@@ -84,7 +84,7 @@ async function handleLike(env, skin, request) {
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rateKey = `ratelimit:like:${ip}`;
   const recent = await env.SKIN_STATS.get(rateKey);
-  if (recent && parseInt(recent) >= 5) {
+  if (recent && parseInt(recent) >= 20) {
     return new Response(JSON.stringify({ error: 'Too many requests' }), {
       status: 429, headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
     });
