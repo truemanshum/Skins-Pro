@@ -6,7 +6,6 @@ import type { HassEntity, HomeAssistant } from '../types';
 export function renderLiveCameraPreview(
   hass: HomeAssistant,
   entity: HassEntity,
-  alt: string,
   className = 'camera-preview camera-live',
 ): TemplateResult {
   return html`
