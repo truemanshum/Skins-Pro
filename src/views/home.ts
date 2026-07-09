@@ -61,6 +61,9 @@ export function renderHomeView(
   })() : nothing;
 
   const energyBars = renderBars(ctx.energyHistory || []);
+  const homeDevicesStyle = window.matchMedia('(orientation: landscape)').matches
+    ? 'display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);grid-template-columns:none;overflow-x:auto;overflow-y:hidden;'
+    : '';
 
   return html`
     <div class="stage-grid">
@@ -77,14 +80,14 @@ export function renderHomeView(
               <span class="time-main">${timeText(ctx.hass, ctx.language)}</span>
               <span class="time-sub" style="font-size:var(--sp-font-sm)">${dateText(ctx.hass, ctx.language)}</span>
             </div>
-            <div class="env-list env-list-inline">${renderEnvironment(ctx.config, ctx.hass, ctx.areas, ctx.entityRegistry, ctx.deviceRegistry, ctx.floors, ctx.language)}</div>
+            <div class="env-list env-list-inline" style="gap:clamp(2px,0.6vw,6px) clamp(6px,1vw,12px);">${renderEnvironment(ctx.config, ctx.hass, ctx.areas, ctx.entityRegistry, ctx.deviceRegistry, ctx.floors, ctx.language)}</div>
           </div>` : ''}
         </div>
       </div>
       <section class="bottom-stack">
         <section class="bottom-block bottom-devices">
           <div class="section-title"><h2>${ctx.translate('devices')}</h2><p class="muted">${ctx.translate('quickControl')}</p></div>
-          <div class="devices">${renderShortcutDevices(ctx)}</div>
+          <div class="devices" style=${homeDevicesStyle}>${renderShortcutDevices(ctx)}</div>
         </section>
         <section class="bottom-block">
           <div class="section-title"><h2>${ctx.translate('rooms')}</h2><p class="muted">${ctx.translate('roomSnapshots')}</p></div>
@@ -102,7 +105,7 @@ export function renderHomeView(
         </section>
         <section class="glass-card">
           <div class="section-title"><h2>${ctx.translate('environment')}</h2></div>
-          <div class="env-list">${renderEnvironment(ctx.config, ctx.hass, ctx.areas, ctx.entityRegistry, ctx.deviceRegistry, ctx.floors, ctx.language)}</div>
+          <div class="env-list" style="gap:clamp(4px,1.2vw,12px);margin-top:clamp(4px,1.2vw,12px);">${renderEnvironment(ctx.config, ctx.hass, ctx.areas, ctx.entityRegistry, ctx.deviceRegistry, ctx.floors, ctx.language)}</div>
         </section>`}
         ${renderHomeEnergyCard(ctx, energyValue, energyUnit, compareValue, energyBars)}
         ${renderMediaPlayer(ctx.hass, ctx.config.media_player?.entity, ctx.translate)}
