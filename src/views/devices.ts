@@ -73,7 +73,7 @@ function renderRealDeviceGroups(ctx: RenderContext, devices: ReturnType<typeof g
       <section class="device-group">
         <div class="section-title"><h2>${groupLabel}</h2><p class="muted">${String(items.length)}</p></div>
         <div class="devices devices-page-grid">
-          ${items.map((device) => renderDeviceCard(ctx.config, ctx.hass, device, ctx.language, ctx.onHandleAction))}
+          ${items.map((device) => renderDeviceCard(ctx.config, ctx.hass, device, ctx.language, ctx.onHandleAction, true))}
         </div>
       </section>
     `;
