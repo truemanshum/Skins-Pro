@@ -206,11 +206,17 @@ npm run type-check  # TypeScript 类型检查
      └── ...（皮肤目录下所有图片文件）
    ```
 
-4. 在 Skins Pro 卡片编辑器中设置：
+4. 在 Skins Pro 卡片编辑器中，先把皮肤名加入 `downloaded_skins` 数组：
+   ```json
+   "downloaded_skins": ["<新皮肤名>"]
+   ```
+   这样卡片会认为该皮肤已经安装，皮肤下拉列表中会直接出现这个皮肤名称，跳过 store 下载流程。
+
+5. 然后再设置：
    - `resource_pack.skin` → `<新皮肤名>`
    - `resource_pack.base_path` → `/local/skins-pro/<新皮肤名>/`
 
-5. 硬刷新 — 皮肤立即从本地 `www/` 目录加载。直接修改 `www/` 下的文件并刷新即可迭代。
+6. 硬刷新 — 皮肤立即从本地 `www/` 目录加载。直接修改 `www/` 下的文件并刷新即可迭代。
 
 本地开发完成后，如果愿意分享，通过 PR 提交即可。
 

@@ -206,11 +206,17 @@ While developing a new skin, you don't need to go through the store. Instead:
      └── ... (all the images from your skin directory)
    ```
 
-4. In the Skins Pro card editor, set:
+4. In the Skins Pro card editor, add the skin name to the `downloaded_skins` array:
+   ```json
+   "downloaded_skins": ["<new-skin-name>"]
+   ```
+   This tells the card that the skin is already available, so it appears in the skin dropdown immediately without going through the store.
+
+5. Then set:
    - `resource_pack.skin` → `<new-skin-name>`
    - `resource_pack.base_path` → `/local/skins-pro/<new-skin-name>/`
 
-5. Hard refresh — your skin now loads from local `www/` files. Edit files in HA's `www/` and refresh to iterate.
+6. Hard refresh — your skin now loads from local `www/` files. Edit files in HA's `www/` and refresh to iterate.
 
 That's it — no store, no PR, no CI needed for local development. When you're happy with the result, open a PR to share it.
 
