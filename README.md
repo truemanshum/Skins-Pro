@@ -151,26 +151,74 @@ git clone https://github.com/ha-china/Skins-Pro.git
 cd Skins-Pro
 npm install
 npm run build       # Build
-npm run watch       # Watch mode
-npm run type-check  # Type check
+npm run watch       # Watch mode (auto-rebuild on source changes)
+npm run type-check  # TypeScript type check
 ```
 
-Build output: `dist/`:
+Build output in `dist/`:
 
-- `dist/skins-pro.js` — Core JS bundle
-- `dist/<skin-name>/` — Per-skin assets and CSS
+- `dist/skins-pro.js` — Core JS bundle (the only file you need for HA testing)
+- `dist/modern/` — The built-in modern skin's processed assets and CSS
 
-### Testing in HA
+### Testing a Local Build in Home Assistant
 
-1. `npm run build`
-2. Copy `dist/` to HA's `www/community/skins-pro/`
-3. Hard refresh (Ctrl+Shift+R)
+1. **Build the project:**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy `skins-pro.js` to HA's `www/` directory:**  
+   Copy `dist/skins-pro.js` into your HA `config/www/` folder:
+   ```
+   <HA config>/www/skins-pro.js
+   ```
+
+3. **Register the resource in Home Assistant:**  
+   Settings → Dashboards → Resources → Add Resource
+   - URL: `/local/skins-pro.js`
+   - Type: JavaScript Module
+
+4. **Hard refresh** (Ctrl+Shift+R) your browser.
+
+   After that, every time you `npm run build`, just replace `www/skins-pro.js` and hard refresh to see changes.
+
+> **Tip** — If the built-in **modern** skin assets (images, CSS) are not loading and you see broken images or unstyled output, also copy `dist/modern/` into `www/community/skins-pro/modern/`:
+> ```
+> <HA config>/www/community/skins-pro/modern/  ← copy dist/modern/ here
+> ```
+
+### Testing a New Skin (Store-less Local Workflow)
+
+While developing a new skin, you don't need to go through the store. Instead:
+
+1. Add your skin directory under `skins-pro/<new-skin-name>/` with the usual files (`theme.css`, `strings.json`, images)
+
+2. Build the project: the skin will be auto-discovered and baked into `generated.ts`
+
+3. Copy your skin's images to your HA `www/` for direct serving:
+   ```
+   <HA config>/www/skins-pro/<new-skin-name>/
+     ├── theme.css
+     ├── avatar.jpg
+     ├── background.jpg
+     ├── room-*.jpg
+     ├── icon-*.jpg
+     └── ... (all the images from your skin directory)
+   ```
+
+4. In the Skins Pro card editor, set:
+   - `resource_pack.skin` → `<new-skin-name>`
+   - `resource_pack.base_path` → `/local/skins-pro/<new-skin-name>/`
+
+5. Hard refresh — your skin now loads from local `www/` files. Edit files in HA's `www/` and refresh to iterate.
+
+That's it — no store, no PR, no CI needed for local development. When you're happy with the result, open a PR to share it.
 
 ## Contributing a Skin
 
 We welcome skin contributions! Simply:
 
-1. **Create a skin folder** under `skins-pro/<skin-name>/` with the required files
+1. **Create a skin folder** under `skins-pro/<skin-name>/` with the required files (see [Skin Development](#skin-development) above)
 2. **Add a preview screenshot** `screenshots/<skin-name>.png` (1920×1080 recommended)
 3. **Submit a PR** using the PR template — fill in all required fields
 

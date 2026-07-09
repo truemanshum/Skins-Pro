@@ -151,26 +151,74 @@ git clone https://github.com/ha-china/Skins-Pro.git
 cd Skins-Pro
 npm install
 npm run build       # 构建
-npm run watch       # 开发模式自动构建
+npm run watch       # 开发模式自动构建（源码变动时自动重构建）
 npm run type-check  # TypeScript 类型检查
 ```
 
 构建产物在 `dist/`：
 
-- `dist/skins-pro.js` — 核心 JS
-- `dist/<skin-name>/` — 各皮肤素材和 CSS
+- `dist/skins-pro.js` — 核心 JS（在 HA 中测试只需要这一个文件）
+- `dist/modern/` — 内置 modern 皮肤的处理后素材和 CSS
 
-### 在 HA 中测试
+### 在 Home Assistant 中测试本地构建
 
-1. `npm run build`
-2. 将 `dist/` 复制到 HA 的 `www/community/skins-pro/`
-3. 硬刷新浏览器（Ctrl+Shift+R）
+1. **构建项目：**
+   ```bash
+   npm run build
+   ```
+
+2. **将 `skins-pro.js` 部署到 HA 的 `www/` 目录：**  
+   把 `dist/skins-pro.js` 复制到 HA 的 `config/www/` 文件夹：
+   ```
+   <HA 配置>/www/skins-pro.js
+   ```
+
+3. **在 Home Assistant 中注册资源：**  
+   设置 → 仪表盘 → 资源 → 添加资源
+   - URL: `/local/skins-pro.js`
+   - 类型：JavaScript Module
+
+4. **硬刷新浏览器**（Ctrl+Shift+R）。
+
+   之后每次 `npm run build`，只需要替换 `www/skins-pro.js` 然后硬刷新就能看到效果。
+
+> **提示** — 如果内置 **modern** 皮肤的素材（图片、CSS）无法加载，出现图片显示异常或样式没有应用的情况，需将 `dist/modern/` 一并复制到 `www/community/skins-pro/modern/`：
+> ```
+> <HA 配置>/www/community/skins-pro/modern/  ← 把 dist/modern/ 复制到这里
+> ```
+
+### 本地测试新皮肤（不通过皮肤商店）
+
+开发新皮肤时，不需要通过商店下载步骤。你可以这样做：
+
+1. 在 `skins-pro/<新皮肤名>/` 下创建皮肤目录，放入所需文件（`theme.css`、`strings.json`、图片等）
+
+2. 执行构建：构建时会自动发现新皮肤，并生成代码到 `generated.ts`
+
+3. 把你的皮肤图片文件复制到 HA 的 `www/` 目录下，以便直接访问：
+   ```
+   <HA 配置>/www/skins-pro/<新皮肤名>/
+     ├── theme.css
+     ├── avatar.jpg
+     ├── background.jpg
+     ├── room-*.jpg
+     ├── icon-*.jpg
+     └── ...（皮肤目录下所有图片文件）
+   ```
+
+4. 在 Skins Pro 卡片编辑器中设置：
+   - `resource_pack.skin` → `<新皮肤名>`
+   - `resource_pack.base_path` → `/local/skins-pro/<新皮肤名>/`
+
+5. 硬刷新 — 皮肤立即从本地 `www/` 目录加载。直接修改 `www/` 下的文件并刷新即可迭代。
+
+本地开发完成后，如果愿意分享，通过 PR 提交即可。
 
 ## 贡献主题
 
 欢迎提交你的皮肤到 Skins Pro！只需：
 
-1. 在 `skins-pro/<皮肤名>/` 下创建皮肤目录，放入所需文件
+1. 在 `skins-pro/<皮肤名>/` 下创建皮肤目录，放入所需文件（参见上方 [皮肤开发](#皮肤开发)）
 2. 在 `screenshots/<皮肤名>.png` 添加预览截图（1920×1080 为宜）
 3. 使用 PR 模板提交 PR，填写所有必填字段
 
