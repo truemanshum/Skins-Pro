@@ -93,21 +93,29 @@ function bindListButtons(host: EditorHost): void {
   host.root.querySelectorAll<HTMLElement>('[data-add-path]').forEach((btn) => {
     btn.addEventListener('click', () => {
       host.state.config = addListItem(host.el, host.state.config, btn.getAttribute('data-add-path') || '', Number(btn.getAttribute('data-add-max')) || undefined);
+      host.onChange({ config: host.state.config });
+      host.reload();
     });
   });
   host.root.querySelectorAll<HTMLElement>('[data-del-path]').forEach((btn) => {
     btn.addEventListener('click', () => {
       host.state.config = setListItem(host.el, host.state.config, btn.getAttribute('data-del-path') || '', Number(btn.getAttribute('data-del-index')), '');
+      host.onChange({ config: host.state.config });
+      host.reload();
     });
   });
   host.root.querySelectorAll<HTMLElement>('[data-add-area-path]').forEach((btn) => {
     btn.addEventListener('click', () => {
       host.state.config = addListItem(host.el, host.state.config, btn.getAttribute('data-add-area-path') || '', Number(btn.getAttribute('data-add-max')) || undefined);
+      host.onChange({ config: host.state.config });
+      host.reload();
     });
   });
   host.root.querySelectorAll<HTMLElement>('[data-del-area-path]').forEach((btn) => {
     btn.addEventListener('click', () => {
       host.state.config = setListItem(host.el, host.state.config, btn.getAttribute('data-del-area-path') || '', Number(btn.getAttribute('data-del-area-index')), '');
+      host.onChange({ config: host.state.config });
+      host.reload();
     });
   });
 }
@@ -119,13 +127,19 @@ function bindBgUpload(host: EditorHost): void {
       const file = uploadInput.files?.[0];
       if (!file) return;
       const url = await uploadBackgroundImage(file, host.state.hass);
-      if (url) host.state.config = setField(host.el, host.state.config, 'background_image', url);
+      if (url) {
+        host.state.config = setField(host.el, host.state.config, 'background_image', url);
+        host.onChange({ config: host.state.config });
+        host.reload();
+      }
     });
   }
   const clearBtn = host.root.querySelector<HTMLElement>('[data-bg-clear]');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       host.state.config = setField(host.el, host.state.config, 'background_image', '');
+      host.onChange({ config: host.state.config });
+      host.reload();
     });
   }
 }
