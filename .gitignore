@@ -3,7 +3,7 @@ node_modules/
 npm-debug.log*
 *.log
 src/skins.generated.ts
-dist/
+
 store/
 __stage/
 screenshots/thumbnails/
