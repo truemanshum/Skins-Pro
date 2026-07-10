@@ -4,7 +4,7 @@
   --sp-sidebar-width:200px; --sp-app-padding:16px; --sp-stage-radius:24px;
   --sp-runtime-height:560px; --sp-runtime-min-height:560px;
   --sp-glass-bg:rgba(238, 247, 255, .74); --sp-panel-bg:rgba(255,255,255,.95);
-  --sp-base-texture:none; --sp-stage-texture:none;
+  --sp-base-texture:url("./background.jpg"); --sp-stage-texture:url("./background.jpg");
   --sp-app-overlay:linear-gradient(135deg, rgba(230,242,255,.78), rgba(196,222,250,.70));
   --sp-stage-overlay:linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,.02) 46%, rgba(207,229,255,.28));
   --sp-room-overlay:linear-gradient(180deg, rgba(255,255,255,.04), rgba(24,63,108,.54));
