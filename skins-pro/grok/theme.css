@@ -298,7 +298,8 @@ button {
   border-radius: var(--sp-radius-xl);
   backdrop-filter: var(--sp-blur-lg);
   -webkit-backdrop-filter: var(--sp-blur-lg);
-  background: rgba(255,255,255,0.22);
+  /* theme-aligned dark panel — never hardcode light frosted white */
+  background: var(--sp-glass-bg, var(--glass-regular));
   border: var(--sp-border-w) solid var(--sp-border-glass);
   box-shadow: var(--sp-shadow-glass);
   box-sizing: border-box;
@@ -320,15 +321,32 @@ button {
   gap: var(--sp-space-md);
   margin: 2px 0 var(--sp-space-lg);
   padding: 0 var(--sp-space-xs);
+  flex-shrink: 0;
 }
-.profile .meta { min-width: 0; }
-.profile h2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile .meta { min-width: 0; flex: 1; }
+.profile h2 {
+  margin: 0;
+  font-size: var(--sp-font-sm);
+  font-weight: var(--sp-font-weight-semibold);
+  color: var(--sp-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile .muted {
+  margin: 2px 0 0;
+  color: var(--sp-text-muted);
+  font-size: var(--sp-font-3xs);
+}
 
 .profile-img {
   width: 52px;
   height: 52px;
+  flex-shrink: 0;
   border-radius: var(--sp-radius-icon);
+  border: 2px solid var(--sp-accent-border);
   box-shadow: var(--sp-shadow-sm);
+  object-fit: cover;
 }
 
 .profile-img,
@@ -339,29 +357,31 @@ button {
   object-fit: cover;
 }
 
-/* ---- Navigation ---- */
+/* ---- Navigation (matches skins-pro-card: ha-icon + span) ---- */
 
 .menu {
   display: grid;
   gap: var(--sp-space-2xs);
+  flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
+  align-content: start;
   padding-right: var(--sp-space-3xs);
 }
 
 .nav-button {
-  min-height: 44px;
+  min-height: 42px;
   border: 0;
-  border-radius: var(--sp-radius-md);
+  border-radius: var(--sp-radius-sidebar);
   padding: 0 var(--sp-space-sm);
   display: flex;
   align-items: center;
   gap: var(--sp-space-sm);
-  color: var(--sp-text-secondary);
+  color: var(--sp-text-muted);
   background: transparent;
   cursor: pointer;
   text-align: left;
-  font-weight: var(--sp-font-weight-medium);
+  font-weight: var(--sp-font-weight-semibold);
   font-size: var(--sp-font-sm);
   letter-spacing: -0.01em;
   transition:
@@ -369,43 +389,68 @@ button {
     color var(--sp-duration-fast) var(--sp-ease-glass),
     box-shadow var(--sp-duration-fast) var(--sp-ease-glass),
     border-color var(--sp-duration-fast) var(--sp-ease-glass);
-  backdrop-filter: var(--sp-blur-2xs);
-  -webkit-backdrop-filter: var(--sp-blur-2xs);
   border: var(--sp-border-w) solid transparent;
 }
 
 .nav-button:hover {
   color: var(--sp-text-primary);
-  background: rgba(255,255,255,0.10);
-  border-color: var(--sp-border-glass);
+  background: var(--sp-accent-alpha);
+  border-color: var(--sp-accent-border);
 }
 
 .nav-button.active {
-  color: var(--sp-text-primary);
-  background: rgba(255,255,255,0.10);
-  border-color: var(--sp-border-glass);
+  color: var(--sp-accent);
+  background: var(--sp-accent-alpha);
+  border-color: var(--sp-accent-border);
+  box-shadow: inset 0 0 0 1px var(--sp-accent-border);
 }
 
-.nav-button ha-icon {
+.nav-button ha-icon,
+.nav-button .nav-ico {
   width: 20px;
+  height: 20px;
+  min-width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: inherit;
+  flex-shrink: 0;
 }
-.nav-button span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-button ha-icon svg,
+.nav-button .nav-ico svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.nav-button span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: inherit;
+  font: inherit;
+}
 
 /* ---- Sidebar Art ---- */
 
 .sidebar-art {
   margin-top: auto;
-  min-height: 100px;
+  min-height: 120px;
+  max-height: 168px;
+  aspect-ratio: 1;
+  width: 100%;
   flex-shrink: 0;
   border-radius: var(--sp-radius-lg);
   overflow: hidden;
   box-shadow: var(--sp-shadow-sm);
+  border: var(--sp-border-w) solid var(--sp-border-glass);
+  background: var(--sp-item-icon-bg, rgba(8,12,22,0.55));
 }
 
 .sidebar-art img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 /* ==========================================================================
