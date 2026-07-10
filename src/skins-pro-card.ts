@@ -284,15 +284,6 @@ export class MinecraftDashboardCard extends LitElement {
 
   private _applyLayout(): void {
     applyLayoutHeight(this._host());
-    const mcApp = this.shadowRoot?.querySelector('.mc-app') as HTMLElement | null;
-    if (!mcApp) return;
-    if (window.matchMedia('(orientation: portrait)').matches) {
-      mcApp.style.height = '';
-      mcApp.style.overflow = '';
-    } else {
-      mcApp.style.height = 'var(--sp-runtime-height)';
-      mcApp.style.overflow = 'hidden';
-    }
   }
 
   // ─── Render context ─────────────────────────────────────
