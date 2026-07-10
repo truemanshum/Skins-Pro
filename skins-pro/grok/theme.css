@@ -18,55 +18,64 @@
   --sp-runtime-height: 560px;
   --sp-runtime-min-height: 560px;
 
-  /* ---- Glass Materials - pure flat frosted glass ---- */
-  --glass-thin:            rgba(168,197,255,0.14);
-  --glass-regular:         rgba(20,28,44,0.42);
-  --glass-thick:           rgba(16,22,34,0.48);
-  --glass-ultra-thick:     rgba(18,24,36,0.58);
-  --glass-knob:            #FFFFFF;
-  --glass-highlight:       0 0 0 0 transparent;
+  /* ---- Glass Materials — dark cosmic frosted panels (theme-aligned) ---- */
+  --glass-thin:            rgba(12, 18, 32, 0.55);
+  --glass-regular:         rgba(10, 16, 28, 0.72);
+  --glass-thick:           rgba(8, 12, 22, 0.82);
+  --glass-ultra-thick:     rgba(6, 10, 18, 0.90);
+  --glass-knob:            #F8FBFF;
+  --glass-highlight:       inset 0 1px 0 rgba(168, 197, 255, 0.18);
 
   /* ---- Background & Overlay ---- */
   --sp-base-texture:  url("./background.png");
   --sp-stage-texture: url("./background.png");
   --sp-bg:            transparent;
 
-  /* Ambient light �� semi-transparent warm, wallpaper visible for frosted effect */
+  /* Cosmic ambient: keep wallpaper readable, darken UI regions for text contrast */
   --sp-app-overlay:
-    radial-gradient(ellipse 55% 60% at 60% 3%, rgba(168,197,255,0.14) 0%, rgba(10,12,16,0.12) 40%, rgba(10,12,16,0.38) 70%, rgba(10,12,16,0.22) 100%),
-    radial-gradient(ellipse 50% 40% at 85% 92%, rgba(91,157,255,0.08) 0%, transparent 50%);
+    radial-gradient(ellipse 55% 60% at 60% 3%, rgba(168,197,255,0.12) 0%, rgba(6,10,18,0.28) 42%, rgba(6,10,18,0.55) 72%, rgba(6,10,18,0.42) 100%),
+    radial-gradient(ellipse 50% 40% at 85% 92%, rgba(91,157,255,0.10) 0%, transparent 50%);
   --sp-stage-overlay:
-    radial-gradient(ellipse 60% 45% at 50% 40%, rgba(10,12,16,0.10) 0%, transparent 55%),
-    linear-gradient(90deg, rgba(8,11,16,0.28) 0%, rgba(8,11,16,0.08) 42%, rgba(8,11,16,0.32) 100%);
+    radial-gradient(ellipse 60% 45% at 50% 40%, rgba(6,10,18,0.18) 0%, transparent 55%),
+    linear-gradient(90deg, rgba(4,8,14,0.42) 0%, rgba(4,8,14,0.16) 42%, rgba(4,8,14,0.48) 100%);
   --sp-room-overlay:
-    linear-gradient(180deg, rgba(0,0,0,0.05) 10%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.55) 100%);
+    linear-gradient(180deg, rgba(0,0,0,0.05) 10%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.72) 100%);
 
-  /* ---- Apple Blue Accent ---- */
-  --sp-accent:          #5B9DFF;
-  --sp-accent-hover:    #4A8AE6;
-  --sp-accent-alpha:    rgba(91,157,255,0.12);
-  --sp-accent-border:   rgba(91,157,255,0.24);
-  --sp-accent-glow:     0 0 32px rgba(91,157,255,0.14);
+  /* ---- Grok Accent (high-visibility cyan-blue on dark) ---- */
+  --sp-accent:          #8EC5FF;
+  --sp-accent-hover:    #A8D4FF;
+  --sp-accent-alpha:    rgba(142,197,255,0.18);
+  --sp-accent-border:   rgba(142,197,255,0.42);
+  --sp-accent-glow:     0 0 28px rgba(142,197,255,0.28);
 
   /* ---- Semantic Colors ---- */
-  --sp-warning:         #FF9F0A;
-  --sp-error:           #FF3B30;
-  --sp-red-alpha:       rgba(255,59,48,0.10);
+  --sp-warning:         #FFC14D;
+  --sp-error:           #FF6B6B;
+  --sp-red-alpha:       rgba(255,107,107,0.16);
 
-  /* ---- Text ---- */
-  /* ---- Text - visionOS system label colors ---- */
-  --sp-text-primary:      #FFFFFF;
-  --sp-text-secondary:   rgba(255,255,255,0.72);
-  --sp-text-muted:       var(--sp-text-secondary);
-  --sp-text-tertiary:    rgba(255,255,255,0.48);
-  --sp-text-quaternary:  rgba(255,255,255,0.22);
-  --sp-text-on-accent:   #FFFFFF;
+  /* ---- Text: high contrast on dark cosmic UI (WCAG-minded) ---- */
+  --sp-text-primary:      #F8FBFF;                         /* near-white, max contrast */
+  --sp-text-secondary:   rgba(248, 251, 255, 0.88);       /* body / labels */
+  --sp-text-muted:       rgba(248, 251, 255, 0.78);       /* still clearly readable */
+  --sp-text-tertiary:    rgba(248, 251, 255, 0.66);       /* captions only */
+  --sp-text-quaternary:  rgba(248, 251, 255, 0.50);
+  --sp-text-on-accent:   #061018;                         /* dark on bright accent chips */
+  /* Legacy aliases used by older selectors / mixed templates */
+  --sp-text-main:        var(--sp-text-primary);
+  --sp-text-muted-bright:rgba(248, 251, 255, 0.92);
+  --sp-text-muted-dim:   rgba(248, 251, 255, 0.70);
+  --sp-text-alt:         var(--sp-accent);
+  --sp-text-dark:        var(--sp-text-primary);          /* dark-theme: keep light ink */
+  --sp-text-dark-dim:    var(--sp-text-secondary);
+  --sp-text-dark-alpha:  rgba(6, 10, 18, 0.55);
+  --sp-text-dropdown:    #0A0C10;
+  --sp-text-down:        var(--sp-accent);
 
   /* ---- Borders ---- */
   --sp-border-w:       0.5px;
-  --sp-border-glass:   rgba(255,255,255,0.60);
-  --sp-border-subtle:  rgba(0,0,0,0.06);
-  --sp-border-medium:  rgba(0,0,0,0.10);
+  --sp-border-glass:   rgba(168, 197, 255, 0.28);
+  --sp-border-subtle:  rgba(248, 251, 255, 0.14);
+  --sp-border-medium:  rgba(248, 251, 255, 0.22);
 
   /* ---- Shadows: flat, no depth ---- */
   --sp-shadow-sm:
@@ -145,13 +154,13 @@
 
   /* ---- Component-specific ---- */
   --sp-bar-gradient:
-    rgba(255,255,255,0.45);
+    linear-gradient(90deg, rgba(91,157,255,0.35), rgba(142,197,255,0.95), rgba(248,251,255,0.85));
   --sp-bar-min:       12px;
-  --sp-switch-on-bg:  #FFFFFF;
-  --sp-switch-off-bg: rgba(0,0,0,0.08);
-  --sp-scrollbar-track: transparent;
-  --sp-scrollbar-thumb: rgba(0,0,0,0.10);
-  --sp-camera-bg:       rgba(0,0,0,0.06);
+  --sp-switch-on-bg:  var(--sp-accent);
+  --sp-switch-off-bg: rgba(248,251,255,0.18);
+  --sp-scrollbar-track: rgba(6,10,18,0.35);
+  --sp-scrollbar-thumb: rgba(142,197,255,0.45);
+  --sp-camera-bg:       rgba(6,10,18,0.55);
   --sp-card-min-width:  140px;
   --sp-room-min-width:  200px;
   --sp-scene-min-width: 130px;
@@ -160,6 +169,10 @@
   --sp-card-bg:         var(--glass-ultra-thick);
   --sp-surface-bg:      var(--glass-regular);
   --sp-panel-bg:        var(--glass-ultra-thick);
+  --sp-glass-bg:        var(--glass-regular);
+  --sp-glass-light:     rgba(12, 18, 32, 0.62);
+  --sp-item-icon-bg:    rgba(8, 12, 22, 0.75);
+  --sp-weather-bg:      rgba(142, 197, 255, 0.16);
 
   /* ========================================================================
      HA Native Component Tokens
