@@ -19,7 +19,7 @@
   --sp-sidebar-width:200px; --sp-app-padding:16px; --sp-stage-radius:24px;
   --sp-runtime-height:560px; --sp-runtime-min-height:560px;
   --sp-glass-bg:rgba(255,255,255,0.32); --sp-panel-bg:rgba(255,255,255,0.24);
-  --sp-base-texture:url("./background.jpg"); --sp-stage-texture:url("./background.jpg");
+  --sp-base-texture:none; --sp-stage-texture:none;
   --sp-app-overlay:linear-gradient(135deg, rgba(10, 132, 255, 0.06), rgba(90, 200, 250, 0.04));
   --sp-stage-overlay:none;
   --sp-room-overlay:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.38));
