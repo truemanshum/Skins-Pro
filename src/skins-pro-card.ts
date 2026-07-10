@@ -284,6 +284,15 @@ export class MinecraftDashboardCard extends LitElement {
 
   private _applyLayout(): void {
     applyLayoutHeight(this._host());
+    const mcApp = this.shadowRoot?.querySelector('.mc-app') as HTMLElement | null;
+    if (!mcApp) return;
+    if (window.matchMedia('(orientation: portrait)').matches) {
+      mcApp.style.height = '';
+      mcApp.style.overflow = '';
+    } else {
+      mcApp.style.height = 'var(--sp-runtime-height)';
+      mcApp.style.overflow = 'hidden';
+    }
   }
 
   // ─── Render context ─────────────────────────────────────
@@ -367,12 +376,6 @@ export class MinecraftDashboardCard extends LitElement {
 
     return html`
       <link rel="stylesheet" href="${assetHref(this._config, 'theme_css')}">
-      <style>
-        @media (orientation: landscape) and (max-width: 1180px) {
-          .mc-app { height:var(--sp-runtime-height) !important; min-height:var(--sp-runtime-min-height) !important; overflow:hidden !important; }
-          .stage { height:100% !important; overflow:hidden !important; }
-        }
-      </style>
       <ha-card>
         ${registriesLoading}
         <div class="mc-app" data-view=${this._view}>
