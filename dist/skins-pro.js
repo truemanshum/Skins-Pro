@@ -315,6 +315,12 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
       </div>
     `)}(a,o,0,c);break;default:u=ta(a,i,n,o,s,c)}return Z`
       <link rel="stylesheet" href="${Be(this._config,"theme_css")}">
+      <style>
+        @media (orientation: landscape) and (max-width: 1180px) {
+          .mc-app { height:var(--sp-runtime-height) !important; min-height:var(--sp-runtime-min-height) !important; overflow:hidden !important; }
+          .stage { height:100% !important; overflow:hidden !important; }
+        }
+      </style>
       <ha-card>
         ${l}
         <div class="mc-app" data-view=${this._view}>
