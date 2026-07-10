@@ -6,6 +6,13 @@ import { deepClone, fire, type DashboardConfigRecord } from './config';
 export const CDN_STORE = 'https://cdn.jsdelivr.net/gh/ha-china/Skins-Pro@store';
 export const STATS_API = 'https://hachina.dpdns.org';
 
+const SKIN_DEP_URL = 'https://github.com/ha-china/skins-pro-hass';
+
+function linkifyDep(text: string, lang: Language): string {
+  const label = lang === 'zh-CN' ? '集成' : 'integration';
+  return text.replace(label, `<a href="${SKIN_DEP_URL}" target="_blank" rel="noopener noreferrer">${label}</a>`);
+}
+
 function getVoterId(): string {
   let id = localStorage.getItem('skins_pro_voter');
   if (!id) {
@@ -90,7 +97,7 @@ export function renderSkinStore(
   return `
     <div class="nav-overlay" data-store-overlay style="display:flex">
       <div class="nav-dialog" style="max-width:1200px;width:95vw">
-        <h3>${t(language, 'editorSkinStore')} <span class="store-dependency" style="font-size:0.7em;font-weight:400;color:var(--sp-text-muted,#888)">${t(language, 'editorSkinStoreDependency')}</span></h3>
+        <h3>${t(language, 'editorSkinStore')} <span class="store-dependency" style="font-size:0.7em;font-weight:400;color:var(--sp-text-muted,#888)">${linkifyDep(t(language, 'editorSkinStoreDependency'), language)}</span></h3>
         ${content}
         <div class="nav-dialog-actions">
           <button class="nav-cancel" data-store-close>${t(language, 'editorSkinStoreClose')}</button>
@@ -179,7 +186,7 @@ export async function downloadSkin(
     fetch(`${STATS_API}/api/download/${skinId}`, { method: 'POST' }).catch(() => {});
     return { success: true };
   } catch (err: any) {
-    const raw = err?.message || t(language, 'editorDownloadFailedHint');
+    const raw = err?.message || t(language, 'editorSkinStoreDependency');
     return { success: false, errorMessage: t(language, 'editorDownloadFailed', { message: raw }) };
   }
 }

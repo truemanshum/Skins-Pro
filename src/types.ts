@@ -311,7 +311,8 @@ export type TranslationKey =
   | 'editorLoadingAreas'
   | 'editorDownloading'
   | 'editorDownloadFailed'
-  | 'editorDownloadFailedHint';
+  
+;
 
 export interface EnergySourceData {
   key: TranslationKey;
