@@ -72,6 +72,7 @@ const en: Record<TranslationKey, string> = {
   pause: 'Pause',
   editorSkin: 'Skin',
   editorSkinStore: 'Skin Store',
+  editorSkinStoreDependency: 'Install the <a href="https://github.com/ha-china/skins-pro-hass" target="_blank" rel="noopener noreferrer">integration</a> to download skins',
   editorSkinStoreClose: 'Close',
   editorSkinStoreLoadFailed: 'Failed to load, please check your network',
   editorSkinStoreDownload: 'Download',

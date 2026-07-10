@@ -90,7 +90,7 @@ export function renderSkinStore(
   return `
     <div class="nav-overlay" data-store-overlay style="display:flex">
       <div class="nav-dialog" style="max-width:1200px;width:95vw">
-        <h3>${t(language, 'editorSkinStore')}</h3>
+        <h3>${t(language, 'editorSkinStore')} <span class="store-dependency" style="font-size:0.7em;font-weight:400;color:var(--sp-text-muted,#888)">${t(language, 'editorSkinStoreDependency')}</span></h3>
         ${content}
         <div class="nav-dialog-actions">
           <button class="nav-cancel" data-store-close>${t(language, 'editorSkinStoreClose')}</button>

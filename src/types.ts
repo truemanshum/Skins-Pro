@@ -286,6 +286,7 @@ export type TranslationKey =
   | 'pause'
   | 'editorSkin'
   | 'editorSkinStore'
+  | 'editorSkinStoreDependency'
   | 'editorSkinStoreClose'
   | 'editorSkinStoreLoadFailed'
   | 'editorSkinStoreDownload'

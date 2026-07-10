@@ -72,6 +72,7 @@ const zh: Record<TranslationKey, string> = {
   pause: '暂停',
   editorSkin: '皮肤',
   editorSkinStore: '皮肤商店',
+  editorSkinStoreDependency: '需安装<a href="https://github.com/ha-china/skins-pro-hass" target="_blank" rel="noopener noreferrer">集成</a>方可下载皮肤',
   editorSkinStoreClose: '关闭',
   editorSkinStoreLoadFailed: '加载失败，请检查网络',
   editorSkinStoreDownload: '下载',
