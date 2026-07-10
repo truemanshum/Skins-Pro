@@ -238,7 +238,7 @@ function bindSkinStore(host: EditorHost): void {
         host.onChange({ skinStore: { ...host.state.skinStore, open: false } });
         host.reload();
       } else {
-        alert(result.errorMessage || t(host.state.language, 'editorSkinStoreDependency'));
+        alert(result.errorMessage || t(host.state.language, 'editorDownloadFailedHint'));
         btn.textContent = origText;
         (btn as HTMLButtonElement).disabled = false;
       }

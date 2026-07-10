@@ -72,7 +72,6 @@ const en: Record<TranslationKey, string> = {
   pause: 'Pause',
   editorSkin: 'Skin',
   editorSkinStore: 'Skin Store',
-  editorSkinStoreDependency: 'Install the integration to download skins',
   editorSkinStoreClose: 'Close',
   editorSkinStoreLoadFailed: 'Failed to load, please check your network',
   editorSkinStoreDownload: 'Download',
@@ -97,7 +96,7 @@ const en: Record<TranslationKey, string> = {
   editorLoadingAreas: 'Loading areas...',
   editorDownloading: 'Downloading...',
   editorDownloadFailed: 'Download failed: {message}',
-
+  editorDownloadFailedHint: 'Integration not found. Install skins-pro-hass and restart HA.',
 };
 
 export default en;

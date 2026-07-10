@@ -286,7 +286,6 @@ export type TranslationKey =
   | 'pause'
   | 'editorSkin'
   | 'editorSkinStore'
-  | 'editorSkinStoreDependency'
   | 'editorSkinStoreClose'
   | 'editorSkinStoreLoadFailed'
   | 'editorSkinStoreDownload'
@@ -311,8 +310,7 @@ export type TranslationKey =
   | 'editorLoadingAreas'
   | 'editorDownloading'
   | 'editorDownloadFailed'
-  
-;
+  | 'editorDownloadFailedHint';
 
 export interface EnergySourceData {
   key: TranslationKey;

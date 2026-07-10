@@ -72,7 +72,6 @@ const zh: Record<TranslationKey, string> = {
   pause: '暂停',
   editorSkin: '皮肤',
   editorSkinStore: '皮肤商店',
-  editorSkinStoreDependency: '需安装集成方可下载皮肤',
   editorSkinStoreClose: '关闭',
   editorSkinStoreLoadFailed: '加载失败，请检查网络',
   editorSkinStoreDownload: '下载',
@@ -97,7 +96,7 @@ const zh: Record<TranslationKey, string> = {
   editorLoadingAreas: '正在加载区域...',
   editorDownloading: '正在下载...',
   editorDownloadFailed: '下载失败：{message}',
-
+  editorDownloadFailedHint: '未找到集成，请安装 skins-pro-hass 并重启 HA。',
 };
 
 export default zh;
