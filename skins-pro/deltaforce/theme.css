@@ -82,7 +82,7 @@
   --sp-runtime-height:560px; --sp-runtime-min-height:560px;
   /* backgrounds */
   --sp-glass-bg:rgba(21, 27, 20, 0.72); --sp-panel-bg:rgba(21, 27, 20, 0.82);
-  --sp-base-texture:none; --sp-stage-texture:none;
+  --sp-base-texture:url("./background.jpg"); --sp-stage-texture:url("./background.jpg");
   --sp-app-overlay:linear-gradient(135deg, rgba(8,13,10,.88), rgba(40,49,32,.76));
   --sp-stage-overlay:linear-gradient(90deg, rgba(7,12,8,.42), rgba(7,12,8,.10) 46%, rgba(7,12,8,.48));
   --sp-room-overlay:linear-gradient(180deg, rgba(0,0,0,.04), rgba(13,18,13,.70));

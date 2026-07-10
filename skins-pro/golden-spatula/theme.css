@@ -66,8 +66,8 @@
   --sp-panel-bg:rgba(18, 22, 42, 0.82);
   --sp-card-bg:rgba(20,28,54,.78);
 
-  --sp-base-texture:none;
-  --sp-stage-texture:none;
+  --sp-base-texture:url("./background.jpg");
+  --sp-stage-texture:url("./background.jpg");
   --sp-app-overlay:
     radial-gradient(circle at 18% 8%, rgba(255,205,92,.18), transparent 30%),
     radial-gradient(circle at 82% 16%, rgba(72,150,255,.20), transparent 34%),
