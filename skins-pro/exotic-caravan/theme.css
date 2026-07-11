@@ -2459,7 +2459,8 @@ button {
 
 /* exotic-caravan visual suite: preserved visionOS structure, replaced palette and materials */
 :host {
-  --sp-stage-texture: url("./background.png");
+  /* Runtime injects the built background asset (background.jpg) into --sp-stage-texture. */
+  --sp-stage-texture: none;
   --sp-bg: #101029;
   --sp-app-overlay:
     linear-gradient(115deg, rgba(10, 12, 42, .78) 0%, rgba(20, 24, 62, .58) 47%, rgba(70, 33, 37, .58) 100%),
@@ -2484,7 +2485,7 @@ button {
   --sp-bar-gradient: linear-gradient(180deg,#ffd071,#bd6d36);
   --sp-font-family: Inter,"Noto Sans SC","Microsoft YaHei",sans-serif;
 }
-.mc-app { font-family: var(--sp-font-family); background-image: var(--sp-app-overlay), url("./background.png") !important; }
+.mc-app { font-family: var(--sp-font-family); }
 .sidebar,.glass-card,.time-card,.device,.scene { border-color: var(--sp-border-glass); box-shadow: var(--sp-shadow-glass); }
 .nav-button.active,.nav-button:hover,.chip.active { color:#ffe0a1; background:rgba(191,119,46,.24); box-shadow:inset 3px 0 0 #e3ab4f; }
 .room { border: 1px solid rgba(248,208,127,.34); }
