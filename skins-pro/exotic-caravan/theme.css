@@ -2455,7 +2455,7 @@ button {
   .room-scene-chip { padding: 1px 8px; font-size: var(--sp-font-3xs); max-width: 80px; }
   .room-active-chip { padding: 1px 8px; font-size: var(--sp-font-3xs); }
   .camera-preview { aspect-ratio: 16/9; min-height: 60px; }
-
+}
 
 /* exotic-caravan visual suite: preserved visionOS structure, replaced palette and materials */
 :host {
@@ -2472,6 +2472,7 @@ button {
   --sp-accent-border: rgba(245,204,122,.36);
   --sp-text-primary: #fff3d8;
   --sp-text-secondary: rgba(255,237,203,.79);
+  --sp-text-muted-bright: rgba(255,237,203,.86);
   --sp-text-tertiary: rgba(245,218,168,.60);
   --sp-border-glass: rgba(247,208,132,.45);
   --sp-device-bg: rgba(18, 25, 65, .56);
