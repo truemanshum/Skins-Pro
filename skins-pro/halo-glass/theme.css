@@ -2821,3 +2821,169 @@ ha-icon {
 .section-title {
   padding-inline-end: 6px;
 }
+
+/* Halo v4 base-contract frame polish: keep the original Skins-Pro glass
+   structure while closing visible device/right bottom frames and corner
+   artifacts called out in PR #54 review. */
+:host {
+  --halo-frame-fill: rgba(54, 44, 35, 0.66);
+  --halo-frame-fill-deep: rgba(46, 38, 31, 0.74);
+  --halo-frame-edge: rgba(255, 248, 234, 0.14);
+  --halo-frame-bottom: rgba(36, 30, 24, 0.46);
+  --halo-control-fill: rgba(52, 42, 34, 0.70);
+  --halo-control-soft: rgba(255, 248, 234, 0.075);
+}
+
+/* Base selector: .device. Use one clipped material per card; no independent
+   inset footer rectangle, so bottom corners no longer show semi-transparent chips. */
+.device {
+  position: relative;
+  overflow: hidden !important;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(64, 52, 42, 0.62), var(--halo-frame-fill-deep)) !important;
+  background-clip: padding-box;
+  border: var(--sp-border-w) solid var(--halo-frame-edge) !important;
+  box-shadow:
+    0 14px 34px rgba(25, 20, 16, 0.24),
+    inset 0 1px 0 rgba(255, 248, 234, 0.07),
+    inset 0 -1px 0 var(--halo-frame-bottom) !important;
+}
+
+.device:hover {
+  background:
+    linear-gradient(180deg, rgba(68, 56, 45, 0.66), rgba(48, 39, 31, 0.78)) !important;
+  border-color: rgba(255, 248, 234, 0.18) !important;
+  box-shadow:
+    0 16px 38px rgba(25, 20, 16, 0.28),
+    inset 0 1px 0 rgba(255, 248, 234, 0.08),
+    inset 0 -1px 0 var(--halo-frame-bottom) !important;
+}
+
+.device::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 52%;
+  border: 0 !important;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(255, 248, 234, 0.018), rgba(42, 34, 27, 0.40) 70%, rgba(36, 30, 24, 0.58));
+  box-shadow: none !important;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.device > * {
+  position: relative;
+  z-index: 1;
+}
+
+.device .control-row,
+.device ha-control-switch,
+.device ha-control-slider,
+.device .media-toggle-icon {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.device ha-control-switch,
+.device ha-control-slider {
+  overflow: hidden;
+  border-radius: var(--sp-radius-pill);
+  background-clip: padding-box;
+}
+
+/* Base selectors: .side, .glass-card, .time-card, .panel-*. The right column
+   remains the original stacked card layout, but every card has a closed clipped
+   bottom edge instead of a bright translucent frame/corner. */
+.side {
+  overflow: visible;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.side .glass-card,
+.side .time-card,
+.side .panel-energy,
+.side .panel-media,
+.side .panel-scenes,
+.side .info-card,
+.side .metric-card,
+.side .energy-panel,
+.side .scenes-panel {
+  position: relative;
+  overflow: hidden !important;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(62, 51, 41, 0.62), var(--halo-frame-fill-deep)) !important;
+  background-clip: padding-box;
+  border: var(--sp-border-w) solid var(--halo-frame-edge) !important;
+  box-shadow:
+    0 12px 30px rgba(25, 20, 16, 0.22),
+    inset 0 1px 0 rgba(255, 248, 234, 0.065),
+    inset 0 -1px 0 var(--halo-frame-bottom) !important;
+}
+
+.side .glass-card::after,
+.side .time-card::after,
+.side .panel-energy::after,
+.side .panel-media::after,
+.side .panel-scenes::after,
+.side .info-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(255, 248, 234, 0.012), rgba(38, 31, 25, 0.34));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.side .glass-card > *,
+.side .time-card > *,
+.side .panel-energy > *,
+.side .panel-media > *,
+.side .panel-scenes > *,
+.side .info-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.side .time-icon,
+.side .dot,
+.side .media-cover-null,
+.side .media-content,
+.side .media-actions,
+.side .media-volume,
+.side .media-voltrack,
+.side .scene {
+  overflow: hidden !important;
+  background: var(--halo-control-fill) !important;
+  background-clip: padding-box;
+  border: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 248, 234, 0.055) !important;
+}
+
+.side .media-content {
+  padding: var(--sp-space-sm);
+  border-radius: var(--sp-radius-md);
+}
+
+.side .media-actions,
+.side .media-volume,
+.side .media-row.media-volrow {
+  background: var(--halo-control-soft) !important;
+  border: 0 !important;
+  border-radius: var(--sp-radius-md);
+  box-shadow: none !important;
+}
+
+.side .scene.morning,
+.side .scene.night,
+.side .scene.movie,
+.side .scene.game {
+  border-top: 0 !important;
+}

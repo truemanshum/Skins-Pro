@@ -8,8 +8,8 @@
   "profile_subtitle_zh": "Halo 中控",
   "profile_subtitle_en": "Halo command center",
   "author": "truemanshum",
-  "theme_version": "20260712-halo-glass-v3",
-  "asset_version": "20260712-halo-glass-v3",
+  "theme_version": "20260712-halo-glass-v4",
+  "asset_version": "20260712-halo-glass-v4",
   "icon_map": {
     "light": "light",
     "input_boolean": "switch",
