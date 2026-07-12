@@ -5,8 +5,9 @@
   --sp-runtime-height:560px; --sp-runtime-min-height:560px;
   --sp-glass-bg: rgba(255, 255, 255, 0.78); --sp-panel-bg: rgba(255, 255, 255, 0.92);
   --sp-base-texture: url("./background.png"); --sp-stage-texture: url("./background.png");
-  --sp-app-overlay:none;
-  --sp-stage-overlay:none;
+  /* Opaque shell so the hall image only appears once on .stage (avoids nested double-crop). */
+  --sp-app-overlay: linear-gradient(180deg, #F5F2EB 0%, #F8F6F1 100%);
+  --sp-stage-overlay: none;
   --sp-room-overlay:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.45));
   --sp-bar-gradient: linear-gradient(90deg, rgba(15, 58, 107, 0.22), rgba(30, 90, 158, 0.92), rgba(245, 248, 251, 0.86));
   --sp-text-main: #0A1628; --sp-text-muted:rgba(232,221,194,.68); --sp-text-muted-dim:rgba(232,221,194,.52);
@@ -253,6 +254,20 @@ button { font:inherit; }
 
 
 
+
+/* skins-pro single-stage-background: shell solid, scenic image only on .stage */
+.mc-app {
+  background: var(--sp-app-overlay) !important;
+  background-image: none !important;
+}
+.stage {
+  background-color: transparent !important;
+  background-image: var(--sp-stage-texture) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+/* end skins-pro single-stage-background */
 /* skins-pro card theme port */
 :host {
   --sp-card-bg: linear-gradient(145deg, rgba(30, 90, 158, 0.18), rgba(10, 22, 40, 0.08));
