@@ -14,7 +14,7 @@
     "input_boolean": "switch",
     "button": "button",
     "scene": "light",
-    "climate": "ac",
+    "climate": "climate",
     "water_heater": "water_heater",
     "humidifier": "humidifier",
     "media_player": "media_player",
