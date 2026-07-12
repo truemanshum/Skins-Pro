@@ -1,0 +1,21 @@
+name: Validate
+
+on:
+  push:
+    paths-ignore:
+      - '.github/workflows/**'
+  pull_request:
+    paths-ignore:
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  validate-hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: HACS validation
+        uses: hacs/action@main
+        with:
+          category: plugin

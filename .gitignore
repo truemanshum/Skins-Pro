@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+npm-debug.log*
+*.log
+src/skins.generated.ts
+
+store/
+__stage/
+screenshots/thumbnails/
+screenshots/registry.json
+screenshots/download_skin.gif
