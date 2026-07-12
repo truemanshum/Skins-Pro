@@ -5,7 +5,7 @@
   --sp-runtime-height:560px; --sp-runtime-min-height:560px;
   --sp-glass-bg: rgba(255, 255, 255, 0.78); --sp-panel-bg: rgba(255, 255, 255, 0.92);
   --sp-base-texture: url("./background.png"); --sp-stage-texture: url("./background.png");
-  --sp-app-overlay:linear-gradient(135deg,rgba(12,15,24,.78),rgba(20,24,36,.76),rgba(15,19,30,.78));
+  --sp-app-overlay:none;
   --sp-stage-overlay:none;
   --sp-room-overlay:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.45));
   --sp-bar-gradient: linear-gradient(90deg, rgba(15, 58, 107, 0.22), rgba(30, 90, 158, 0.92), rgba(245, 248, 251, 0.86));
