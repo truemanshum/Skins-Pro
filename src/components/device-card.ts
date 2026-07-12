@@ -5,6 +5,8 @@ import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
 import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin } from '../utils';
 import { renderImage } from '../render/context';
+import { renderClimateCard } from './climate';
+import { renderLightCard } from './light';
 
 export const CONTROLLABLE_DOMAINS = new Set([
   'light', 'switch', 'fan', 'cover', 'valve', 'media_player', 'lock', 'climate',
@@ -42,6 +44,16 @@ export function renderDeviceCard(
   onHandleAction: (entityId: string, action: string) => void,
   showDomain = false,
 ): TemplateResult {
+  const isClimate = device.detail === 'climate';
+  if (isClimate) {
+    return renderClimateCard(config, hass, device, language, onHandleAction);
+  }
+
+  const isLight = device.detail === 'light';
+  if (isLight) {
+    return renderLightCard(config, hass, device, language, onHandleAction);
+  }
+
   const stateLabel = deviceStateLabel(device.state, language);
   const active = ['on', 'playing', 'paused', 'cool', 'heat', 'armed', 'locked', 'open'].includes(device.state);
   const statusClass = active ? `device-on-${device.color}` : (device.state === 'unavailable' ? 'device-unavailable' : 'device-off');
