@@ -2710,3 +2710,114 @@ button {
 .room::after {
   background: linear-gradient(180deg, rgba(20,16,12,0.04) 8%, rgba(20,16,12,0.34) 52%, rgba(20,16,12,0.72) 100%);
 }
+
+/* Halo v3 targeted polish: user-requested transparent forecast days,
+   transparent SVG icon surfaces, and contained device/media control footers. */
+:host {
+  --halo-footer-glass: rgba(66,54,42,0.58);
+  --halo-footer-border: rgba(255,248,234,0.26);
+  --halo-icon-plain: transparent;
+}
+
+.weather-forecast {
+  border-radius: var(--sp-radius-sm);
+  background: rgba(38,31,24,0.18);
+  border: 0.5px solid rgba(255,248,234,0.16);
+  padding: 3px;
+  backdrop-filter: blur(10px) saturate(1.12);
+  -webkit-backdrop-filter: blur(10px) saturate(1.12);
+}
+
+.forecast-day {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.forecast-day + .forecast-day {
+  border-left: 0.5px solid rgba(255,248,234,0.18) !important;
+}
+
+.weather-state-icon,
+.forecast-icon,
+.item-icon,
+.media-actions ha-icon,
+.media-volume ha-icon,
+ha-svg-icon {
+  background: var(--halo-icon-plain) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+ha-svg-icon,
+ha-icon {
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.device {
+  background: rgba(48,39,31,0.56);
+}
+
+.device::after {
+  content: "";
+  position: absolute;
+  left: var(--sp-space-lg);
+  right: var(--sp-space-lg);
+  bottom: var(--sp-space-lg);
+  height: 42px;
+  border-radius: calc(var(--sp-radius-md) + 2px);
+  background: linear-gradient(180deg, rgba(255,248,234,0.08), var(--halo-footer-glass));
+  border: 0.5px solid var(--halo-footer-border);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.device > * {
+  position: relative;
+  z-index: 1;
+}
+
+.device .control-row,
+.device ha-control-switch,
+.device ha-control-slider {
+  position: relative;
+  z-index: 2;
+}
+
+.panel-media .media-content,
+.panel-media .media-row,
+.panel-media .media-actions,
+.panel-media .media-volume,
+.media-content,
+.media-row.media-volrow {
+  border-radius: var(--sp-radius-md);
+}
+
+.panel-media .media-content {
+  background: var(--halo-footer-glass);
+  border: 0.5px solid var(--halo-footer-border);
+  padding: var(--sp-space-sm);
+  box-shadow: inset 0 1px 0 rgba(255,248,234,0.10);
+}
+
+.panel-media .media-actions,
+.panel-media .media-volume,
+.media-row.media-volrow {
+  background: rgba(255,248,234,0.10);
+  border: 0.5px solid rgba(255,248,234,0.16);
+}
+
+.side .device,
+.side .panel-media,
+.side .glass-card {
+  background-color: rgba(48,39,31,0.52);
+}
+
+.section-title {
+  padding-inline-end: 6px;
+}
