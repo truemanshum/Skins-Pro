@@ -51,8 +51,8 @@ export function renderLightCard(
   };
 
   return html`
-    <button class="device ${statusClass}" @click=${() => onHandleAction(device.entityId, 'more-info')}>
-      <div class="device-top">
+    <button class="device ${statusClass}" @click=${() => onHandleAction(device.entityId, 'toggle')}>
+      <div class="device-top" @click=${(e: Event) => { e.stopPropagation(); onHandleAction(device.entityId, 'more-info'); }}>
         ${renderImage(config, assetKey, device.name, 'item-img')}
         <div class="tag-stack">
           <div class="status">${stateLabel}</div>
@@ -69,7 +69,7 @@ export function renderLightCard(
         ${hasColorTemp && isOn && colorTemp !== undefined ? html`
         <ha-control-slider .value=${colorTemp} min=${minM} max=${maxM} style="--control-slider-thickness:28px;--control-slider-border-radius:var(--sp-radius-pill);flex:1;min-width:0;--control-slider-color:var(--sp-accent)" @value-changed=${(e: CustomEvent) => { e.stopPropagation(); doService('turn_on', { color_temp: Math.round((e.detail.value ?? minM) as number) }); }} @click=${(e: Event) => e.stopPropagation()}></ha-control-slider>
         ` : ''}
-        <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('toggle', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
+        <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService('toggle', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>
     </button>
   `;
