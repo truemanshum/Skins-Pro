@@ -98,12 +98,12 @@ const lastTime = stateForTime?.last_changed
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:20px;text-align:center">${targetTemp !== undefined ? tempDisplay(targetTemp) : '--'}</span>
           <button class="media-volbtn" style="width:22px;height:22px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(step); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:12px"></ha-icon></button>
         </div>
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_hvac_mode', { hvac_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()} .value=${hvacMode}>
-          ${hvacModes.map(m => html`<option value=${m}>${lab(m, HVAC_LABELS, language)}</option>`)}
+        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_hvac_mode', { hvac_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
+          ${hvacModes.map(m => html`<option value=${m} ?selected=${m === hvacMode}>${lab(m, HVAC_LABELS, language)}</option>`)}
         </select>
         ${showFan ? html`
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_fan_mode', { fan_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()} .value=${fanMode ?? ''}>
-          ${fanModes.map(m => html`<option value=${m}>${lab(m, FAN_LABELS, language)}</option>`)}
+        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_fan_mode', { fan_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
+          ${fanModes.map(m => html`<option value=${m} ?selected=${m === fanMode}>${lab(m, FAN_LABELS, language)}</option>`)}
         </select>` : ''}
       </div>
       `}
