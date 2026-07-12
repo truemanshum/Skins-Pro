@@ -26,12 +26,12 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:20px;text-align:center">${void 0!==h?z(h):"--"}</span>
           <button class="media-volbtn" style="width:22px;height:22px;padding:0" @click=${e=>{e.stopPropagation(),x(y)}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:12px"></ha-icon></button>
         </div>
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),S("set_hvac_mode",{hvac_mode:e.target.value})}} @click=${e=>e.stopPropagation()} .value=${l}>
-          ${_.map(e=>Z`<option value=${e}>${Gt(e,Ut,i)}</option>`)}
+        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),S("set_hvac_mode",{hvac_mode:e.target.value})}} @click=${e=>e.stopPropagation()}>
+          ${_.map(e=>Z`<option value=${e} ?selected=${e===l}>${Gt(e,Ut,i)}</option>`)}
         </select>
         ${b?Z`
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),S("set_fan_mode",{fan_mode:e.target.value})}} @click=${e=>e.stopPropagation()} .value=${p??""}>
-          ${v.map(e=>Z`<option value=${e}>${Gt(e,jt,i)}</option>`)}
+        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),S("set_fan_mode",{fan_mode:e.target.value})}} @click=${e=>e.stopPropagation()}>
+          ${v.map(e=>Z`<option value=${e} ?selected=${e===p}>${Gt(e,jt,i)}</option>`)}
         </select>`:""}
       </div>
       `}
@@ -40,8 +40,8 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
       <div class="device-top">${Ft(e,n,a.name,"item-img")}<div class="tag-stack"><div class="status">${Pe(a.state,i)}</div></div></div>
       <div class="device-copy"><p class="device-name">${a.name}</p><p class="muted">${a.subtitle}</p></div>
     </button>`;const s=o.attributes||{},c="on"===o.state,l=s.brightness,u=void 0!==l?Math.round(l/2.55):void 0,d=s.supported_color_modes||[],m=d.some(e=>Jt.has(e)),h=d.some(e=>Yt.has(e)),_=s.color_temp,p=s.min_mireds??153,v=s.max_mireds??500,g=c?`device-on-${a.color}`:"unavailable"===o.state?"device-unavailable":"device-off",f=Pe(o.state,i),y=o.last_changed?Fe(new Date(o.last_changed),i):a.subtitle,b=(e,i)=>{t.callService("light",e,{entity_id:a.entityId,...i})};return Z`
-    <button class="device ${g}" @click=${()=>r(a.entityId,"more-info")}>
-      <div class="device-top">
+    <button class="device ${g}" @click=${()=>r(a.entityId,"toggle")}>
+      <div class="device-top" @click=${e=>{e.stopPropagation(),r(a.entityId,"more-info")}}>
         ${Ft(e,n,a.name,"item-img")}
         <div class="tag-stack">
           <div class="status">${f}</div>
@@ -58,7 +58,7 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
         ${h&&c&&void 0!==_?Z`
         <ha-control-slider .value=${_} min=${p} max=${v} style="--control-slider-thickness:28px;--control-slider-border-radius:var(--sp-radius-pill);flex:1;min-width:0;--control-slider-color:var(--sp-accent)" @value-changed=${e=>{e.stopPropagation(),b("turn_on",{color_temp:Math.round(e.detail.value??p)})}} @click=${e=>e.stopPropagation()}></ha-control-slider>
         `:""}
-        <ha-control-switch .checked=${c} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0" @change=${e=>{e.stopPropagation(),b("toggle",{})}} @click=${e=>e.stopPropagation()} .label=${a.name}></ha-control-switch>
+        <ha-control-switch .checked=${c} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${e=>{e.stopPropagation(),b("toggle",{})}} @click=${e=>e.stopPropagation()} .label=${a.name}></ha-control-switch>
       </div>
     </button>
   `}(e,t,a,i,r);const o=Pe(a.state,i),s=["on","playing","paused","cool","heat","armed","locked","open"].includes(a.state),c=s?`device-on-${a.color}`:"unavailable"===a.state?"device-unavailable":"device-off",l=Ue(je(e),a.entityId.split(".")[0]||"sensor"),u="media_player"===a.detail,d="cover"===a.detail,m="valve"===a.detail,h=u?"play-pause":!Kt.has(a.detail)||d||m?"more-info":"toggle",_=u?t.states?.[a.entityId]:void 0,p=u?_?.attributes?.entity_picture:void 0,v=u?_?.attributes?.volume_level:void 0,g=void 0!==v?Math.round(100*v):void 0,f=d||m,y=f?t.states?.[a.entityId]?.attributes?.current_position:void 0,b=function(e,t,a){const i=t.entityId.split(".")[0],r=e.states?.[t.entityId];return"automation"===i?r?.attributes?.last_triggered?Fe(new Date(r.attributes.last_triggered),a):void 0:"scene"===i?r?.state&&"unavailable"!==r.state&&"unknown"!==r.state?Fe(new Date(r.state),a):void 0:r?Fe(new Date(r.last_changed),a):void 0}(t,a,i);return Z`
