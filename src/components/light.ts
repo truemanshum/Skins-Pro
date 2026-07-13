@@ -8,8 +8,38 @@ import { renderImage } from '../render/context';
 
 const BRIGHTNESS_MODES = new Set(['brightness', 'color_temp', 'hs', 'rgb', 'rgbw', 'rgbww', 'xy']);
 const COLOR_TEMP_MODES = new Set(['color_temp']);
+const COLOR_RGB_MODES = new Set(['hs', 'rgb', 'rgbw', 'rgbww', 'xy']);
 const DEFAULT_MIN_MIREDS = 153;
 const DEFAULT_MAX_MIREDS = 500;
+
+function rgbToHex(rgb: [number, number, number]): string {
+  const toHex = (n: number) => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0');
+  return `#${toHex(rgb[0])}${toHex(rgb[1])}${toHex(rgb[2])}`;
+}
+
+function hsToRgb(hue: number, sat: number): [number, number, number] {
+  const s = sat / 100;
+  const v = 1;
+  const c = v * s;
+  const hp = hue / 60;
+  const x = c * (1 - Math.abs((hp % 2) - 1));
+  let r = 0, g = 0, b = 0;
+  if (hp >= 0 && hp < 1) { r = c; g = x; b = 0; }
+  else if (hp < 2) { r = x; g = c; b = 0; }
+  else if (hp < 3) { r = 0; g = c; b = x; }
+  else if (hp < 4) { r = 0; g = x; b = c; }
+  else if (hp < 5) { r = x; g = 0; b = c; }
+  else { r = c; g = 0; b = x; }
+  const m = v - c;
+  return [(r + m) * 255, (g + m) * 255, (b + m) * 255];
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return [255, 255, 255];
+  const n = parseInt(m[1], 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
 
 export function renderLightCard(
   config: DashboardConfig | undefined,
@@ -36,7 +66,13 @@ export function renderLightCard(
   const colorModes = (a.supported_color_modes as string[]) || [];
   const hasBrightness = colorModes.some(m => BRIGHTNESS_MODES.has(m));
   const hasColorTemp = colorModes.some(m => COLOR_TEMP_MODES.has(m));
+  const hasRgbColor = colorModes.some(m => COLOR_RGB_MODES.has(m));
   const colorTemp = a.color_temp as number | undefined;
+  const rgbColor = a.rgb_color as [number, number, number] | undefined;
+  const hsColor = a.hs_color as [number, number] | undefined;
+  const currentHex = rgbColor
+    ? rgbToHex(rgbColor)
+    : (hsColor ? rgbToHex(hsToRgb(hsColor[0], hsColor[1])) : '#ffffff');
   const minM = (a.min_mireds as number) ?? DEFAULT_MIN_MIREDS;
   const maxM = (a.max_mireds as number) ?? DEFAULT_MAX_MIREDS;
 
@@ -68,6 +104,11 @@ export function renderLightCard(
         ` : ''}
         ${hasColorTemp && isOn && colorTemp !== undefined ? html`
         <ha-control-slider .value=${colorTemp} min=${minM} max=${maxM} style="--control-slider-thickness:28px;--control-slider-border-radius:var(--sp-radius-pill);flex:1;min-width:0;--control-slider-color:var(--sp-accent)" @value-changed=${(e: CustomEvent) => { e.stopPropagation(); doService('turn_on', { color_temp: Math.round((e.detail.value ?? minM) as number) }); }} @click=${(e: Event) => e.stopPropagation()}></ha-control-slider>
+        ` : ''}
+        ${hasRgbColor && isOn ? html`
+        <label class="light-color-swatch" style="width:28px;height:28px;border-radius:50%;background:${currentHex};border:2px solid rgba(255,255,255,.6);flex-shrink:0;cursor:pointer;overflow:hidden;box-shadow:var(--sp-shadow-device);display:block" title=${currentHex} @click=${(e: Event) => e.stopPropagation()}>
+          <input type="color" .value=${currentHex} style="opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0" @input=${(e: Event) => { e.stopPropagation(); const v = (e.target as HTMLInputElement).value; doService('turn_on', { rgb_color: hexToRgb(v) }); }} @click=${(e: Event) => e.stopPropagation()}>
+        </label>
         ` : ''}
         <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService('toggle', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>

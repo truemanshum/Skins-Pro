@@ -7,6 +7,11 @@ import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin }
 import { renderImage } from '../render/context';
 import { renderClimateCard } from './climate';
 import { renderLightCard } from './light';
+import { renderFanCard } from './fan';
+import { renderHumidifierCard } from './humidifier';
+import { renderVacuumCard } from './vacuum';
+import { renderWaterHeaterCard } from './water-heater';
+import { renderAlarmControlPanelCard } from './alarm-control-panel';
 
 export const CONTROLLABLE_DOMAINS = new Set([
   'light', 'switch', 'fan', 'cover', 'valve', 'media_player', 'lock', 'climate',
@@ -52,6 +57,26 @@ export function renderDeviceCard(
   const isLight = device.detail === 'light';
   if (isLight) {
     return renderLightCard(config, hass, device, language, onHandleAction);
+  }
+
+  if (device.detail === 'fan') {
+    return renderFanCard(config, hass, device, language, onHandleAction);
+  }
+
+  if (device.detail === 'humidifier') {
+    return renderHumidifierCard(config, hass, device, language, onHandleAction);
+  }
+
+  if (device.detail === 'vacuum') {
+    return renderVacuumCard(config, hass, device, language, onHandleAction);
+  }
+
+  if (device.detail === 'water_heater') {
+    return renderWaterHeaterCard(config, hass, device, language, onHandleAction);
+  }
+
+  if (device.detail === 'alarm_control_panel') {
+    return renderAlarmControlPanelCard(config, hass, device, language, onHandleAction);
   }
 
   const stateLabel = deviceStateLabel(device.state, language);
