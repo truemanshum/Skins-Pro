@@ -43,12 +43,49 @@ export function renderAlarmControlPanelCard(
   }
 
   const state = stateObj.state;
+  const attrs = stateObj.attributes || {};
   const isArmed = state === 'armed_home' || state === 'armed_away' || state === 'armed_night' || state === 'armed_vacation' || state === 'armed_custom_bypass';
   const isTriggered = state === 'triggered';
   const isPending = state === 'pending' || state === 'arming' || state === 'disarming';
 
   const statusClass: string = isTriggered ? `device-on-red` : (isArmed ? `device-on-${device.color}` : (isPending ? `device-on-${device.color}` : (state === 'unavailable' ? 'device-unavailable' : 'device-off')));
   const lastTime = stateObj.last_changed ? formatRelativeTime(new Date(stateObj.last_changed), language) : device.subtitle;
+
+  const supportedFeatures = (attrs.supported_features as number) || 0;
+  const codeArmRequired = attrs.code_arm_required === true;
+  const hasCode = Boolean(attrs.code_format);
+
+  const FEATURE_ARM_HOME = 1;
+  const FEATURE_ARM_AWAY = 2;
+  const FEATURE_ARM_NIGHT = 4;
+  const FEATURE_ARM_VACATION = 16;
+
+  type ArmMode = { feature: number; icon: string; service: string; title: string };
+  const armModes: ArmMode[] = [
+    { feature: FEATURE_ARM_AWAY, icon: 'mdi:shield-lock', service: 'alarm_arm_away', title: t(language, 'alarmArmedAway') },
+    { feature: FEATURE_ARM_HOME, icon: 'mdi:shield-home', service: 'alarm_arm_home', title: t(language, 'alarmArmedHome') },
+    { feature: FEATURE_ARM_NIGHT, icon: 'mdi:shield-moon', service: 'alarm_arm_night', title: t(language, 'alarmArmedNight') },
+    { feature: FEATURE_ARM_VACATION, icon: 'mdi:shield-airplane', service: 'alarm_arm_vacation', title: t(language, 'alarmArmedVacation') },
+  ];
+  const availableArms = armModes.filter(m => supportedFeatures & m.feature);
+  const showDirectArm = !codeArmRequired && availableArms.length > 0;
+  const showDirectDisarm = !hasCode;
+
+  const iconStyle = '--mdc-icon-size:18px;color:var(--sp-text-primary);display:flex;cursor:pointer';
+
+  const armButtons = showDirectArm
+    ? availableArms.slice(0, 3).map(m => html`
+        <ha-icon icon=${m.icon} style=${iconStyle} title=${m.title} @click=${(e: Event) => { e.stopPropagation(); hass.callService('alarm_control_panel', m.service, { entity_id: device.entityId }); }}></ha-icon>
+      `)
+    : (!isArmed && !isTriggered && !isPending ? html`<ha-icon icon="mdi:shield-lock" style=${iconStyle} title=${t(language, 'alarmArmedAway')} @click=${(e: Event) => { e.stopPropagation(); onHandleAction(device.entityId, 'more-info'); }}></ha-icon>` : '');
+
+  const disarmButton = (isArmed || isTriggered)
+    ? (showDirectDisarm
+        ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); hass.callService('alarm_control_panel', 'alarm_disarm', { entity_id: device.entityId }); }}></ha-icon>`
+        : html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); onHandleAction(device.entityId, 'more-info'); }}></ha-icon>`)
+    : '';
+
+  const controlIcons = isPending ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : (isArmed ? 'mdi:shield-lock' : 'mdi:shield-off')} style="--mdc-icon-size:18px;color:var(--sp-text-primary)"></ha-icon>` : html`${armButtons}${disarmButton}`;
 
   return html`
     <button class="device ${statusClass}" @click=${() => onHandleAction(device.entityId, 'more-info')}>
@@ -62,8 +99,8 @@ export function renderAlarmControlPanelCard(
         <p class="device-name">${device.name}</p>
         <p class="muted">${lastTime}</p>
       </div>
-      <div class="control-row" style="justify-content:flex-end" @click=${(e: Event) => e.stopPropagation()}>
-        <ha-icon icon=${isTriggered ? 'mdi:bell-ring' : (isArmed ? 'mdi:shield-lock' : 'mdi:shield-off')} style="--mdc-icon-size:18px;color:var(--sp-text-primary)"></ha-icon>
+      <div class="control-row" style="justify-content:flex-end;gap:6px" @click=${(e: Event) => e.stopPropagation()}>
+        ${controlIcons}
       </div>
     </button>
   `;
