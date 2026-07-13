@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const sharp = require('sharp');
 const { ZipArchive } = require('archiver');
 
@@ -7,6 +8,29 @@ const src = 'skins-pro';
 const dest = 'dist';
 const store = 'store';
 const stage = '__stage';
+
+// Optional target skin via positional arg.
+//   npm run build -- visionOS
+//   node scripts/build-skins.cjs visionOS
+// Builds only the specified skin plus the bundled 'modern' (always built).
+function resolveTargetSkin() {
+  const arg = process.argv[2];
+  if (!arg) return '';
+  if (arg.startsWith('--skin=')) return arg.slice(7);
+  return arg;
+}
+const targetSkin = resolveTargetSkin();
+const allDirs = fs.readdirSync(src, { withFileTypes: true })
+  .filter(d => d.isDirectory())
+  .map(d => d.name)
+  .sort();
+if (targetSkin && !allDirs.includes(targetSkin)) {
+  console.error(`Error: skin '${targetSkin}' not found in ${src}/. Available: ${allDirs.join(', ')}`);
+  process.exit(1);
+}
+const dirs = targetSkin
+  ? allDirs.filter(d => d === 'modern' || d === targetSkin)
+  : allDirs;
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'];
 
@@ -64,10 +88,6 @@ async function processImage(srcPath, destDir) {
     fs.copyFileSync(srcPath, outPath);
   }
 }
-
-const dirs = fs.readdirSync(src, { withFileTypes: true })
-  .filter(d => d.isDirectory())
-  .map(d => d.name);
 
 (async () => {
   fs.mkdirSync(dest, { recursive: true });
@@ -204,7 +224,11 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
     JSON.stringify(registry, null, 2),
   );
 
-  console.log(`Build complete: ${dirs.length} skin(s) processed, ${i18nFiles.length} locale(s) detected, ${registry.length} thumbnail(s) generated, ${storePackages.length} store package(s) packed`);
+  const scope = targetSkin ? ` (target: ${targetSkin})` : '';
+  console.log(`Build complete${scope}: ${dirs.length} skin(s) processed, ${i18nFiles.length} locale(s) detected, ${registry.length} thumbnail(s) generated, ${storePackages.length} store package(s) packed`);
+
+  const rollup = spawnSync('node', [require.resolve('rollup/dist/bin/rollup'), '-c'], { stdio: 'inherit' });
+  if (rollup.status !== 0) process.exit(rollup.status ?? 1);
 })().catch(err => {
   console.error('Build failed:', err);
   process.exit(1);
