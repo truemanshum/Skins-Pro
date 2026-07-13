@@ -1,6 +1,6 @@
 import type { HomeAssistant } from '../types';
 import type { Language } from '../i18n';
-import { t } from '../utils';
+import { t, clearSkinMetadata } from '../utils';
 import { deepClone, fire, type DashboardConfigRecord } from './config';
 
 export const CDN_STORE = 'https://cdn.jsdelivr.net/gh/ha-china/Skins-Pro@store';
@@ -177,6 +177,7 @@ export async function downloadSkin(
 ): Promise<DownloadResult> {
   try {
     await (hass as any)?.callService('skins_pro', 'download_skin', { skin_id: skinId });
+    clearSkinMetadata(skinId);
     const next = deepClone(currentConfig);
     next.resource_pack = next.resource_pack || {};
     next.resource_pack.skin = skinId;

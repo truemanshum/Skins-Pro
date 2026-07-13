@@ -121,10 +121,14 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
     fs.rmSync(stage, { recursive: true, force: true });
   }
 
-  // Generate skin list + strings + icon maps for compile-time injection
+  // Generate skin list + strings + icon maps for compile-time injection.
+  // Only the bundled 'modern' skin's metadata is injected — non-bundled skins
+  // fetch their strings.json at runtime from /local/skins-pro/<skin>/strings.json
+  // (the file is shipped inside each store zip and unzipped by skins-pro-hass).
   const stringsMap = {};
   const iconMaps = {};
   dirs.forEach(dir => {
+    if (dir !== 'modern') return;
     const file = path.join(src, dir, 'strings.json');
     const data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {};
     stringsMap[dir] = data;

@@ -6,6 +6,45 @@ import { STRINGS } from '../i18n';
 
 export const BUNDLED_SKINS: readonly string[] = SKINS;
 
+interface SkinMetadata {
+  strings: Record<string, string>;
+  iconMap: Record<string, string>;
+}
+
+const SKIN_METADATA_CACHE: Record<string, SkinMetadata> = {
+  [DEFAULT_SKIN]: {
+    strings: (SKIN_STRINGS[DEFAULT_SKIN] || {}) as Record<string, string>,
+    iconMap: (SKIN_ICON_MAPS[DEFAULT_SKIN] || {}) as Record<string, string>,
+  },
+};
+const SKIN_METADATA_LOADING = new Set<string>();
+
+export async function loadSkinMetadata(skin: string): Promise<boolean> {
+  if (SKIN_METADATA_CACHE[skin]) return false;
+  if (SKINS.includes(skin)) return false;
+  if (SKIN_METADATA_LOADING.has(skin)) return false;
+  SKIN_METADATA_LOADING.add(skin);
+  try {
+    const res = await fetch(`/local/skins-pro/${skin}/strings.json?v=${Date.now()}`);
+    if (!res.ok) return false;
+    const data = (await res.json()) as Record<string, unknown>;
+    SKIN_METADATA_CACHE[skin] = {
+      strings: data as Record<string, string>,
+      iconMap: (data.icon_map as Record<string, string>) || {},
+    };
+    return true;
+  } catch {
+    return false;
+  } finally {
+    SKIN_METADATA_LOADING.delete(skin);
+  }
+}
+
+export function clearSkinMetadata(skin: string): void {
+  if (skin === DEFAULT_SKIN) return;
+  delete SKIN_METADATA_CACHE[skin];
+}
+
 export type { Language } from '../i18n';
 export type { TranslationKey } from '../types';
 
@@ -203,7 +242,7 @@ export function iconForDomain(domain: string): string {
 }
 
 export function assetKeyForDomain(skin: string, domain: string): string {
-  const map = SKIN_ICON_MAPS[skin] || {};
+  const map = SKIN_METADATA_CACHE[skin]?.iconMap || {};
   if (map[domain]) {
     return map[domain]!;
   }
@@ -251,7 +290,7 @@ export function assetHref(config?: DashboardConfig, key?: string): string {
 }
 
 export function skinString(skin: string, key: string): string {
-  const data = (SKIN_STRINGS[skin] || SKIN_STRINGS[DEFAULT_SKIN] || {}) as Record<string, string>;
+  const data = SKIN_METADATA_CACHE[skin]?.strings || SKIN_METADATA_CACHE[DEFAULT_SKIN]?.strings || {};
   return data[key] || '';
 }
 
