@@ -8,7 +8,7 @@
   "profile_name_en": "Owner",
   "profile_subtitle_zh": "青瓷中控",
   "profile_subtitle_en": "Celadon home hub",
-  "asset_version": "20260712-1325-celadon-breath",
+  "asset_version": "20260713-celadon-breath-v2",
   "icon_map": {
     "light": "light",
     "input_boolean": "switch",
