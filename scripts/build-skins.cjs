@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-const archiver = require('archiver');
+const { ZipArchive } = require('archiver');
 
 const src = 'skins-pro';
 const dest = 'dist';
@@ -104,7 +104,7 @@ const dirs = fs.readdirSync(src, { withFileTypes: true })
       const zipPath = path.join(store, `${dir}.zip`);
       await new Promise((resolve, reject) => {
         const output = fs.createWriteStream(zipPath);
-        const archive = archiver('zip', { zlib: { level: 9 } });
+        const archive = new ZipArchive({ zlib: { level: 9 } });
         output.on('close', resolve);
         archive.on('error', reject);
         archive.pipe(output);
