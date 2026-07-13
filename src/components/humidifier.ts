@@ -80,12 +80,12 @@ export function renderHumidifierCard(
       <div class="control-row" style="gap:4px" @click=${(e: Event) => e.stopPropagation()}>
         ${isOn && targetHumidity !== undefined ? html`
         <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
-          <button class="media-volbtn" style="width:22px;height:22px;padding:0" @click=${(e: Event) => { e.stopPropagation(); const next = Math.max(minH, targetHumidity - step); doService('set_humidity', { humidity: next }); }}><ha-icon icon="mdi:minus" style="--mdc-icon-size:12px"></ha-icon></button>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${(e: Event) => { e.stopPropagation(); const next = Math.max(minH, targetHumidity - step); doService('set_humidity', { humidity: next }); }}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:24px;text-align:center">${Math.round(targetHumidity)}%</span>
-          <button class="media-volbtn" style="width:22px;height:22px;padding:0" @click=${(e: Event) => { e.stopPropagation(); const next = Math.min(maxH, targetHumidity + step); doService('set_humidity', { humidity: next }); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:12px"></ha-icon></button>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${(e: Event) => { e.stopPropagation(); const next = Math.min(maxH, targetHumidity + step); doService('set_humidity', { humidity: next }); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>` : ''}
         ${isOn && modes.length > 0 ? html`
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:22px;min-width:44px;padding:0 14px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_mode', { mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
+        <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_mode', { mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
           ${modes.map(m => html`<option value=${m} ?selected=${m === mode}>${modeLabel(m, language)}</option>`)}
         </select>` : ''}
         <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isOn ? 'turn_off' : 'turn_on', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>

@@ -26,15 +26,15 @@ export function renderDevicesView(ctx: RenderContext): TemplateResult {
       <div class="filter-bar">
         <button class="chip${ctx.deviceGrouping === 'area' ? ' active' : ''}" @click=${() => ctx.setDeviceGrouping('area')}>${ctx.translate('byArea')}</button>
         <button class="chip${ctx.deviceGrouping === 'domain' ? ' active' : ''}" @click=${() => ctx.setDeviceGrouping('domain')}>${ctx.translate('byType')}</button>
-        <select class="filter-select" @change=${(e: Event) => ctx.setFilterRoom((e.target as HTMLSelectElement).value)}>
+        <select class="filter-select" style="min-height:32px" @change=${(e: Event) => ctx.setFilterRoom((e.target as HTMLSelectElement).value)}>
           <option value="">${ctx.translate('allRooms')}</option>
           ${rooms.map((r) => html`<option value="${r}" .selected=${r === ctx.filterRoom}>${r}</option>`)}
         </select>
-        <select class="filter-select" @change=${(e: Event) => ctx.setFilterType((e.target as HTMLSelectElement).value)}>
+        <select class="filter-select" style="min-height:32px" @change=${(e: Event) => ctx.setFilterType((e.target as HTMLSelectElement).value)}>
           <option value="">${ctx.translate('allTypes')}</option>
           ${types.map((t) => html`<option value="${t}" .selected=${t === ctx.filterType}>${domainGroupLabel(t, ctx.language)}</option>`)}
         </select>
-        <select class="filter-select" @change=${(e: Event) => ctx.setHideUnassigned((e.target as HTMLSelectElement).value === 'true')}>
+        <select class="filter-select" style="min-height:32px" @change=${(e: Event) => ctx.setHideUnassigned((e.target as HTMLSelectElement).value === 'true')}>
           <option value="true" .selected=${ctx.hideUnassigned}>${ctx.translate('hideUnassigned')}</option>
           <option value="false" .selected=${!ctx.hideUnassigned}>${ctx.translate('showAll')}</option>
         </select>
