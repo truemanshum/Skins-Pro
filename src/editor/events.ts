@@ -126,11 +126,18 @@ function bindBgUpload(host: EditorHost): void {
     uploadInput.addEventListener('change', async () => {
       const file = uploadInput.files?.[0];
       if (!file) return;
-      const url = await uploadBackgroundImage(file, host.state.hass);
-      if (url) {
+      uploadInput.disabled = true;
+      try {
+        const url = await uploadBackgroundImage(file, host.state.hass);
         host.state.config = setField(host.el, host.state.config, 'background_image', url);
         host.onChange({ config: host.state.config });
         host.reload();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        alert(t(host.state.language, 'editorUploadFailed', { message }));
+      } finally {
+        uploadInput.disabled = false;
+        uploadInput.value = '';
       }
     });
   }

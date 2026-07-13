@@ -158,6 +158,7 @@ const en: Record<TranslationKey, string> = {
   editorLoadingAreas: 'Loading areas...',
   editorDownloading: 'Downloading...',
   editorDownloadFailed: 'Download failed: {message}',
+  editorUploadFailed: 'Background upload failed: {message}. Please try again.',
 
 };
 
