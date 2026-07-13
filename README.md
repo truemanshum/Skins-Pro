@@ -150,10 +150,13 @@ All styles are customized via CSS variables on `:host`. Each skin has its own `t
 git clone https://github.com/ha-china/Skins-Pro.git
 cd Skins-Pro
 npm install
-npm run build       # Build
+npm run build       # Build all skins (also runs rollup)
+npm run build -- <skin-name>   # Build only one skin + the bundled 'modern' (faster for local testing)
 npm run watch       # Watch mode (auto-rebuild on source changes)
 npm run type-check  # TypeScript type check
 ```
+
+`npm run build -- visionOS` processes only `modern` + `visionOS`, skipping the other skins and store packages — useful when iterating on a single skin.
 
 Build output in `dist/`:
 
