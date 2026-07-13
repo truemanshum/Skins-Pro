@@ -426,7 +426,11 @@ export class MinecraftDashboardCard extends LitElement {
   }
 
   private async batchControl(state: 'on' | 'off', translate: (key: TranslationKey) => string): Promise<void> {
-    const devices = getRealDevicesForRender(this._hass, this._deviceRegistry, this._entityRegistry, this._areas);
+    const devices = getRealDevicesForRender(this._hass, this._deviceRegistry, this._entityRegistry, this._areas, {
+      filterRoom: this._filterRoom,
+      filterType: this._filterType,
+      hideUnassigned: this._hideUnassigned,
+    });
     const controllable = devices.filter((d) => CONTROLLABLE_DOMAINS.has(d.detail));
     if (controllable.length === 0) return;
     if (!confirm(translate('confirmAction'))) return;

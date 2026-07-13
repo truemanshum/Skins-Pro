@@ -7,6 +7,11 @@ import { renderPageShell } from '../components/page-shell';
 import { renderImage } from '../render/context';
 import { assetKeyForDomain, deviceStateLabel, selectedSkin, t } from '../utils';
 
+const SECURITY_TOGGLE_DOMAINS = new Set([
+  'light', 'switch', 'fan', 'cover', 'valve', 'media_player', 'lock',
+  'input_boolean', 'automation', 'group', 'vacuum', 'humidifier', 'water_heater', 'siren',
+]);
+
 export function renderSecurityView(ctx: RenderContext): TemplateResult {
   const cards = renderSecurityCards(ctx);
   return renderPageShell(
@@ -70,14 +75,15 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
     const assetKey = assetKeyForDomain(skin, domain);
     const tones: RenderedDevice['color'][] = ['red', 'green', 'blue', 'purple', 'yellow', 'brown'];
     const statusClass = entity.state === 'unavailable' ? 'device-unavailable' : `device-on-${tones[index % tones.length]}`;
+    const togglable = SECURITY_TOGGLE_DOMAINS.has(domain);
     return html`
       <button class="device ${statusClass}" @click=${() => ctx.onHandleAction(entity.entity_id, 'more-info')}>
         <div class="device-top">
           ${renderImage(ctx.config, assetKey, String(entity.attributes?.friendly_name || entity.entity_id), 'item-img')}
           <div class="tag-stack"><div class="status">${stateLabel}</div></div>
         </div>
-        <div class="device-copy"><p class="device-name">${String(entity.attributes?.friendly_name || entity.entity_id)}</p><p class="muted">${domain}</p></div>
-        <div class="control-row"><span class="state-word">${stateLabel}</span><ha-control-switch .checked=${['on', 'armed_away', 'armed_home', 'locked'].includes(entity.state)} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0" @click=${(e: Event) => e.stopPropagation()} @change=${(e: Event) => { e.stopPropagation(); ctx.onHandleAction(entity.entity_id, 'toggle'); }} .label=${String(entity.attributes?.friendly_name || entity.entity_id)}></ha-control-switch></div>
+        <div class="device-copy"><p class="device-name">${String(entity.attributes?.friendly_name || entity.entity_id)}</p><p class="muted">${t(ctx.language, 'security')}</p></div>
+        <div class="control-row" style="justify-content:flex-end">${togglable ? html`<ha-control-switch .checked=${['on', 'playing', 'open', 'locked'].includes(entity.state)} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0" @click=${(e: Event) => e.stopPropagation()} @change=${(e: Event) => { e.stopPropagation(); ctx.onHandleAction(entity.entity_id, 'toggle'); }} .label=${String(entity.attributes?.friendly_name || entity.entity_id)}></ha-control-switch>` : html`<span class="state-word">${stateLabel}</span>`}</div>
       </button>
     `;
   });
