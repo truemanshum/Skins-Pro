@@ -2825,3 +2825,328 @@ ha-icon {
 .room::after {
   background: linear-gradient(180deg, rgba(20,12,8,0.05) 8%, rgba(20,12,8,0.34) 52%, rgba(20,12,8,0.74) 100%);
 }
+
+/* Ember frame polish: keep the Skins-Pro base contract, but make device and
+   right-column controls part of one clipped glass surface. This removes the
+   independent rounded footer frame and translucent corner artifacts visible
+   in the PR preview. */
+:host {
+  --ember-frame-fill: rgba(61,31,21,0.70);
+  --ember-frame-fill-deep: rgba(43,23,17,0.82);
+  --ember-frame-edge: rgba(255,232,200,0.16);
+  --ember-frame-bottom: rgba(24,13,10,0.52);
+  --ember-control-fill: rgba(55,29,21,0.74);
+  --ember-control-soft: rgba(255,232,200,0.07);
+}
+
+.device {
+  position: relative;
+  overflow: hidden !important;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(72,37,25,0.66), var(--ember-frame-fill-deep)) !important;
+  background-clip: padding-box;
+  border: var(--sp-border-w) solid var(--ember-frame-edge) !important;
+  box-shadow:
+    0 14px 34px rgba(20,12,8,0.30),
+    inset 0 1px 0 rgba(255,232,200,0.07),
+    inset 0 -1px 0 var(--ember-frame-bottom) !important;
+}
+
+.device:hover {
+  background:
+    linear-gradient(180deg, rgba(80,42,28,0.70), rgba(48,25,18,0.84)) !important;
+  border-color: rgba(255,232,200,0.20) !important;
+  box-shadow:
+    0 16px 38px rgba(20,12,8,0.34),
+    inset 0 1px 0 rgba(255,232,200,0.08),
+    inset 0 -1px 0 var(--ember-frame-bottom) !important;
+}
+
+.device::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 52%;
+  border: 0 !important;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(255,232,200,0.015), rgba(38,20,15,0.42) 70%, rgba(28,15,11,0.62));
+  box-shadow: none !important;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.device > * {
+  position: relative;
+  z-index: 1;
+}
+
+.device .control-row {
+  min-height: 32px;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.device ha-control-switch,
+.device ha-control-slider,
+.device .media-toggle-icon {
+  position: relative;
+  z-index: 2;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.device ha-control-switch,
+.device ha-control-slider {
+  overflow: hidden;
+  border-radius: var(--sp-radius-pill);
+  background-clip: padding-box;
+}
+
+.device .media-vol-slider {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.device .media-toggle-icon {
+  flex: 0 0 auto;
+  margin-inline-start: var(--sp-space-xs);
+}
+
+.side {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.side .glass-card,
+.side .time-card,
+.side .panel-energy,
+.side .panel-media,
+.side .panel-scenes,
+.side .info-card,
+.side .metric-card,
+.side .energy-panel,
+.side .scenes-panel {
+  position: relative;
+  overflow: hidden !important;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(68,35,24,0.66), var(--ember-frame-fill-deep)) !important;
+  background-clip: padding-box;
+  border: var(--sp-border-w) solid var(--ember-frame-edge) !important;
+  box-shadow:
+    0 12px 30px rgba(20,12,8,0.28),
+    inset 0 1px 0 rgba(255,232,200,0.065),
+    inset 0 -1px 0 var(--ember-frame-bottom) !important;
+}
+
+.side .glass-card::after,
+.side .time-card::after,
+.side .panel-energy::after,
+.side .panel-media::after,
+.side .panel-scenes::after,
+.side .info-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(255,232,200,0.012), rgba(31,17,13,0.38));
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.side .glass-card > *,
+.side .time-card > *,
+.side .panel-energy > *,
+.side .panel-media > *,
+.side .panel-scenes > *,
+.side .info-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.side .time-icon,
+.side .dot,
+.side .media-cover-null,
+.side .media-content,
+.side .media-actions,
+.side .media-volume,
+.side .media-voltrack,
+.side .scene {
+  overflow: hidden !important;
+  background: var(--ember-control-fill) !important;
+  background-clip: padding-box;
+  border: 0 !important;
+  box-shadow: inset 0 1px 0 rgba(255,232,200,0.055) !important;
+}
+
+.side .media-content {
+  padding: var(--sp-space-sm);
+  border-radius: var(--sp-radius-md);
+}
+
+.side .media-actions,
+.side .media-volume,
+.side .media-row.media-volrow {
+  background: var(--ember-control-soft) !important;
+  border: 0 !important;
+  border-radius: var(--sp-radius-md);
+  box-shadow: none !important;
+}
+
+.side .media-actions {
+  padding-inline: var(--sp-space-xs);
+}
+
+.side .media-volume {
+  min-width: 0;
+  padding: 2px var(--sp-space-xs);
+}
+
+.side .media-voltrack {
+  min-width: 56px;
+}
+
+.side .scene.morning,
+.side .scene.night,
+.side .scene.movie,
+.side .scene.game {
+  border-top: 0 !important;
+}
+
+/* Ember v2 device-card sync: align quick-control cards with the current
+   Skins-Pro card contract: visible control slot, semantic status chips, and
+   consistent switch/slider surfaces for both on and off states. */
+:host {
+  --ember-status-on-bg: rgba(46,140,138,0.32);
+  --ember-status-on-border: rgba(75,214,199,0.36);
+  --ember-status-off-bg: rgba(255,232,200,0.12);
+  --ember-status-off-border: rgba(255,232,200,0.18);
+  --ember-device-control-bg: rgba(255,232,200,0.055);
+  --ember-device-control-border: rgba(255,232,200,0.10);
+  --ember-switch-off-track: rgba(255,232,200,0.26);
+  --ember-switch-on-track: rgba(46,140,138,0.82);
+  --ember-slider-track: rgba(255,232,200,0.20);
+  --ember-slider-fill: rgba(255,232,200,0.86);
+}
+
+.devices {
+  overflow: visible;
+}
+
+.device {
+  grid-template-rows: auto minmax(42px, 1fr) auto;
+  row-gap: var(--sp-space-sm);
+  min-width: 0;
+}
+
+.device-top {
+  align-items: flex-start;
+}
+
+.device-copy {
+  align-self: center;
+  min-width: 0;
+  padding-block: 2px;
+}
+
+.device-name {
+  font-size: var(--sp-font-sm);
+  line-height: 1.22;
+  max-width: 100%;
+}
+
+.device-copy .muted {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255,232,200,0.66);
+  font-size: var(--sp-font-3xs);
+  line-height: 1.15;
+}
+
+.status {
+  min-height: 24px;
+  padding: 0 10px;
+  border: 0.5px solid var(--ember-status-off-border);
+  background: var(--ember-status-off-bg);
+  color: rgba(255,232,200,0.78);
+  box-shadow: inset 0 1px 0 rgba(255,232,200,0.06);
+}
+
+.device-on-yellow .status,
+.device-on-green .status,
+.device-on-blue .status,
+.device-on-purple .status,
+.device-on-red .status,
+.device-on-brown .status {
+  background: var(--ember-status-on-bg);
+  border-color: var(--ember-status-on-border);
+  color: #EFFFFA;
+}
+
+.device .control-row {
+  width: 100%;
+  min-height: 34px;
+  box-sizing: border-box;
+  justify-content: space-between !important;
+  align-self: end;
+  gap: var(--sp-space-sm);
+  padding: 0;
+}
+
+.device .control-row:empty {
+  display: none;
+}
+
+.device .state-word {
+  color: rgba(255,232,200,0.68);
+}
+
+.device ha-control-switch {
+  flex: 0 0 auto;
+  width: 46px !important;
+  --control-switch-on-color: var(--ember-switch-on-track) !important;
+  --control-switch-off-color: var(--ember-switch-off-track) !important;
+  --control-switch-background-opacity: 1 !important;
+  --control-switch-thickness: 24px !important;
+  --control-switch-padding: 3px !important;
+  filter: drop-shadow(0 4px 10px rgba(20,12,8,0.28));
+}
+
+.device ha-control-slider.media-vol-slider {
+  --control-slider-color: var(--ember-slider-fill) !important;
+  --control-slider-background: var(--ember-slider-track) !important;
+  --control-slider-background-opacity: 1 !important;
+  --control-slider-thickness: 28px !important;
+  flex: 1 1 auto;
+  min-width: 72px;
+  max-width: 132px;
+}
+
+ha-icon.media-toggle-icon,
+.device ha-icon.media-toggle-icon {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  color: rgba(255,232,200,0.94) !important;
+  border-radius: var(--sp-radius-pill) !important;
+  background: var(--ember-device-control-bg) !important;
+  box-shadow: inset 0 1px 0 var(--ember-device-control-border) !important;
+  margin-inline-start: 0;
+  --mdc-icon-size: 18px;
+}
+
+ha-icon.media-toggle-icon ha-svg-icon,
+.device ha-icon.media-toggle-icon ha-svg-icon,
+.device ha-icon.media-toggle-icon svg {
+  background: transparent !important;
+}
