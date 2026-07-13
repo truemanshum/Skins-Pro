@@ -372,6 +372,7 @@ export type TranslationKey =
   | 'editorLoadingAreas'
   | 'editorDownloading'
   | 'editorDownloadFailed'
+  | 'editorUploadFailed'
   
 ;
 
