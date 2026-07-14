@@ -46,10 +46,8 @@ jobs:
             | grep -v '^thumbnails$' | grep -v '^registry$' || true)
           CHANGED=$(printf '%s\n%s\n' "$SKIN_CHANGED" "$SCREENSHOT_CHANGED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
           if [ -z "$CHANGED" ]; then
-            echo "target=" >> "$GITHUB_OUTPUT"
             echo "No specific skins changed"
           else
-            echo "target=$CHANGED" >> "$GITHUB_OUTPUT"
             echo "Changed skins: $CHANGED"
           fi
 
@@ -60,6 +58,16 @@ jobs:
             | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
             | grep -v '^thumbnails$' | grep -v '^registry$' || true)
           DELETED=$(printf '%s\n%s\n' "$SKIN_DELETED" "$SCREENSHOT_DELETED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
+          # Keep workflow arguments inert even if a malicious or malformed path reaches this job.
+          # Official skin slugs are restricted to lowercase letters, digits, and hyphens.
+          for skin in $CHANGED $DELETED; do
+            if [[ ! "$skin" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+              echo "::error::Unsafe skin slug: $skin"
+              exit 1
+            fi
+          done
+
+          echo "target=$CHANGED" >> "$GITHUB_OUTPUT"
           echo "deleted=$DELETED" >> "$GITHUB_OUTPUT"
           [ -n "$DELETED" ] && echo "Deleted skins: $DELETED"
 
@@ -87,9 +95,12 @@ jobs:
           done
 
       - name: Build skins
+        env:
+          CHANGED_SKINS: ${{ steps.skins.outputs.target }}
         run: |
-          if [ -n "${{ steps.skins.outputs.target }}" ]; then
-            npm run build -- ${{ steps.skins.outputs.target }}
+          if [ -n "$CHANGED_SKINS" ]; then
+            read -r -a skins <<< "$CHANGED_SKINS"
+            npm run build -- "${skins[@]}"
           else
             npm run build
           fi
