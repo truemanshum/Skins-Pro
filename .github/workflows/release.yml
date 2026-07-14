@@ -14,6 +14,7 @@ jobs:
   release:
     name: Build JS and release
     runs-on: ubuntu-latest
+    if: github.repository == 'ha-china/Skins-Pro'
 
     steps:
       - name: Checkout code
