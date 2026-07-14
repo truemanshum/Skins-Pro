@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   validate-skin-submission:
@@ -19,9 +20,18 @@ jobs:
           fetch-depth: 0
 
       - name: Validate skin submission
+        id: validate
         shell: bash
         run: |
           set -euo pipefail
+
+          ERRORS_FILE="/tmp/validation-errors.txt"
+          : > "$ERRORS_FILE"
+
+          report_error() {
+            echo "::error::$1"
+            echo "- $1" >> "$ERRORS_FILE"
+          }
 
           git fetch origin "${{ github.event.pull_request.base.ref }}" --depth=1
 
@@ -40,7 +50,7 @@ jobs:
               fi
             done
             if [[ $allowed -eq 0 ]]; then
-              echo "::error::Change outside allowed paths: $file (only screenshots/ and skins-pro/ are allowed)"
+              report_error "Change outside allowed paths: $file (only screenshots/ and skins-pro/ are allowed)"
               failures=1
             fi
           done
@@ -74,7 +84,7 @@ jobs:
 
             # Skin directory must exist
             if [[ ! -d "$skin_dir" ]]; then
-              echo "::error::Missing skin directory: $skin_dir"
+              report_error "Missing skin directory: $skin_dir"
               failures=1
               continue
             fi
@@ -87,10 +97,10 @@ jobs:
               fi
             done
             if [[ $screenshot_count -eq 0 ]]; then
-              echo "::error::Missing preview image for skin '$skin' in screenshots/"
+              report_error "Missing preview image for skin '$skin' in screenshots/"
               failures=1
             elif [[ $screenshot_count -gt 1 ]]; then
-              echo "::error::Multiple preview images for skin '$skin' in screenshots/ (only one allowed)"
+              report_error "Multiple preview images for skin '$skin' in screenshots/ (only one allowed)"
               failures=1
             fi
 
@@ -104,7 +114,7 @@ jobs:
               case "${rel,,}" in
                 *.png|*.jpg|*.jpeg|*.gif|*.webp|*.bmp|*.svg|*.tiff|*.tif|*.ico|*.avif|*.heic|*.heif) ;;
                 *)
-                  echo "::error::Disallowed file in '$skin_dir': $rel (only image files + theme.css + strings.json allowed)"
+                  report_error "Disallowed file in '$skin_dir': $rel (only image files + theme.css + strings.json allowed)"
                   failures=1
                   ;;
               esac
@@ -112,7 +122,7 @@ jobs:
 
             # Validate strings.json exists
             if [[ ! -f "$strings_file" ]]; then
-              echo "::error::Missing strings.json for skin '$skin': $strings_file"
+              report_error "Missing strings.json for skin '$skin': $strings_file"
               failures=1
               continue
             fi
@@ -120,7 +130,7 @@ jobs:
             # Validate author field
             author=$(jq -r '.author // empty' "$strings_file")
             if [ -z "$author" ]; then
-              echo "::error::Skin '$skin' must define a non-empty author in $strings_file"
+              report_error "Skin '$skin' must define a non-empty author in $strings_file"
               failures=1
             fi
           done
@@ -131,3 +141,54 @@ jobs:
           fi
 
           echo "Skin submission validation passed."
+
+      - name: Notify author on validation failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- validation-feedback -->';
+            const pr = context.payload.pull_request;
+            const author = pr.user.login;
+
+            let errors = '';
+            try {
+              errors = fs.readFileSync('/tmp/validation-errors.txt', 'utf8').trim();
+            } catch (e) {
+              errors = 'Validation failed. Please check the workflow logs for details.';
+            }
+
+            const body = [
+              marker,
+              `@${author} 你的皮肤提交有一些问题需要修复 / your skin submission has some issues that need fixing:`,
+              '',
+              errors,
+              '',
+              '请修复后更新 PR / Please fix these and update your PR.',
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              per_page: 100,
+            });
+
+            const existing = comments.find(c => c.user?.type === 'Bot' && c.body?.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body,
+              });
+            }
