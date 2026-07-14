@@ -5,6 +5,7 @@ import type { DashboardConfig, HomeAssistant, RenderedDevice, TranslationKey } f
 import type { Language } from '../i18n';
 import { assetKeyForDomain, formatRelativeTime, selectedSkin, t } from '../utils';
 import { renderImage } from '../render/context';
+import { showAlarmCodeDialog } from './alarm-code-dialog';
 
 const ALARM_STATE_LABELS: Record<string, TranslationKey> = {
   disarmed: 'alarmDisarmed',
@@ -75,11 +76,13 @@ export function renderAlarmControlPanelCard(
   const callAlarm = (service: string, needCode: boolean) => {
     const data: Record<string, unknown> = { entity_id: device.entityId };
     if (needCode) {
-      const code = prompt(t(language, 'alarmEnterCode'));
-      if (code === null) return;
-      data.code = code;
+      void showAlarmCodeDialog(language).then((code) => {
+        if (code === null || code === '') return;
+        hass.callService('alarm_control_panel', service, { ...data, code });
+      });
+    } else {
+      hass.callService('alarm_control_panel', service, data);
     }
-    hass.callService('alarm_control_panel', service, data);
   };
 
   const armButtons = (!isTriggered && !isPending)

@@ -6,6 +6,7 @@ import type { RenderContext } from '../render/context';
 import { renderPageShell } from '../components/page-shell';
 import { renderImage } from '../render/context';
 import { assetKeyForDomain, deviceStateLabel, selectedSkin, t } from '../utils';
+import { showAlarmCodeDialog } from '../components/alarm-code-dialog';
 
 const SECURITY_TOGGLE_DOMAINS = new Set([
   'light', 'switch', 'fan', 'cover', 'valve', 'media_player', 'lock',
@@ -101,11 +102,13 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
       const callAlarm = (service: string, needCode: boolean) => {
         const data: Record<string, unknown> = { entity_id: entity.entity_id };
         if (needCode) {
-          const code = prompt(t(ctx.language, 'alarmEnterCode'));
-          if (code === null || code === '') return;
-          data.code = code;
+          void showAlarmCodeDialog(ctx.language).then((code) => {
+            if (code === null || code === '') return;
+            ctx.hass.callService('alarm_control_panel', service, { ...data, code });
+          });
+        } else {
+          ctx.hass.callService('alarm_control_panel', service, data);
         }
-        ctx.hass.callService('alarm_control_panel', service, data);
       };
 
       const armBtns = isPending
