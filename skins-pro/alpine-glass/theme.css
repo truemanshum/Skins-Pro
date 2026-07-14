@@ -2613,3 +2613,51 @@ button {
 .forecast-temp {
   text-shadow: 0 2px 10px rgba(17, 26, 33, 0.72);
 }
+
+/* Theme-specific chroma/layout polish: alpine-glass */
+:host {
+  --sp-alpine-ice: #D8F2FF;
+  --sp-alpine-sky: #8BC6E8;
+  --sp-alpine-stone: #253746;
+  --sp-sidebar-bg: rgba(14, 28, 40, 0.82);
+  --sp-side-bg: rgba(18, 35, 48, 0.72);
+  --sp-device-bg: rgba(21, 42, 58, 0.64);
+  --sp-device-hover-bg: rgba(30, 60, 82, 0.74);
+  --sp-side-border: rgba(216, 242, 255, 0.36);
+  --sp-device-border: rgba(216, 242, 255, 0.30);
+  --sp-app-overlay:
+    radial-gradient(ellipse 62% 58% at 18% 0%, rgba(216, 242, 255, 0.22) 0%, transparent 58%),
+    linear-gradient(135deg, rgba(8, 22, 34, 0.26) 0%, rgba(32, 59, 76, 0.08) 48%, rgba(255, 255, 255, 0.10) 100%);
+  --sp-stage-overlay:
+    linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(139,198,232,0.07) 42%, rgba(9,22,34,0.34) 100%);
+  --sp-room-overlay: linear-gradient(180deg, rgba(8, 22, 34, 0.02) 0%, rgba(8, 22, 34, 0.42) 72%, rgba(8, 22, 34, 0.78) 100%);
+}
+.welcome h1,
+.page-header h1 { color: var(--sp-alpine-ice); text-shadow: 0 0 22px rgba(139,198,232,0.34); }
+.device { border-top-color: rgba(216,242,255,0.54); box-shadow: 0 16px 34px rgba(5,18,30,0.38), inset 0 1px 0 rgba(255,255,255,0.20); }
+.device:nth-child(odd) { transform: translateY(-2px); }
+.room { box-shadow: 0 18px 36px rgba(5,18,30,0.42); }
+.side .glass-card,
+.panel-energy,
+.panel-media,
+.panel-scenes { border-left: 1px solid rgba(216,242,255,0.26); }
+
+/* Theme-specific layout identity: alpine summit panels */
+:host { --sp-sidebar-width: 236px; --sp-stage-radius: 36px; }
+.stage-grid { grid-template-columns: minmax(0, 2.75fr) minmax(310px, 0.9fr); gap: calc(var(--sp-space-lg) + 2px); }
+.devices { grid-template-columns: 1.12fr 1fr 1fr 1fr 0.92fr; align-items: end; }
+.devices .device:nth-child(1) { min-height: 176px; }
+.devices .device:nth-child(5) { min-height: 132px; align-self: center; }
+.bottom-stack { padding-top: 2px; }
+.rooms { grid-template-columns: 1.22fr 1fr 0.96fr; align-items: end; }
+.rooms .room:first-child { min-height: 114px; }
+.side { max-width: 330px; }
+
+/* Theme-specific visible structure pass: alpine summit tower */
+.mc-app { grid-template-columns: 260px minmax(0, 1fr) !important; }
+.sidebar { background: linear-gradient(180deg, rgba(9,24,38,0.94), rgba(18,42,58,0.82)) !important; color: #F4FBFF !important; }
+.stage-grid { grid-template-columns: minmax(0, 3fr) 300px !important; gap: 18px !important; }
+.panel-devices .devices { grid-template-columns: 1.34fr 1fr 0.96fr 0.96fr 0.78fr !important; }
+.panel-devices .device:nth-child(1) { min-height: 188px !important; }
+.side { max-width: 308px !important; }
+.rooms { grid-template-columns: 1.42fr 0.9fr 0.82fr !important; }

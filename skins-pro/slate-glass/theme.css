@@ -2613,3 +2613,53 @@ button {
 .forecast-temp {
   text-shadow: 0 2px 10px rgba(17, 22, 26, 0.72);
 }
+
+/* Theme-specific chroma/layout polish: slate-glass */
+:host {
+  --sp-slate-steel: #9DAFBA;
+  --sp-slate-graphite: #11161A;
+  --sp-slate-line: #5E7587;
+  --sp-sidebar-bg: rgba(13, 18, 22, 0.76);
+  --sp-side-bg: rgba(16, 21, 25, 0.62);
+  --sp-device-bg: rgba(18, 24, 29, 0.54);
+  --sp-device-hover-bg: rgba(28, 36, 42, 0.66);
+  --sp-side-border: rgba(198, 210, 218, 0.26);
+  --sp-device-border: rgba(157, 175, 186, 0.22);
+  --sp-app-overlay:
+    linear-gradient(110deg, rgba(157,175,186,0.10) 0%, transparent 35%, rgba(0,0,0,0.24) 100%),
+    radial-gradient(ellipse at 75% 12%, rgba(94,117,135,0.14) 0%, transparent 46%);
+  --sp-stage-overlay:
+    linear-gradient(180deg, rgba(5,8,10,0.06) 0%, rgba(5,8,10,0.20) 100%);
+  --sp-room-overlay: linear-gradient(180deg, rgba(10,14,17,0.04) 0%, rgba(10,14,17,0.44) 70%, rgba(10,14,17,0.82) 100%);
+}
+.sidebar,
+.stage,
+.glass-card,
+.panel-energy,
+.panel-media,
+.panel-scenes,
+.time-card,
+.device { border-radius: 12px; }
+.device { border-left: 3px solid rgba(157,175,186,0.44); box-shadow: 0 18px 34px rgba(0,0,0,0.38); }
+.device:nth-child(2n) { border-left-color: rgba(94,117,135,0.62); }
+.room { border-radius: 14px; filter: saturate(0.82) contrast(1.04); }
+.welcome h1 { letter-spacing: -0.03em; }
+
+/* Theme-specific layout identity: slate strict grid */
+:host { --sp-sidebar-width: 204px; --sp-stage-radius: 18px; }
+.stage-grid { grid-template-columns: minmax(0, 2.9fr) minmax(280px, 0.82fr); gap: var(--sp-space-md); }
+.devices { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--sp-space-sm); }
+.devices .device { min-height: 142px; padding: var(--sp-space-md); }
+.rooms { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-space-sm); }
+.room { min-height: 96px; }
+.side { gap: var(--sp-space-sm); max-width: 292px; }
+.glass-card, .panel-energy, .panel-media, .panel-scenes, .time-card { padding: var(--sp-space-md); }
+
+/* Theme-specific visible structure pass: slate compact grid */
+.mc-app { grid-template-columns: 188px minmax(0, 1fr) !important; }
+.sidebar { background: linear-gradient(180deg, rgba(10,13,16,0.96), rgba(28,34,39,0.84)) !important; color: #F0F4F6 !important; border-radius: 12px !important; }
+.stage-grid { grid-template-columns: minmax(0, 3.18fr) 270px !important; gap: 12px !important; }
+.panel-devices .devices { grid-template-columns: repeat(5, 1fr) !important; gap: 10px !important; }
+.panel-devices .device { min-height: 130px !important; border-radius: 10px !important; }
+.side { max-width: 278px !important; gap: 10px !important; }
+.rooms { gap: 10px !important; }
