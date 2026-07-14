@@ -158,6 +158,8 @@ const zh: Record<TranslationKey, string> = {
   editorLoadingAreas: '正在加载区域...',
   editorDownloading: '正在下载...',
   editorDownloadFailed: '下载失败：{message}',
+  editorUploadFailed: '背景图上传失败：{message}，请重试。',
+  alarmEnterCode: '请输入密码',
 
 };
 

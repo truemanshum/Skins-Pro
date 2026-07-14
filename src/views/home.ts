@@ -132,7 +132,7 @@ export function renderSidebar(ctx: RenderContext): TemplateResult {
       <nav class="menu">
         ${renderNav(ctx.config.nav, ctx.view, ctx.language, ctx.onNavigate)}
       </nav>
-      <div class="sidebar-art" @click=${() => ctx.onToggleKiosk()}>${renderImage(ctx.config, 'decor', 'Decor', '')}</div>
+      <div class="sidebar-art">${renderImage(ctx.config, 'decor', 'Decor', '')}</div>
     </aside>
   `;
 }

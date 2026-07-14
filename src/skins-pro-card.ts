@@ -30,6 +30,9 @@ import {
   runScene,
   toggleEntity,
   turnOffAreaType as turnOffAreaTypeAction,
+  loadSkinMetadata,
+  selectedSkin,
+  BUNDLED_SKINS,
 } from './utils';
 
 import { mergeConfig } from './config';
@@ -47,7 +50,7 @@ import { renderAutomationsView } from './views/automations';
 import { renderEnergyView } from './views/energy';
 import { renderSecurityView } from './views/security';
 
-export class MinecraftDashboardCard extends LitElement {
+export class SkinsProCard extends LitElement {
   private _config?: DashboardConfig;
   private _hass?: HomeAssistant;
 
@@ -86,6 +89,7 @@ export class MinecraftDashboardCard extends LitElement {
   private _weatherForecastUnsub?: () => Promise<void>;
 
   private _autoFullscreenDone = false;
+  private _loadedSkinMetadata?: string;
   private readonly _handleWindowResize = () => this._applyLayout();
 
   public get hass(): HomeAssistant | undefined {
@@ -125,6 +129,7 @@ export class MinecraftDashboardCard extends LitElement {
     this._weatherForecast = undefined;
     this._weatherForecastEntity = undefined;
     this._autoFullscreenDone = false;
+    this._loadedSkinMetadata = undefined;
     void this.unsubscribeWeatherForecast();
     this.requestUpdate();
   }
@@ -145,6 +150,16 @@ export class MinecraftDashboardCard extends LitElement {
     const weatherEntity = this._config?.weather?.entity;
     if (weatherEntity && this._weatherForecastEntity !== weatherEntity) {
       void this.loadWeatherForecast();
+    }
+
+    const skin = this._config ? selectedSkin(this._config) : undefined;
+    if (skin && skin !== this._loadedSkinMetadata) {
+      this._loadedSkinMetadata = skin;
+      if (!BUNDLED_SKINS.includes(skin)) {
+        void loadSkinMetadata(skin).then((changed) => {
+          if (changed) this.requestUpdate();
+        });
+      }
     }
   }
 

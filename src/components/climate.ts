@@ -42,8 +42,6 @@ export function renderClimateCard(
   const a = stateObj.attributes || {};
   const validHvacModes = new Set(['off', 'auto', 'cool', 'heat', 'dry', 'fan_only', 'heat_cool']);
   const hvacMode = (a.hvac_mode as string) || (validHvacModes.has(stateObj.state) ? stateObj.state : 'off');
-  const isOff = hvacMode === 'off';
-  const isActive = hvacMode !== 'off';
   const currentTemp = a.current_temperature as number | undefined;
   const targetTemp = a.temperature as number | undefined;
   const hvacModes = ((a.hvac_modes as string[]) || []).filter(m => m !== 'heat_cool')
@@ -55,7 +53,7 @@ export function renderClimateCard(
   const step = (a.target_temp_step as number) ?? 1;
 
   const showFan = fanModes.length > 1;
-  const statusClass = isActive ? `device-on-${device.color}` : (stateObj.state === 'unavailable' ? 'device-unavailable' : 'device-off');
+  const statusClass = stateObj.state === 'unavailable' ? 'device-unavailable' : `device-on-${device.color}`;
   const stateForTime = hass.states?.[device.entityId];
 const lastTime = stateForTime?.last_changed
   ? formatRelativeTime(new Date(stateForTime.last_changed), language)
@@ -85,28 +83,20 @@ const lastTime = stateForTime?.last_changed
         <p class="device-name">${device.name}</p>
         <p class="muted">${lastTime || device.subtitle}</p>
       </div>
-      ${isOff ? html`
-      <div class="control-row" style="justify-content:center" @click=${(e: Event) => e.stopPropagation()}>
-        <button class="chip" style="font-size:var(--sp-font-4xs);min-height:26px;padding:0 10px;display:flex;align-items:center;gap:4px" @click=${(e: Event) => { e.stopPropagation(); const on = hvacModes.find(m => m !== 'off'); if (on) doService('set_hvac_mode', { hvac_mode: on }); }}>
-          <ha-icon icon="mdi:power-standby" style="--mdc-icon-size:14px"></ha-icon>${t(language, 'turnOn')}
-        </button>
-      </div>
-      ` : html`
       <div class="control-row" style="gap:2px" @click=${(e: Event) => e.stopPropagation()}>
         <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
-          <button class="media-volbtn" style="width:22px;height:22px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(-step); }}><ha-icon icon="mdi:minus" style="--mdc-icon-size:12px"></ha-icon></button>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(-step); }}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:20px;text-align:center">${targetTemp !== undefined ? tempDisplay(targetTemp) : '--'}</span>
-          <button class="media-volbtn" style="width:22px;height:22px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(step); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:12px"></ha-icon></button>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(step); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_hvac_mode', { hvac_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
+        <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_hvac_mode', { hvac_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
           ${hvacModes.map(m => html`<option value=${m} ?selected=${m === hvacMode}>${lab(m, HVAC_LABELS, language)}</option>`)}
         </select>
         ${showFan ? html`
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:20px;min-width:44px;padding:0 14px 0 3px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_fan_mode', { fan_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
+        <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_fan_mode', { fan_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
           ${fanModes.map(m => html`<option value=${m} ?selected=${m === fanMode}>${lab(m, FAN_LABELS, language)}</option>`)}
         </select>` : ''}
       </div>
-      `}
     </button>
   `;
 }

@@ -2,7 +2,7 @@
 // Architecture reference: https://github.com/dwainscheeren/dwains-dashboard-next
 
 import { buildAutoConfig } from './config';
-import { MinecraftDashboardCard } from './skins-pro-card';
+import { SkinsProCard } from './skins-pro-card';
 import './skins-pro-card-editor';
 
 const CARD_TYPE = 'skins-pro-card';
@@ -96,7 +96,7 @@ class SkinsProStrategyDashboard extends HTMLElement {
   }
 }
 
-defineElement(CARD_TYPE, MinecraftDashboardCard);
+defineElement(CARD_TYPE, SkinsProCard);
 defineElement(DASHBOARD_STRATEGY_TAG, SkinsProStrategyDashboard);
 
 window.customCards = window.customCards || [];
@@ -123,4 +123,4 @@ if (!window.customStrategies.some((item) => item?.type === DASHBOARD_STRATEGY_TY
 
 console.log('Skins Pro Card loaded');
 
-export { MinecraftDashboardCard };
+export { SkinsProCard };

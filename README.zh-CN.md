@@ -150,10 +150,13 @@ skins-pro/
 git clone https://github.com/ha-china/Skins-Pro.git
 cd Skins-Pro
 npm install
-npm run build       # 构建
+npm run build       # 构建全部皮肤（同时执行 rollup 打包）
+npm run build -- <皮肤名>   # 只构建指定皮肤 + 内置 modern（本地测试更快）
 npm run watch       # 开发模式自动构建（源码变动时自动重构建）
 npm run type-check  # TypeScript 类型检查
 ```
+
+`npm run build -- visionOS` 只处理 `modern` + `visionOS`，跳过其它皮肤的图片处理与 store 打包，适合本地迭代单个皮肤。
 
 构建产物在 `dist/`：
 

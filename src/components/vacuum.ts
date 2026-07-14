@@ -59,12 +59,12 @@ export function renderVacuumCard(
     void hass.callService('vacuum', 'set_fan_speed', { entity_id: device.entityId, fan_speed: speed });
   };
 
-  const btnStyle = 'width:24px;height:24px;padding:0;flex-shrink:0';
+  const btnStyle = 'width:32px;height:32px;padding:0;flex-shrink:0';
 
-  const startBtn = html`<button class="media-volbtn" style=${btnStyle} title=${t(language, 'vacuumStart')} @click=${(e: Event) => { e.stopPropagation(); doService('start_pause'); }}><ha-icon icon="mdi:play" style="--mdc-icon-size:14px"></ha-icon></button>`;
-  const pauseBtn = html`<button class="media-volbtn" style=${btnStyle} title=${t(language, 'vacuumPause')} @click=${(e: Event) => { e.stopPropagation(); doService('start_pause'); }}><ha-icon icon="mdi:pause" style="--mdc-icon-size:14px"></ha-icon></button>`;
-  const dockBtn = html`<button class="media-volbtn" style=${btnStyle} title=${t(language, 'vacuumDock')} @click=${(e: Event) => { e.stopPropagation(); doService('return_to_base'); }}><ha-icon icon="mdi:home" style="--mdc-icon-size:14px"></ha-icon></button>`;
-  const locateBtn = html`<button class="media-volbtn" style=${btnStyle} title=${t(language, 'vacuumLocate')} @click=${(e: Event) => { e.stopPropagation(); doService('locate'); }}><ha-icon icon="mdi:map-marker" style="--mdc-icon-size:14px"></ha-icon></button>`;
+  const startBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumStart')} @click=${(e: Event) => { e.stopPropagation(); doService('start'); }}><ha-icon icon="mdi:play" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const pauseBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumPause')} @click=${(e: Event) => { e.stopPropagation(); doService('pause'); }}><ha-icon icon="mdi:pause" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const dockBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumDock')} @click=${(e: Event) => { e.stopPropagation(); doService('return_to_base'); }}><ha-icon icon="mdi:home" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const locateBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumLocate')} @click=${(e: Event) => { e.stopPropagation(); doService('locate'); }}><ha-icon icon="mdi:map-marker" style="--mdc-icon-size:14px"></ha-icon></div>`;
 
   return html`
     <button class="device ${statusClass}" @click=${() => onHandleAction(device.entityId, 'more-info')}>
@@ -80,13 +80,13 @@ export function renderVacuumCard(
       </div>
       <div class="control-row" style="gap:4px" @click=${(e: Event) => e.stopPropagation()}>
         ${fanSpeedList.length > 0 ? html`
-        <select class="filter-select" style="font-size:var(--sp-font-4xs);min-height:22px;min-width:44px;padding:0 14px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); setFanSpeed((e.target as HTMLSelectElement).value); }} @click=${(e: Event) => e.stopPropagation()}>
+        <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); setFanSpeed((e.target as HTMLSelectElement).value); }} @click=${(e: Event) => e.stopPropagation()}>
           ${fanSpeedList.map(s => html`<option value=${s} ?selected=${s === fanSpeed}>${s}</option>`)}
         </select>` : ''}
         ${isActive ? pauseBtn : startBtn}
         ${(isActive || isPaused) ? dockBtn : ''}
         ${locateBtn}
-        <ha-control-switch .checked=${isActive} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isActive ? 'pause' : 'start_pause'); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
+        <ha-control-switch .checked=${isActive} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isActive ? 'pause' : 'start'); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>
     </button>
   `;

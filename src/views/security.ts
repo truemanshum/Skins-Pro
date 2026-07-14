@@ -6,6 +6,7 @@ import type { RenderContext } from '../render/context';
 import { renderPageShell } from '../components/page-shell';
 import { renderImage } from '../render/context';
 import { assetKeyForDomain, deviceStateLabel, selectedSkin, t } from '../utils';
+import { setAlarmMode } from '../components/alarm-code-dialog';
 
 const SECURITY_TOGGLE_DOMAINS = new Set([
   'light', 'switch', 'fan', 'cover', 'valve', 'media_player', 'lock',
@@ -76,6 +77,39 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
     const tones: RenderedDevice['color'][] = ['red', 'green', 'blue', 'purple', 'yellow', 'brown'];
     const statusClass = entity.state === 'unavailable' ? 'device-unavailable' : `device-on-${tones[index % tones.length]}`;
     const togglable = SECURITY_TOGGLE_DOMAINS.has(domain);
+    const isAlarm = domain === 'alarm_control_panel';
+
+    let control: TemplateResult;
+    if (isAlarm) {
+      const attrs = entity.attributes || {};
+      const supportedFeatures = (attrs.supported_features as number) || 0;
+      const isArmed = /armed_/.test(entity.state);
+      const isTriggered = entity.state === 'triggered';
+      const isPending = entity.state === 'pending' || entity.state === 'arming' || entity.state === 'disarming';
+      const iconStyle = '--mdc-icon-size:18px;color:var(--sp-text-primary);display:flex;cursor:pointer';
+      const armModes = [
+        { f: 2, i: 'mdi:shield-lock', s: 'alarm_arm_away', k: 'alarmArmedAway' as const },
+        { f: 1, i: 'mdi:shield-home', s: 'alarm_arm_home', k: 'alarmArmedHome' as const },
+        { f: 4, i: 'mdi:shield-moon', s: 'alarm_arm_night', k: 'alarmArmedNight' as const },
+      ].filter(m => supportedFeatures & m.f);
+      const fallbackArms = armModes.length > 0 ? armModes : [
+        { f: 0, i: 'mdi:shield-lock', s: 'alarm_arm_away', k: 'alarmArmedAway' as const },
+        { f: 0, i: 'mdi:shield-home', s: 'alarm_arm_home', k: 'alarmArmedHome' as const },
+      ];
+
+      const armBtns = isPending
+        ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : 'mdi:shield-lock'} style=${iconStyle}></ha-icon>`
+        : html`${fallbackArms.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, ctx.hass, entity.entity_id, m.s, false); }}></ha-icon>`)}`;
+      const disarmBtn = (isArmed || isTriggered)
+        ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, ctx.hass, entity.entity_id, 'alarm_disarm', true); }}></ha-icon>`
+        : '';
+      control = html`<div class="control-row" style="justify-content:flex-end;gap:6px" @click=${(e: Event) => e.stopPropagation()}>${armBtns}${disarmBtn}</div>`;
+    } else if (togglable) {
+      control = html`<div class="control-row" style="justify-content:flex-end"><ha-control-switch .checked=${['on', 'playing', 'open', 'locked'].includes(entity.state)} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0" @click=${(e: Event) => e.stopPropagation()} @change=${(e: Event) => { e.stopPropagation(); ctx.onHandleAction(entity.entity_id, 'toggle'); }} .label=${String(entity.attributes?.friendly_name || entity.entity_id)}></ha-control-switch></div>`;
+    } else {
+      control = html`<div class="control-row" style="justify-content:flex-end"><span class="state-word">${stateLabel}</span></div>`;
+    }
+
     return html`
       <button class="device ${statusClass}" @click=${() => ctx.onHandleAction(entity.entity_id, 'more-info')}>
         <div class="device-top">
@@ -83,7 +117,7 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
           <div class="tag-stack"><div class="status">${stateLabel}</div></div>
         </div>
         <div class="device-copy"><p class="device-name">${String(entity.attributes?.friendly_name || entity.entity_id)}</p><p class="muted">${t(ctx.language, 'security')}</p></div>
-        <div class="control-row" style="justify-content:flex-end">${togglable ? html`<ha-control-switch .checked=${['on', 'playing', 'open', 'locked'].includes(entity.state)} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0" @click=${(e: Event) => e.stopPropagation()} @change=${(e: Event) => { e.stopPropagation(); ctx.onHandleAction(entity.entity_id, 'toggle'); }} .label=${String(entity.attributes?.friendly_name || entity.entity_id)}></ha-control-switch>` : html`<span class="state-word">${stateLabel}</span>`}</div>
+        ${control}
       </button>
     `;
   });
