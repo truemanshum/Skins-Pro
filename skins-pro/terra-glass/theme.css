@@ -2613,3 +2613,48 @@ button {
 .forecast-temp {
   text-shadow: 0 2px 10px rgba(36, 27, 22, 0.72);
 }
+
+/* Theme-specific chroma/layout polish: terra-glass */
+:host {
+  --sp-terra-clay: #C77B55;
+  --sp-terra-sand: #F0D4B5;
+  --sp-terra-olive: #8F9B68;
+  --sp-sidebar-bg: rgba(48, 31, 22, 0.78);
+  --sp-side-bg: rgba(62, 39, 26, 0.66);
+  --sp-device-bg: rgba(72, 44, 28, 0.58);
+  --sp-device-hover-bg: rgba(92, 55, 34, 0.70);
+  --sp-side-border: rgba(240, 212, 181, 0.30);
+  --sp-device-border: rgba(199, 123, 85, 0.34);
+  --sp-app-overlay:
+    radial-gradient(circle at 12% 14%, rgba(199,123,85,0.20) 0%, transparent 34%),
+    radial-gradient(circle at 88% 80%, rgba(143,155,104,0.14) 0%, transparent 38%),
+    linear-gradient(180deg, rgba(44,27,18,0.08) 0%, rgba(44,27,18,0.30) 100%);
+  --sp-stage-overlay:
+    linear-gradient(145deg, rgba(240,212,181,0.10) 0%, rgba(199,123,85,0.10) 52%, rgba(38,23,17,0.32) 100%);
+  --sp-room-overlay: linear-gradient(180deg, rgba(44,27,18,0.02) 0%, rgba(44,27,18,0.38) 66%, rgba(44,27,18,0.78) 100%);
+}
+.sidebar { border-radius: 28px; }
+.device { border-radius: 28px 18px 28px 18px; box-shadow: 0 16px 34px rgba(52,31,20,0.42), inset 0 1px 0 rgba(240,212,181,0.16); }
+.device:nth-child(odd) { background: linear-gradient(145deg, rgba(88,52,32,0.62), rgba(58,36,25,0.54)); }
+.room { border-radius: 30px 18px 30px 18px; }
+.energy-bar,
+.bar { border-radius: 999px; }
+
+/* Theme-specific layout identity: terra courtyard cards */
+:host { --sp-sidebar-width: 244px; --sp-stage-radius: 34px; }
+.stage-grid { grid-template-columns: minmax(0, 2.42fr) minmax(350px, 1.05fr); gap: calc(var(--sp-space-lg) + 8px); }
+.devices { grid-template-columns: 1.18fr 1fr 1fr 1fr 0.9fr; gap: calc(var(--sp-space-md) + 4px); }
+.devices .device { min-height: 166px; padding: calc(var(--sp-space-lg) + 2px); }
+.rooms { grid-template-columns: 1.08fr 0.96fr 1.08fr; gap: calc(var(--sp-space-md) + 4px); }
+.room { min-height: 122px; }
+.side { gap: calc(var(--sp-space-sm) + 5px); }
+.panel-energy { min-height: 154px; }
+
+/* Theme-specific visible structure pass: terra courtyard */
+.mc-app { grid-template-columns: 274px minmax(0, 1fr) !important; }
+.sidebar { background: linear-gradient(180deg, rgba(68,38,22,0.94), rgba(118,68,38,0.76)) !important; color: #FFF2DF !important; }
+.stage-grid { grid-template-columns: minmax(0, 2.18fr) 410px !important; gap: 32px !important; }
+.panel-devices .devices { grid-template-columns: 1.32fr 1fr 1fr 0.9fr 0.86fr !important; }
+.panel-devices .device { min-height: 176px !important; }
+.rooms { grid-template-columns: 1.28fr 0.88fr 1.18fr !important; }
+.side { max-width: 416px !important; }

@@ -31,5 +31,6 @@
     "device_tracker": "device_tracker",
     "update": "update"
   },
-  "asset_version": "20260713-zen-glass-v1"
+  "asset_version": "20260714-zen-glass-v2",
+  "theme_version": "20260714-zen-glass-v2"
 }
