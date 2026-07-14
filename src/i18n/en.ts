@@ -160,6 +160,10 @@ const en: Record<TranslationKey, string> = {
   editorDownloadFailed: 'Download failed: {message}',
   editorUploadFailed: 'Background upload failed: {message}. Please try again.',
   alarmEnterCode: 'Enter code',
+  searchPlaceholder: 'Search devices...',
+  searchRecent: 'Recent',
+  searchNoResults: 'No matching devices found',
+  searchAll: 'All',
 
 };
 

@@ -67,6 +67,13 @@ export function renderHomeView(
 
   return html`
     <div class="stage-grid">
+      <div
+        style="position:absolute;top:var(--sp-space-sm,8px);left:${window.matchMedia('(orientation: portrait)').matches ? '50%' : '37.5%'};transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:10px;width:${window.matchMedia('(orientation: portrait)').matches ? '50%' : '37.5%'};padding:10px 20px;border-radius:var(--sp-radius-pill,999px);background:var(--sp-glass-bg,rgba(255,255,255,0.12));border:1px solid var(--sp-glass-border,rgba(255,255,255,0.15));cursor:pointer;color:var(--sp-text-secondary,rgba(255,255,255,0.5));font-size:15px;"
+        @click=${() => ctx.onOpenSearch()}
+      >
+        <ha-icon icon="mdi:magnify" style="--mdc-icon-size:20px;flex-shrink:0;"></ha-icon>
+        <span>${ctx.translate('searchPlaceholder')}</span>
+      </div>
       <div class="welcome-group">
         <section class="welcome" data-section="home">
           <h1>${ctx.config.title || localizedText(undefined, ctx.config.title_zh || skinString(selectedSkin(ctx.config), 'title_zh'), ctx.config.title_en || skinString(selectedSkin(ctx.config), 'title_en'), ctx.language)}</h1>
