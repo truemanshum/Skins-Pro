@@ -5,7 +5,7 @@ import type { DashboardConfig, HomeAssistant, RenderedDevice, TranslationKey } f
 import type { Language } from '../i18n';
 import { assetKeyForDomain, formatRelativeTime, selectedSkin, t } from '../utils';
 import { renderImage } from '../render/context';
-import { showAlarmCodeDialog } from './alarm-code-dialog';
+import { setAlarmMode } from './alarm-code-dialog';
 
 const ALARM_STATE_LABELS: Record<string, TranslationKey> = {
   disarmed: 'alarmDisarmed',
@@ -53,8 +53,6 @@ export function renderAlarmControlPanelCard(
   const lastTime = stateObj.last_changed ? formatRelativeTime(new Date(stateObj.last_changed), language) : device.subtitle;
 
   const supportedFeatures = (attrs.supported_features as number) || 0;
-  const codeArmRequired = attrs.code_arm_required !== false;
-  const hasCode = Boolean(attrs.code_format);
 
   const FEATURE_ARM_HOME = 1;
   const FEATURE_ARM_AWAY = 2;
@@ -73,26 +71,14 @@ export function renderAlarmControlPanelCard(
 
   const iconStyle = '--mdc-icon-size:18px;color:var(--sp-text-primary);display:flex;cursor:pointer';
 
-  const callAlarm = (service: string, needCode: boolean) => {
-    const data: Record<string, unknown> = { entity_id: device.entityId };
-    if (needCode) {
-      void showAlarmCodeDialog(language).then((code) => {
-        if (code === null || code === '') return;
-        hass.callService('alarm_control_panel', service, { ...data, code });
-      });
-    } else {
-      hass.callService('alarm_control_panel', service, data);
-    }
-  };
-
   const armButtons = (!isTriggered && !isPending)
     ? fallbackArms.slice(0, 3).map(m => html`
-        <ha-icon icon=${m.icon} style=${iconStyle} title=${m.title} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.service, codeArmRequired); }}></ha-icon>
+        <ha-icon icon=${m.icon} style=${iconStyle} title=${m.title} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, hass, device.entityId, m.service, false); }}></ha-icon>
       `)
     : '';
 
   const disarmButton = (isArmed || isTriggered)
-    ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); callAlarm('alarm_disarm', hasCode); }}></ha-icon>`
+    ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, hass, device.entityId, 'alarm_disarm', true); }}></ha-icon>`
     : '';
 
   const controlIcons = isPending ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : (isArmed ? 'mdi:shield-lock' : 'mdi:shield-off')} style="--mdc-icon-size:18px;color:var(--sp-text-primary)"></ha-icon>` : html`${armButtons}${disarmButton}`;
