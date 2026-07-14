@@ -52,7 +52,7 @@ export function renderAlarmControlPanelCard(
   const lastTime = stateObj.last_changed ? formatRelativeTime(new Date(stateObj.last_changed), language) : device.subtitle;
 
   const supportedFeatures = (attrs.supported_features as number) || 0;
-  const codeArmRequired = attrs.code_arm_required === true;
+  const codeArmRequired = attrs.code_arm_required !== false;
   const hasCode = Boolean(attrs.code_format);
 
   const FEATURE_ARM_HOME = 1;
@@ -68,21 +68,28 @@ export function renderAlarmControlPanelCard(
     { feature: FEATURE_ARM_VACATION, icon: 'mdi:shield-airplane', service: 'alarm_arm_vacation', title: t(language, 'alarmArmedVacation') },
   ];
   const availableArms = armModes.filter(m => supportedFeatures & m.feature);
-  const showDirectArm = !codeArmRequired && availableArms.length > 0;
-  const showDirectDisarm = !hasCode;
+  const fallbackArms = availableArms.length > 0 ? availableArms : armModes.slice(0, 2);
 
   const iconStyle = '--mdc-icon-size:18px;color:var(--sp-text-primary);display:flex;cursor:pointer';
 
-  const armButtons = showDirectArm
-    ? availableArms.slice(0, 3).map(m => html`
-        <ha-icon icon=${m.icon} style=${iconStyle} title=${m.title} @click=${(e: Event) => { e.stopPropagation(); hass.callService('alarm_control_panel', m.service, { entity_id: device.entityId }); }}></ha-icon>
+  const callAlarm = (service: string, needCode: boolean) => {
+    const data: Record<string, unknown> = { entity_id: device.entityId };
+    if (needCode) {
+      const code = prompt(t(language, 'alarmEnterCode'));
+      if (code === null) return;
+      data.code = code;
+    }
+    hass.callService('alarm_control_panel', service, data);
+  };
+
+  const armButtons = (!isArmed && !isTriggered && !isPending)
+    ? fallbackArms.slice(0, 3).map(m => html`
+        <ha-icon icon=${m.icon} style=${iconStyle} title=${m.title} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.service, codeArmRequired); }}></ha-icon>
       `)
-    : (!isArmed && !isTriggered && !isPending ? html`<ha-icon icon="mdi:shield-lock" style=${iconStyle} title=${t(language, 'alarmArmedAway')} @click=${(e: Event) => { e.stopPropagation(); onHandleAction(device.entityId, 'more-info'); }}></ha-icon>` : '');
+    : '';
 
   const disarmButton = (isArmed || isTriggered)
-    ? (showDirectDisarm
-        ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); hass.callService('alarm_control_panel', 'alarm_disarm', { entity_id: device.entityId }); }}></ha-icon>`
-        : html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); onHandleAction(device.entityId, 'more-info'); }}></ha-icon>`)
+    ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); callAlarm('alarm_disarm', hasCode); }}></ha-icon>`
     : '';
 
   const controlIcons = isPending ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : (isArmed ? 'mdi:shield-lock' : 'mdi:shield-off')} style="--mdc-icon-size:18px;color:var(--sp-text-primary)"></ha-icon>` : html`${armButtons}${disarmButton}`;

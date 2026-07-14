@@ -159,6 +159,7 @@ const zh: Record<TranslationKey, string> = {
   editorDownloading: '正在下载...',
   editorDownloadFailed: '下载失败：{message}',
   editorUploadFailed: '背景图上传失败：{message}，请重试。',
+  alarmEnterCode: '请输入密码',
 
 };
 

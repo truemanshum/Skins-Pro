@@ -82,7 +82,7 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
     if (isAlarm) {
       const attrs = entity.attributes || {};
       const supportedFeatures = (attrs.supported_features as number) || 0;
-      const codeArmRequired = attrs.code_arm_required === true;
+      const codeArmRequired = attrs.code_arm_required !== false;
       const hasCode = Boolean(attrs.code_format);
       const isArmed = /armed_/.test(entity.state);
       const isTriggered = entity.state === 'triggered';
@@ -93,19 +93,28 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
         { f: 1, i: 'mdi:shield-home', s: 'alarm_arm_home', k: 'alarmArmedHome' as const },
         { f: 4, i: 'mdi:shield-moon', s: 'alarm_arm_night', k: 'alarmArmedNight' as const },
       ].filter(m => supportedFeatures & m.f);
-      const directArm = !codeArmRequired && armModes.length > 0;
-      const directDisarm = !hasCode;
+      const fallbackArms = armModes.length > 0 ? armModes : [
+        { f: 0, i: 'mdi:shield-lock', s: 'alarm_arm_away', k: 'alarmArmedAway' as const },
+        { f: 0, i: 'mdi:shield-home', s: 'alarm_arm_home', k: 'alarmArmedHome' as const },
+      ];
+
+      const callAlarm = (service: string, needCode: boolean) => {
+        const data: Record<string, unknown> = { entity_id: entity.entity_id };
+        if (needCode) {
+          const code = prompt(t(ctx.language, 'alarmEnterCode'));
+          if (code === null || code === '') return;
+          data.code = code;
+        }
+        ctx.hass.callService('alarm_control_panel', service, data);
+      };
+
       const armBtns = isPending
         ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : 'mdi:shield-lock'} style=${iconStyle}></ha-icon>`
         : (!isArmed && !isTriggered
-            ? (directArm
-                ? html`${armModes.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); ctx.hass.callService('alarm_control_panel', m.s, { entity_id: entity.entity_id }); }}></ha-icon>`)}`
-                : html`<ha-icon icon="mdi:shield-lock" style=${iconStyle} title=${t(ctx.language, 'alarmArmedAway')} @click=${(e: Event) => { e.stopPropagation(); ctx.onHandleAction(entity.entity_id, 'more-info'); }}></ha-icon>`)
+            ? html`${fallbackArms.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.s, codeArmRequired); }}></ha-icon>`)}`
             : '');
       const disarmBtn = (isArmed || isTriggered)
-        ? (directDisarm
-            ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); ctx.hass.callService('alarm_control_panel', 'alarm_disarm', { entity_id: entity.entity_id }); }}></ha-icon>`
-            : html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); ctx.onHandleAction(entity.entity_id, 'more-info'); }}></ha-icon>`)
+        ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); callAlarm('alarm_disarm', hasCode); }}></ha-icon>`
         : '';
       control = html`<div class="control-row" style="justify-content:flex-end;gap:6px" @click=${(e: Event) => e.stopPropagation()}>${armBtns}${disarmBtn}</div>`;
     } else if (togglable) {

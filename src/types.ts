@@ -373,6 +373,7 @@ export type TranslationKey =
   | 'editorDownloading'
   | 'editorDownloadFailed'
   | 'editorUploadFailed'
+  | 'alarmEnterCode'
   
 ;
 

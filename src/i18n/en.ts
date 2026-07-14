@@ -159,6 +159,7 @@ const en: Record<TranslationKey, string> = {
   editorDownloading: 'Downloading...',
   editorDownloadFailed: 'Download failed: {message}',
   editorUploadFailed: 'Background upload failed: {message}. Please try again.',
+  alarmEnterCode: 'Enter code',
 
 };
 
