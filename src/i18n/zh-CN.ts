@@ -160,6 +160,10 @@ const zh: Record<TranslationKey, string> = {
   editorDownloadFailed: '下载失败：{message}',
   editorUploadFailed: '背景图上传失败：{message}，请重试。',
   alarmEnterCode: '请输入密码',
+  searchPlaceholder: '搜索设备...',
+  searchRecent: '最近',
+  searchNoResults: '未找到相关设备',
+  searchAll: '全部',
 
 };
 
