@@ -4,6 +4,7 @@ package-lock.json
 npm-debug.log*
 *.log
 src/skins.generated.ts
+scripts/store-worker.js
 
 store/
 __stage/

@@ -374,7 +374,10 @@ export type TranslationKey =
   | 'editorDownloadFailed'
   | 'editorUploadFailed'
   | 'alarmEnterCode'
-  
+  | 'searchPlaceholder'
+  | 'searchRecent'
+  | 'searchNoResults'
+  | 'searchAll'
 ;
 
 export interface EnergySourceData {

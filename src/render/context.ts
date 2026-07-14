@@ -48,6 +48,10 @@ export interface RenderContext {
   onMoreInfo: (entityId: string) => void;
   onTurnOffAreaType: (entityIds: string[]) => void;
 
+  searchOpen: boolean;
+  onOpenSearch: () => void;
+  onCloseSearch: () => void;
+
   setDeviceGrouping: (g: 'area' | 'domain') => void;
   setFilterRoom: (r: string) => void;
   setFilterType: (t: string) => void;

@@ -9,27 +9,32 @@ const dest = 'dist';
 const store = 'store';
 const stage = '__stage';
 
-// Optional target skin via positional arg.
-//   npm run build -- visionOS
-//   node scripts/build-skins.cjs visionOS
-// Builds only the specified skin plus the bundled 'modern' (always built).
-function resolveTargetSkin() {
-  const arg = process.argv[2];
-  if (!arg) return '';
-  if (arg.startsWith('--skin=')) return arg.slice(7);
-  return arg;
+// Optional target skins via positional args (multiple supported).
+//   npm run build -- visionOS minecraft
+//   node scripts/build-skins.cjs visionOS minecraft
+// Processes only specified skins + bundled 'modern'. Registry always includes all skins.
+function resolveTargetSkins() {
+  const skins = [];
+  for (let i = 2; i < process.argv.length; i += 1) {
+    const arg = process.argv[i];
+    if (arg.startsWith('--')) break;
+    skins.push(arg);
+  }
+  return skins;
 }
-const targetSkin = resolveTargetSkin();
+const targetSkins = resolveTargetSkins();
+const skinsOnly = process.argv.includes('--skins-only');
 const allDirs = fs.readdirSync(src, { withFileTypes: true })
   .filter(d => d.isDirectory())
   .map(d => d.name)
   .sort();
-if (targetSkin && !allDirs.includes(targetSkin)) {
-  console.error(`Error: skin '${targetSkin}' not found in ${src}/. Available: ${allDirs.join(', ')}`);
+const invalid = targetSkins.filter(s => !allDirs.includes(s));
+if (invalid.length > 0) {
+  console.error(`Error: skin(s) not found: ${invalid.join(', ')}. Available: ${allDirs.join(', ')}`);
   process.exit(1);
 }
-const dirs = targetSkin
-  ? allDirs.filter(d => d === 'modern' || d === targetSkin)
+const dirs = targetSkins.length > 0
+  ? allDirs.filter(d => d === 'modern' || targetSkins.includes(d))
   : allDirs;
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'];
@@ -98,7 +103,7 @@ async function processImage(srcPath, destDir) {
   for (const dir of dirs) {
     const srcDir = path.join(src, dir);
     const isModern = dir === 'modern';
-    const outDir = isModern ? path.join(dest, dir) : path.join(stage, dir);
+    const outDir = isModern ? path.join(dest, dir) : (skinsOnly ? path.join(dest, dir) : path.join(stage, dir));
 
     fs.mkdirSync(outDir, { recursive: true });
 
@@ -119,7 +124,7 @@ async function processImage(srcPath, destDir) {
 
     await Promise.all(jobs);
 
-    if (!isModern) {
+    if (!isModern && !skinsOnly) {
       // Zip non-modern directly into store/<dir>.zip, then clean up staging
       const zipPath = path.join(store, `${dir}.zip`);
       await new Promise((resolve, reject) => {
@@ -139,6 +144,12 @@ async function processImage(srcPath, destDir) {
   // Clean up staging directory
   if (fs.existsSync(stage)) {
     fs.rmSync(stage, { recursive: true, force: true });
+  }
+
+  if (skinsOnly) {
+    const scope = targetSkins.length > 0 ? `: ${targetSkins.join(', ')}` : '';
+    console.log(`Skins build complete${scope} — ${dirs.length} skin(s) processed, output in dist/`);
+    return;
   }
 
   // Generate skin list + strings + icon maps for compile-time injection.
@@ -201,13 +212,19 @@ async function processImage(srcPath, destDir) {
 
   fs.mkdirSync(thumbsDir, { recursive: true });
 
+  // Only generate thumbnails for processed skins (changed ones)
   for (const dir of dirs) {
     if (dir === 'modern') continue;
     const found = IMAGE_EXTENSIONS.map(ext => path.join(screenshotsDir, `${dir}${ext}`)).find(p => fs.existsSync(p));
-    const thumbDest = path.join(thumbsDir, `${dir}.jpg`);
     if (found) {
+      const thumbDest = path.join(thumbsDir, `${dir}.jpg`);
       await sharp(found).resize({ width: 500, withoutEnlargement: true }).jpeg({ quality: 80, mozjpeg: true }).toFile(thumbDest);
     }
+  }
+
+  // Registry always includes ALL skins (just reads metadata, fast)
+  for (const dir of allDirs) {
+    if (dir === 'modern') continue;
     const stringsFile = path.join(src, dir, 'strings.json');
     const stringsData = fs.existsSync(stringsFile) ? JSON.parse(fs.readFileSync(stringsFile, 'utf8')) : {};
     registry.push({
@@ -224,8 +241,8 @@ async function processImage(srcPath, destDir) {
     JSON.stringify(registry, null, 2),
   );
 
-  const scope = targetSkin ? ` (target: ${targetSkin})` : '';
-  console.log(`Build complete${scope}: ${dirs.length} skin(s) processed, ${i18nFiles.length} locale(s) detected, ${registry.length} thumbnail(s) generated, ${storePackages.length} store package(s) packed`);
+  const scope = targetSkins.length > 0 ? ` (target: ${targetSkins.join(', ')})` : '';
+  console.log(`Build complete${scope}: ${dirs.length}/${allDirs.length} skin(s) processed, ${i18nFiles.length} locale(s) detected, ${registry.length} registry entries, ${storePackages.length} store package(s) packed`);
 
   const rollup = spawnSync('node', [require.resolve('rollup/dist/bin/rollup'), '-c'], { stdio: 'inherit' });
   if (rollup.status !== 0) process.exit(rollup.status ?? 1);

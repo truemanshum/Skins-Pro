@@ -1,0 +1,179 @@
+name: Build Skins
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'skins-pro/**'
+      - 'screenshots/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: skins-build
+  cancel-in-progress: false
+
+jobs:
+  build-skins:
+    name: Build and publish skins
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect changed skins
+        id: skins
+        run: |
+          # Detect added/modified skins (exclude deletions)
+          SKIN_CHANGED=$(git diff --diff-filter=d --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
+            | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
+          SCREENSHOT_CHANGED=$(git diff --diff-filter=d --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
+            | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
+            | grep -v '^thumbnails$' | grep -v '^registry$' || true)
+          CHANGED=$(printf '%s\n%s\n' "$SKIN_CHANGED" "$SCREENSHOT_CHANGED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
+          if [ -z "$CHANGED" ]; then
+            echo "No specific skins changed"
+          else
+            echo "Changed skins: $CHANGED"
+          fi
+
+          # Detect deleted skins
+          SKIN_DELETED=$(git diff --diff-filter=D --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
+            | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
+          SCREENSHOT_DELETED=$(git diff --diff-filter=D --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
+            | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
+            | grep -v '^thumbnails$' | grep -v '^registry$' || true)
+          DELETED=$(printf '%s\n%s\n' "$SKIN_DELETED" "$SCREENSHOT_DELETED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
+          # Keep workflow arguments inert even if a malicious or malformed path reaches this job.
+          # Official skin slugs are restricted to lowercase letters, digits, and hyphens.
+          for skin in $CHANGED $DELETED; do
+            if [[ ! "$skin" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+              echo "::error::Unsafe skin slug: $skin"
+              exit 1
+            fi
+          done
+
+          echo "target=$CHANGED" >> "$GITHUB_OUTPUT"
+          echo "deleted=$DELETED" >> "$GITHUB_OUTPUT"
+          [ -n "$DELETED" ] && echo "Deleted skins: $DELETED"
+
+      - name: Fetch existing store assets
+        run: |
+          git fetch origin store --depth=1 2>/dev/null || true
+          mkdir -p store screenshots/thumbnails
+          for p in $(git ls-tree -r --name-only origin/store -- store/ 2>/dev/null | grep '\.zip$' || true); do
+            git show "origin/store:$p" > "$p" 2>/dev/null && echo "Restored: $p"
+          done
+          for p in $(git ls-tree -r --name-only origin/store -- screenshots/thumbnails/ 2>/dev/null | grep '\.jpg$' || true); do
+            git show "origin/store:$p" > "$p" 2>/dev/null && echo "Restored: $p"
+          done
+
+      - name: Remove deleted skin assets
+        run: |
+          DELETED="${{ steps.skins.outputs.deleted }}"
+          if [ -z "$DELETED" ]; then
+            echo "No skins to delete"
+            exit 0
+          fi
+          for skin in $DELETED; do
+            rm -f "store/${skin}.zip" "screenshots/thumbnails/${skin}.jpg"
+            echo "Removed store assets for deleted skin: $skin"
+          done
+
+      - name: Build skins
+        env:
+          CHANGED_SKINS: ${{ steps.skins.outputs.target }}
+        run: |
+          if [ -n "$CHANGED_SKINS" ]; then
+            read -r -a skins <<< "$CHANGED_SKINS"
+            npm run build -- "${skins[@]}"
+          else
+            npm run build
+          fi
+
+      - name: Detect changed store assets
+        id: changed
+        run: |
+          git fetch origin store --depth=1 2>/dev/null || true
+
+          PURGE_URLS="https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/registry.json"
+
+          # Purge CDN cache for deleted skins
+          DELETED="${{ steps.skins.outputs.deleted }}"
+          if [ -n "$DELETED" ]; then
+            for skin in $DELETED; do
+              echo "Deleted skin: $skin"
+              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/store/${skin}.zip"
+              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/thumbnails/${skin}.jpg"
+            done
+          fi
+
+          for zip in store/*.zip; do
+            [ -f "$zip" ] || continue
+            skin=$(basename "$zip" .zip)
+            new_hash=$(md5sum "$zip" | cut -d' ' -f1)
+            old_hash=$(git show "origin/store:$zip" 2>/dev/null | md5sum | cut -d' ' -f1 || echo "")
+            if [ -n "$old_hash" ] && [ "$new_hash" != "$old_hash" ]; then
+              echo "Changed zip: $skin"
+              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/store/${skin}.zip"
+            fi
+          done
+
+          for thumb in screenshots/thumbnails/*.jpg; do
+            [ -f "$thumb" ] || continue
+            skin=$(basename "$thumb" .jpg)
+            new_hash=$(md5sum "$thumb" | cut -d' ' -f1)
+            old_hash=$(git show "origin/store:$thumb" 2>/dev/null | md5sum | cut -d' ' -f1 || echo "")
+            if [ -n "$old_hash" ] && [ "$new_hash" != "$old_hash" ]; then
+              echo "Changed thumbnail: $skin"
+              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/thumbnails/${skin}.jpg"
+            fi
+          done
+
+          echo "purge_urls=$PURGE_URLS" >> "$GITHUB_OUTPUT"
+          echo "Purge URLs: $PURGE_URLS"
+
+      - name: Push store assets to store branch
+        run: |
+          STORE_DIR="$(mktemp -d)"
+          mv store/*.zip "$STORE_DIR/" 2>/dev/null || true
+          mv screenshots/thumbnails "$STORE_DIR/thumbnails" 2>/dev/null || true
+          mv screenshots/registry.json "$STORE_DIR/registry.json" 2>/dev/null || true
+
+          git checkout --orphan _store_push
+          find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
+
+          mkdir -p store screenshots/thumbnails
+          mv "$STORE_DIR"/*.zip store/ 2>/dev/null || true
+          mv "$STORE_DIR"/thumbnails/* screenshots/thumbnails/ 2>/dev/null || true
+          mv "$STORE_DIR"/registry.json screenshots/registry.json 2>/dev/null || true
+
+          printf '%s\n' '# Skins Pro — Store Assets' '' 'This branch contains build artifacts for the skin store.' 'Pushed automatically by CI. Do not edit manually.' > README.md
+          git add .
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+            commit -m "Update store artifacts [skip ci]" --allow-empty
+          git push origin _store_push:store --force
+
+          git checkout "${{ github.ref_name }}"
+
+      - name: Purge jsdelivr cache
+        run: |
+          for url in ${{ steps.changed.outputs.purge_urls }}; do
+            echo "Purging: $url"
+            curl -s "$url" > /dev/null
+            sleep 0.5
+          done

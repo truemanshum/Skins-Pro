@@ -49,6 +49,7 @@ import { renderScenesView } from './views/scenes';
 import { renderAutomationsView } from './views/automations';
 import { renderEnergyView } from './views/energy';
 import { renderSecurityView } from './views/security';
+import { renderSearchOverlay } from './views/search';
 
 export class SkinsProCard extends LitElement {
   private _config?: DashboardConfig;
@@ -87,6 +88,10 @@ export class SkinsProCard extends LitElement {
   @state() private _weatherForecast?: WeatherForecastDay[];
   private _weatherForecastEntity?: string;
   private _weatherForecastUnsub?: () => Promise<void>;
+
+  @state() private _searchOpen = false;
+  @state() private _searchQuery = '';
+  @state() private _searchFilter = 'all';
 
   private _autoFullscreenDone = false;
   private _loadedSkinMetadata?: string;
@@ -333,6 +338,9 @@ export class SkinsProCard extends LitElement {
       onToggleKiosk: () => this.toggleKioskFullscreen(),
       onMoreInfo: (entityId) => moreInfo(this, entityId),
       onTurnOffAreaType: (entityIds) => turnOffAreaTypeAction(this._hass, entityIds),
+      searchOpen: this._searchOpen,
+      onOpenSearch: () => { this._searchOpen = true; },
+      onCloseSearch: () => { this._searchOpen = false; this._searchQuery = ''; this._searchFilter = 'all'; },
       setDeviceGrouping: (g) => { this._deviceGrouping = g; },
       setFilterRoom: (r) => { this._filterRoom = r; },
       setFilterType: (t) => { this._filterType = t; },
@@ -389,6 +397,15 @@ export class SkinsProCard extends LitElement {
           <main class="stage">${stage}</main>
           ${renderMobileNav(ctx)}
         </div>
+        ${this._searchOpen
+          ? renderSearchOverlay(
+              ctx,
+              this._searchQuery,
+              this._searchFilter,
+              (q) => { this._searchQuery = q; },
+              (f) => { this._searchFilter = f; },
+            )
+          : nothing}
       </ha-card>
     `;
   }
