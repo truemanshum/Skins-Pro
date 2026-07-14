@@ -38,11 +38,10 @@ jobs:
       - name: Detect changed skins
         id: skins
         run: |
-          # Detect changed skins from skins-pro/ source files
-          SKIN_CHANGED=$(git diff --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
+          # Detect added/modified skins (exclude deletions)
+          SKIN_CHANGED=$(git diff --diff-filter=d --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
             | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
-          # Detect changed skins from screenshots/ (e.g. screenshots/cs-go.png)
-          SCREENSHOT_CHANGED=$(git diff --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
+          SCREENSHOT_CHANGED=$(git diff --diff-filter=d --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
             | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
             | grep -v '^thumbnails$' | grep -v '^registry$' || true)
           CHANGED=$(printf '%s\n%s\n' "$SKIN_CHANGED" "$SCREENSHOT_CHANGED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
@@ -54,6 +53,16 @@ jobs:
             echo "Changed skins: $CHANGED"
           fi
 
+          # Detect deleted skins
+          SKIN_DELETED=$(git diff --diff-filter=D --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
+            | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
+          SCREENSHOT_DELETED=$(git diff --diff-filter=D --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
+            | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
+            | grep -v '^thumbnails$' | grep -v '^registry$' || true)
+          DELETED=$(printf '%s\n%s\n' "$SKIN_DELETED" "$SCREENSHOT_DELETED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
+          echo "deleted=$DELETED" >> "$GITHUB_OUTPUT"
+          [ -n "$DELETED" ] && echo "Deleted skins: $DELETED"
+
       - name: Fetch existing store assets
         run: |
           git fetch origin store --depth=1 2>/dev/null || true
@@ -63,6 +72,18 @@ jobs:
           done
           for p in $(git ls-tree -r --name-only origin/store -- screenshots/thumbnails/ 2>/dev/null | grep '\.jpg$' || true); do
             git show "origin/store:$p" > "$p" 2>/dev/null && echo "Restored: $p"
+          done
+
+      - name: Remove deleted skin assets
+        run: |
+          DELETED="${{ steps.skins.outputs.deleted }}"
+          if [ -z "$DELETED" ]; then
+            echo "No skins to delete"
+            exit 0
+          fi
+          for skin in $DELETED; do
+            rm -f "store/${skin}.zip" "screenshots/thumbnails/${skin}.jpg"
+            echo "Removed store assets for deleted skin: $skin"
           done
 
       - name: Build skins
@@ -79,6 +100,16 @@ jobs:
           git fetch origin store --depth=1 2>/dev/null || true
 
           PURGE_URLS="https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/registry.json"
+
+          # Purge CDN cache for deleted skins
+          DELETED="${{ steps.skins.outputs.deleted }}"
+          if [ -n "$DELETED" ]; then
+            for skin in $DELETED; do
+              echo "Deleted skin: $skin"
+              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/store/${skin}.zip"
+              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/thumbnails/${skin}.jpg"
+            done
+          fi
 
           for zip in store/*.zip; do
             [ -f "$zip" ] || continue
