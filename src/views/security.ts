@@ -6,7 +6,7 @@ import type { RenderContext } from '../render/context';
 import { renderPageShell } from '../components/page-shell';
 import { renderImage } from '../render/context';
 import { assetKeyForDomain, deviceStateLabel, selectedSkin, t } from '../utils';
-import { showAlarmCodeDialog } from '../components/alarm-code-dialog';
+import { setAlarmMode } from '../components/alarm-code-dialog';
 
 const SECURITY_TOGGLE_DOMAINS = new Set([
   'light', 'switch', 'fan', 'cover', 'valve', 'media_player', 'lock',
@@ -83,8 +83,6 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
     if (isAlarm) {
       const attrs = entity.attributes || {};
       const supportedFeatures = (attrs.supported_features as number) || 0;
-      const codeArmRequired = attrs.code_arm_required !== false;
-      const hasCode = Boolean(attrs.code_format);
       const isArmed = /armed_/.test(entity.state);
       const isTriggered = entity.state === 'triggered';
       const isPending = entity.state === 'pending' || entity.state === 'arming' || entity.state === 'disarming';
@@ -99,23 +97,11 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
         { f: 0, i: 'mdi:shield-home', s: 'alarm_arm_home', k: 'alarmArmedHome' as const },
       ];
 
-      const callAlarm = (service: string, needCode: boolean) => {
-        const data: Record<string, unknown> = { entity_id: entity.entity_id };
-        if (needCode) {
-          void showAlarmCodeDialog(ctx.language).then((code) => {
-            if (code === null || code === '') return;
-            ctx.hass.callService('alarm_control_panel', service, { ...data, code });
-          });
-        } else {
-          ctx.hass.callService('alarm_control_panel', service, data);
-        }
-      };
-
       const armBtns = isPending
         ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : 'mdi:shield-lock'} style=${iconStyle}></ha-icon>`
-        : html`${fallbackArms.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.s, codeArmRequired); }}></ha-icon>`)}`;
+        : html`${fallbackArms.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, ctx.hass, entity.entity_id, m.s, false); }}></ha-icon>`)}`;
       const disarmBtn = (isArmed || isTriggered)
-        ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); callAlarm('alarm_disarm', hasCode); }}></ha-icon>`
+        ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, ctx.hass, entity.entity_id, 'alarm_disarm', true); }}></ha-icon>`
         : '';
       control = html`<div class="control-row" style="justify-content:flex-end;gap:6px" @click=${(e: Event) => e.stopPropagation()}>${armBtns}${disarmBtn}</div>`;
     } else if (togglable) {
