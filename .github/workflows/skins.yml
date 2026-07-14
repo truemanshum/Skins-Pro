@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: skins-build
+  cancel-in-progress: false
+
 jobs:
   build-skins:
     name: Build and publish skins
@@ -41,7 +45,7 @@ jobs:
           SCREENSHOT_CHANGED=$(git diff --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
             | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
             | grep -v '^thumbnails$' | grep -v '^registry$' || true)
-          CHANGED=$(printf '%s\n%s\n' "$SKIN_CHANGED" "$SCREENSHOT_CHANGED" | grep -v '^$' | sort -u || true)
+          CHANGED=$(printf '%s\n%s\n' "$SKIN_CHANGED" "$SCREENSHOT_CHANGED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
           if [ -z "$CHANGED" ]; then
             echo "target=" >> "$GITHUB_OUTPUT"
             echo "No specific skins changed"
