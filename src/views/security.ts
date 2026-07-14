@@ -110,9 +110,7 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
 
       const armBtns = isPending
         ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : 'mdi:shield-lock'} style=${iconStyle}></ha-icon>`
-        : (!isArmed && !isTriggered
-            ? html`${fallbackArms.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.s, codeArmRequired); }}></ha-icon>`)}`
-            : '');
+        : html`${fallbackArms.slice(0, 3).map(m => html`<ha-icon icon=${m.i} style=${iconStyle} title=${t(ctx.language, m.k)} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.s, codeArmRequired); }}></ha-icon>`)}`;
       const disarmBtn = (isArmed || isTriggered)
         ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${t(ctx.language, 'alarmDisarmed')} @click=${(e: Event) => { e.stopPropagation(); callAlarm('alarm_disarm', hasCode); }}></ha-icon>`
         : '';

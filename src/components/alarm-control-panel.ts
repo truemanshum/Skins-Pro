@@ -82,7 +82,7 @@ export function renderAlarmControlPanelCard(
     hass.callService('alarm_control_panel', service, data);
   };
 
-  const armButtons = (!isArmed && !isTriggered && !isPending)
+  const armButtons = (!isTriggered && !isPending)
     ? fallbackArms.slice(0, 3).map(m => html`
         <ha-icon icon=${m.icon} style=${iconStyle} title=${m.title} @click=${(e: Event) => { e.stopPropagation(); callAlarm(m.service, codeArmRequired); }}></ha-icon>
       `)
