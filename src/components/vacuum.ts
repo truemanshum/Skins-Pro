@@ -61,8 +61,8 @@ export function renderVacuumCard(
 
   const btnStyle = 'width:32px;height:32px;padding:0;flex-shrink:0';
 
-  const startBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumStart')} @click=${(e: Event) => { e.stopPropagation(); doService('start_pause'); }}><ha-icon icon="mdi:play" style="--mdc-icon-size:14px"></ha-icon></div>`;
-  const pauseBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumPause')} @click=${(e: Event) => { e.stopPropagation(); doService('start_pause'); }}><ha-icon icon="mdi:pause" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const startBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumStart')} @click=${(e: Event) => { e.stopPropagation(); doService('start'); }}><ha-icon icon="mdi:play" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const pauseBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumPause')} @click=${(e: Event) => { e.stopPropagation(); doService('pause'); }}><ha-icon icon="mdi:pause" style="--mdc-icon-size:14px"></ha-icon></div>`;
   const dockBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumDock')} @click=${(e: Event) => { e.stopPropagation(); doService('return_to_base'); }}><ha-icon icon="mdi:home" style="--mdc-icon-size:14px"></ha-icon></div>`;
   const locateBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumLocate')} @click=${(e: Event) => { e.stopPropagation(); doService('locate'); }}><ha-icon icon="mdi:map-marker" style="--mdc-icon-size:14px"></ha-icon></div>`;
 
@@ -86,7 +86,7 @@ export function renderVacuumCard(
         ${isActive ? pauseBtn : startBtn}
         ${(isActive || isPaused) ? dockBtn : ''}
         ${locateBtn}
-        <ha-control-switch .checked=${isActive} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isActive ? 'pause' : 'start_pause'); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
+        <ha-control-switch .checked=${isActive} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isActive ? 'pause' : 'start'); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>
     </button>
   `;
