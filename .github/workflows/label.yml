@@ -72,22 +72,24 @@ jobs:
         with:
           script: |
             const body = context.payload.pull_request.body || '';
+            const bodyUpper = body.toUpperCase();
             const labels = [];
-            const isContributeSkin = /- \[[xX]\] 贡献主题 \/ Contribute a Skin/.test(body);
-            const isArchitecture = /- \[[xX]\] 优化架构 \/ Architecture Optimization/.test(body);
-            if (isContributeSkin) labels.push('contribute-skin');
-            if (isArchitecture) labels.push('architecture');
-            await github.rest.issues.setLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              labels,
-            });
+            if (bodyUpper.includes('CONTRIBUTE A SKIN') || body.includes('- [x]') && body.includes('Contribute a Skin')) labels.push('contribute-skin');
+            if (bodyUpper.includes('ARCHITECTURE OPTIMIZATION') || body.includes('- [x]') && body.includes('Architecture Optimization')) labels.push('architecture');
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels,
+              });
+            }
       - uses: actions/github-script@v7
         with:
           script: |
             const pr = context.payload.pull_request;
-            const isArchitecture = /- \[[xX]\] 优化架构 \/ Architecture Optimization/.test(pr.body || '');
+            const bodyUpper2 = (pr.body || '').toUpperCase();
+            const isArchitecture = bodyUpper2.includes('ARCHITECTURE OPTIMIZATION') || (bodyUpper2.includes('- [X]') && bodyUpper2.includes('Architecture Optimization')) || (bodyUpper2.includes('- [x]') && bodyUpper2.includes('Architecture Optimization'));
             if (!isArchitecture) { console.log('Not architecture PR, skipping.'); return; }
             const changed = await github.paginate(github.rest.pulls.listFiles, {
               owner: context.repo.owner, repo: context.repo.repo, pull_number: pr.number, per_page: 100,
@@ -128,7 +130,8 @@ jobs:
             const marker = '<!-- pr-screenshot-preview -->';
             const pr = context.payload.pull_request;
             const body = pr.body || '';
-            const isContributeSkin = /- \[[xX]\] 贡献主题 \/ Contribute a Skin/.test(body);
+            const bodyUpper = body.toUpperCase();
+            const isContributeSkin = bodyUpper.includes('CONTRIBUTE A SKIN') || (body.includes('- [x]') && body.includes('Contribute a Skin'));
 
             const files = await github.paginate(github.rest.pulls.listFiles, {
               owner: context.repo.owner,

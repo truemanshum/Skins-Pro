@@ -12,9 +12,6 @@ permissions:
 
 jobs:
   validate-skin-submission:
-    # Architecture-only PRs are validated by the normal HACS/CodeQL lanes.
-    # The strict path gate below is reserved for checked skin submissions.
-    if: ${{ !contains(github.event.pull_request.body, '- [x] 优化架构 / Architecture Optimization') && !contains(github.event.pull_request.body, '- [X] 优化架构 / Architecture Optimization') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR head
