@@ -109,14 +109,23 @@ jobs:
             echo "Full sync (no specific changes detected)"
             aws s3 sync store/ "s3://skinspro/store/" --endpoint-url "$ENDPOINT" --delete
             aws s3 sync screenshots/thumbnails/ "s3://skinspro/screenshots/thumbnails/" --endpoint-url "$ENDPOINT" --delete
+            for f in screenshots/*.*; do
+              [ -f "$f" ] && aws s3 cp "$f" "s3://skinspro/screenshots/$(basename "$f")" --endpoint-url "$ENDPOINT"
+            done
           else
             for skin in $TARGET; do
               [ -f "store/${skin}.zip" ] && aws s3 cp "store/${skin}.zip" "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT"
               [ -f "screenshots/thumbnails/${skin}.jpg" ] && aws s3 cp "screenshots/thumbnails/${skin}.jpg" "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT"
+              for f in screenshots/${skin}.*; do
+                [ -f "$f" ] && aws s3 cp "$f" "s3://skinspro/screenshots/$(basename "$f")" --endpoint-url "$ENDPOINT"
+              done
             done
             for skin in $DELETED; do
               aws s3 rm "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT" 2>/dev/null || true
               aws s3 rm "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT" 2>/dev/null || true
+              for ext in png jpg jpeg webp bmp gif; do
+                aws s3 rm "s3://skinspro/screenshots/${skin}.${ext}" --endpoint-url "$ENDPOINT" 2>/dev/null || true
+              done
             done
           fi
 
