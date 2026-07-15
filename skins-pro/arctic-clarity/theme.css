@@ -3915,19 +3915,6 @@ input:focus-visible,
   line-height: 1.25 !important;
 }
 
-/* kill leftover spacer/filler growth on the left column */
-.mc-app .stage-grid > *:not(.welcome-group):not(.bottom-stack):not(.side) {
-  grid-area: filler !important;
-  min-height: 0 !important;
-  height: 0 !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
 .mc-app .weather-with-meta {
   margin-top: 10px !important;
   margin-bottom: 8px !important;
@@ -4078,9 +4065,6 @@ input:focus-visible,
       "bottom"
       "side" !important;
     overflow: auto !important;
-  }
-  .mc-app .stage-grid > *:not(.welcome-group):not(.bottom-stack):not(.side) {
-    display: none !important;
   }
   .mc-app .side {
     height: auto !important;
