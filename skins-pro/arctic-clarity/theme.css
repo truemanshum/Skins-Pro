@@ -4995,39 +4995,54 @@ input:focus-visible,
   .mc-app .stage-grid,
   .mc-app[data-view="home"] .stage-grid,
   .mc-app:not([data-view]) .stage-grid {
+    display: grid !important;
+    grid-template: "search" max-content "welcome" max-content "side" max-content "bottom" max-content / minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     grid-template-rows: max-content max-content max-content max-content !important;
-    grid-template-areas: none !important;
+    grid-template-areas: "search" "welcome" "side" "bottom" !important;
   }
 
-  .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+  .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
     position: relative !important;
     inset: auto !important;
     top: auto !important;
     left: auto !important;
     transform: none !important;
-    grid-column: 1 !important;
+    grid-area: search !important;
+    grid-column: 1 / -1 !important;
     grid-row: 1 !important;
+    justify-self: stretch !important;
+    align-self: start !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
     padding: 10px 14px !important;
+    white-space: nowrap !important;
   }
 
-  .mc-app .welcome-group {
-    grid-area: auto !important;
+  .mc-app .welcome-group,
+  .mc-app[data-view="home"] .welcome-group,
+  .mc-app:not([data-view]) .welcome-group {
+    grid-area: welcome !important;
     grid-column: 1 !important;
     grid-row: 2 !important;
   }
 
-  .mc-app .side {
-    grid-area: auto !important;
+  .mc-app .side,
+  .mc-app[data-view="home"] .side,
+  .mc-app:not([data-view]) .side {
+    grid-area: side !important;
     grid-column: 1 !important;
     grid-row: 3 !important;
   }
 
-  .mc-app .bottom-stack {
-    grid-area: auto !important;
+  .mc-app .bottom-stack,
+  .mc-app[data-view="home"] .bottom-stack,
+  .mc-app:not([data-view]) .bottom-stack {
+    grid-area: bottom !important;
     grid-column: 1 !important;
     grid-row: 4 !important;
   }
