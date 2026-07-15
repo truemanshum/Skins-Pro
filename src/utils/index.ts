@@ -70,7 +70,12 @@ export function localizedText(
   return en || base || zh || fallback;
 }
 
-export function deviceStateLabel(state: string, language: Language): string {
+export function deviceStateLabel(
+  state: string,
+  language: Language,
+  hass?: HomeAssistant,
+  domain?: string,
+): string {
   if (state === 'unavailable' || state === 'unknown') {
     return STRINGS[language].offline;
   }
@@ -87,6 +92,10 @@ export function deviceStateLabel(state: string, language: Language): string {
     return STRINGS[language].off;
   }
   if (/^armed_|^disarmed|^triggered|^pending|^arming/.test(state)) {
+    if (hass && domain && (hass as any).localize) {
+      const localized = (hass as any).localize(`state_badge.${domain}.${state}`);
+      if (localized) return localized;
+    }
     return state.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
   return formatRawState(state, language);
@@ -100,12 +109,11 @@ function formatRawState(raw: string, language: Language): string {
   if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
     const d = new Date(raw);
     if (!isNaN(d.getTime())) {
-      const locale = language === 'zh-CN' ? 'zh-CN' : 'en';
       const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(raw);
       if (isDateOnly) {
-        return new Intl.DateTimeFormat(locale, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+        return new Intl.DateTimeFormat(language, { year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
       }
-      return new Intl.DateTimeFormat(locale, {
+      return new Intl.DateTimeFormat(language, {
         year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit',
       }).format(d);
@@ -182,7 +190,7 @@ export function formatRelativeTime(isoDate: Date, language: Language): string {
   const now = new Date();
   const diff = now.getTime() - isoDate.getTime();
   const seconds = Math.floor(diff / 1000);
-  const rtf = new Intl.RelativeTimeFormat(language === 'zh-CN' ? 'zh-CN' : 'en', { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(language, { numeric: 'auto' });
   if (seconds < 0) return rtf.format(0, 'seconds');
   if (seconds < 60) return rtf.format(-seconds, 'seconds');
   const minutes = Math.floor(seconds / 60);
