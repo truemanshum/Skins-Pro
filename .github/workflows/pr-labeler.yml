@@ -232,7 +232,7 @@ jobs:
               '',
               lines,
               '',
-              '如果你是有意为之，请在 PR 描述中说明改动原因 / If this is intentional, please describe the reason in the PR description.',
+              '请在 PR 描述中说明你的改动原因 / Please describe your changes in the PR description.',
             ].join('\n');
 
             const comments = await github.paginate(github.rest.issues.listComments, {
