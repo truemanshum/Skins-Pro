@@ -4799,6 +4799,7 @@ input:focus-visible,
   .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"],
   .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
   .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+    display: flex !important;
     position: relative !important;
     inset: auto !important;
     top: auto !important;
