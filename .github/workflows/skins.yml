@@ -144,8 +144,24 @@ jobs:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
         run: |
           ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
-          aws s3 sync store/ "s3://skinspro/store/" --endpoint-url "$ENDPOINT" --delete --checksum
-          aws s3 sync screenshots/thumbnails/ "s3://skinspro/screenshots/thumbnails/" --endpoint-url "$ENDPOINT" --delete --checksum
+          TARGET="${{ steps.skins.outputs.target }}"
+          DELETED="${{ steps.skins.outputs.deleted }}"
+
+          if [ -z "$TARGET" ] && [ -z "$DELETED" ]; then
+            echo "Full sync (no specific changes detected)"
+            aws s3 sync store/ "s3://skinspro/store/" --endpoint-url "$ENDPOINT" --delete
+            aws s3 sync screenshots/thumbnails/ "s3://skinspro/screenshots/thumbnails/" --endpoint-url "$ENDPOINT" --delete
+          else
+            for skin in $TARGET; do
+              [ -f "store/${skin}.zip" ] && aws s3 cp "store/${skin}.zip" "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT"
+              [ -f "screenshots/thumbnails/${skin}.jpg" ] && aws s3 cp "screenshots/thumbnails/${skin}.jpg" "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT"
+            done
+            for skin in $DELETED; do
+              aws s3 rm "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT" 2>/dev/null || true
+              aws s3 rm "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT" 2>/dev/null || true
+            done
+          fi
+
           aws s3 cp screenshots/registry.json "s3://skinspro/screenshots/registry.json" --endpoint-url "$ENDPOINT"
 
       - name: Push store assets to store branch
