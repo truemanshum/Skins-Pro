@@ -3856,8 +3856,8 @@ input:focus-visible,
   overflow-y: auto !important;
 }
 
-/* kill leftover spacer/filler growth on the left column */
-.mc-app .stage-grid > *:not(.welcome-group):not(.bottom-stack):not(.side) {
+/* suppress only explicit empty filler nodes; keep runtime-injected search visible */
+.mc-app .stage-grid > .filler:empty {
   grid-area: filler !important;
   min-height: 0 !important;
   height: 0 !important;
