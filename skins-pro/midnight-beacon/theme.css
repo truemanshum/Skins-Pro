@@ -3920,7 +3920,7 @@ input:focus-visible,
       "side" !important;
     overflow: auto !important;
   }
-  .mc-app .stage-grid > .filler:empty {
+  .mc-app .stage-grid > .filler:empty:not([style*="position:absolute"]):not([style*="translateX"]) {
     display: none !important;
   }
   .mc-app .side {
