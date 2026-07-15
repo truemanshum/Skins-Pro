@@ -4844,6 +4844,9 @@ input:focus-visible,
 
   .mobile-nav,
   .mc-app .mobile-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     gap: 2px !important;
     padding: 5px 4px calc(5px + env(safe-area-inset-bottom, 0px)) !important;
     overflow-x: hidden !important;
