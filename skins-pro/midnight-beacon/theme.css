@@ -3920,7 +3920,7 @@ input:focus-visible,
       "side" !important;
     overflow: auto !important;
   }
-  .mc-app .stage-grid > *:not(.welcome-group):not(.bottom-stack):not(.side) {
+  .mc-app .stage-grid > .filler:empty {
     display: none !important;
   }
   .mc-app .side {
