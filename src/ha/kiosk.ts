@@ -47,7 +47,9 @@ export function toggleKiosk(): boolean {
            partial-panel-resolver { --mdc-top-app-bar-width: 100% !important; }`
         );
         injectStyle(drawer.shadowRoot,
-          `.mdc-drawer, wa-drawer, .sidebar-shell { display: none !important; }
+          `.mdc-drawer, aside, wa-drawer, [part="drawer"] { display: none !important; width: 0 !important; min-width: 0 !important; }
+           [part="content"], .content, main { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+           .sidebar-shell { display: none !important; }
            mwc-top-app-bar-fixed, mwc-top-app-bar, header { display: none !important; }`
         );
       }
