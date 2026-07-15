@@ -3856,8 +3856,8 @@ input:focus-visible,
   overflow-y: auto !important;
 }
 
-/* kill leftover spacer/filler growth on the left column */
-.mc-app .stage-grid > *:not(.welcome-group):not(.bottom-stack):not(.side) {
+/* suppress only explicit empty filler nodes; keep runtime-injected search visible */
+.mc-app .stage-grid > .filler:empty {
   grid-area: filler !important;
   min-height: 0 !important;
   height: 0 !important;
@@ -3920,7 +3920,7 @@ input:focus-visible,
       "side" !important;
     overflow: auto !important;
   }
-  .mc-app .stage-grid > *:not(.welcome-group):not(.bottom-stack):not(.side) {
+  .mc-app .stage-grid > .filler:empty:not([style*="position:absolute"]):not([style*="translateX"]) {
     display: none !important;
   }
   .mc-app .side {
@@ -4875,4 +4875,79 @@ input:focus-visible,
     font-size: 14px !important;
     line-height: 16px !important;
   }
+}
+
+/* ========================================================================
+   Paper Ink Morning low-vision contrast candidate pass — minimal, surface-aware
+   - Paper surfaces use ink text without heavy shadows.
+   - Photo/room overlays keep white text on an opaque dark plate.
+   - Search and status pills get explicit non-text contrast.
+   ======================================================================== */
+:host {
+  --pim-ink: #101820;
+  --pim-ink-soft: #243B54;
+  --pim-paper: #FFFCF4;
+  --pim-gold: #F2B134;
+  --pim-outline: #163A5F;
+}
+
+.mc-app .device,
+.mc-app .glass-card,
+.mc-app .time-card,
+.mc-app .panel-energy,
+.mc-app .panel-media,
+.mc-app .panel-scenes,
+.mc-app .scene,
+.mc-app .env-row {
+  color: var(--pim-ink) !important;
+  text-shadow: none !important;
+}
+
+.mc-app .device-name,
+.mc-app .state-word,
+.mc-app .media-title,
+.mc-app .media-artist,
+.mc-app .media-source,
+.mc-app .media-off-state,
+.mc-app .time-main,
+.mc-app .time-sub,
+.mc-app .env-label,
+.mc-app .env-value,
+.mc-app .energy-value,
+.mc-app .energy-footer,
+.mc-app .panel-scenes .section-title h2,
+.mc-app .panel-scenes .section-title p,
+.mc-app .scene strong,
+.mc-app .scene span {
+  color: var(--pim-ink) !important;
+  text-shadow: none !important;
+}
+
+.mc-app .status,
+.mc-app .room-scene-chip,
+.mc-app .room-active-chip {
+  background: var(--pim-gold) !important;
+  color: var(--pim-ink) !important;
+  border: 2px solid var(--pim-ink) !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+}
+
+.mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+  background: var(--pim-paper) !important;
+  color: var(--pim-ink) !important;
+  border-color: var(--pim-outline) !important;
+  text-shadow: none !important;
+}
+
+.mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"] ha-icon {
+  color: var(--pim-ink) !important;
+}
+
+.mc-app .room-label,
+.mc-app .room-label h3,
+.mc-app .room-label .muted,
+.mc-app .room-stats {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 3px #000000 !important;
 }
