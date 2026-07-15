@@ -178,7 +178,7 @@ Build output in `dist/`:
    <HA config>/www/skins-pro.js
    ```
 
-3. **Add it as a dashboard resource in Home Assistant:**
+3. **Add it as a dashboard resource in Home Assistant:**  
    Settings → Dashboards → Resources → Add Resource
    - URL: `/local/skins-pro.js`
    - Type: JavaScript Module
