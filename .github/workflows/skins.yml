@@ -94,48 +94,6 @@ jobs:
             npm run build
           fi
 
-      - name: Detect changed store assets
-        id: changed
-        run: |
-          git fetch origin store --depth=1 2>/dev/null || true
-
-          PURGE_URLS="https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/registry.json"
-
-          # Purge CDN cache for deleted skins
-          DELETED="${{ steps.skins.outputs.deleted }}"
-          if [ -n "$DELETED" ]; then
-            for skin in $DELETED; do
-              echo "Deleted skin: $skin"
-              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/store/${skin}.zip"
-              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/thumbnails/${skin}.jpg"
-            done
-          fi
-
-          for zip in store/*.zip; do
-            [ -f "$zip" ] || continue
-            skin=$(basename "$zip" .zip)
-            new_hash=$(md5sum "$zip" | cut -d' ' -f1)
-            old_hash=$(git show "origin/store:$zip" 2>/dev/null | md5sum | cut -d' ' -f1 || echo "")
-            if [ -n "$old_hash" ] && [ "$new_hash" != "$old_hash" ]; then
-              echo "Changed zip: $skin"
-              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/store/${skin}.zip"
-            fi
-          done
-
-          for thumb in screenshots/thumbnails/*.jpg; do
-            [ -f "$thumb" ] || continue
-            skin=$(basename "$thumb" .jpg)
-            new_hash=$(md5sum "$thumb" | cut -d' ' -f1)
-            old_hash=$(git show "origin/store:$thumb" 2>/dev/null | md5sum | cut -d' ' -f1 || echo "")
-            if [ -n "$old_hash" ] && [ "$new_hash" != "$old_hash" ]; then
-              echo "Changed thumbnail: $skin"
-              PURGE_URLS="$PURGE_URLS https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store/screenshots/thumbnails/${skin}.jpg"
-            fi
-          done
-
-          echo "purge_urls=$PURGE_URLS" >> "$GITHUB_OUTPUT"
-          echo "Purge URLs: $PURGE_URLS"
-
       - name: Sync to Cloudflare R2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
@@ -189,8 +147,14 @@ jobs:
 
       - name: Purge jsdelivr cache
         run: |
-          for url in ${{ steps.changed.outputs.purge_urls }}; do
-            echo "Purging: $url"
-            curl -s "$url" > /dev/null
-            sleep 0.5
+          BASE="https://purge.jsdelivr.net/gh/ha-china/Skins-Pro@store"
+          TARGET="${{ steps.skins.outputs.target }}"
+          DELETED="${{ steps.skins.outputs.deleted }}"
+
+          purge() { echo "Purging: $1"; curl -s "$1" > /dev/null; sleep 0.5; }
+
+          purge "$BASE/screenshots/registry.json"
+          for skin in $TARGET $DELETED; do
+            purge "$BASE/store/${skin}.zip"
+            purge "$BASE/screenshots/thumbnails/${skin}.jpg"
           done
