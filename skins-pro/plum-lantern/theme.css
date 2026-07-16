@@ -5019,3 +5019,30 @@ input:focus-visible,
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
+
+/* ========================================================================
+   Plum Lantern final local HA candidate gate — mobile search/nav flex
+   - Runtime search remains an explicit flex target on phone/portrait.
+   - Seven mobile navigation entries stay in one row after containment rules.
+   ======================================================================== */
+@media (max-width: 640px), (orientation: portrait) {
+  .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .mobile-nav,
+  .mc-app .mobile-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+  }
+}
