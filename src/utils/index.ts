@@ -272,6 +272,12 @@ export function selectedSkin(config?: DashboardConfig): string {
   return matchedSkin || DEFAULT_SKIN;
 }
 
+const DARK_SUPPORTED_SKINS = new Set(['modern']);
+let _darkAssetSkin: string | null = null;
+export function setDarkAssetSkin(skin: string | null): void {
+  _darkAssetSkin = skin && DARK_SUPPORTED_SKINS.has(skin) ? skin : null;
+}
+
 export function assetUrl(config?: DashboardConfig, key?: string): string {
   if (!key) return '';
   const skin = selectedSkin(config);
@@ -284,8 +290,12 @@ export function assetUrl(config?: DashboardConfig, key?: string): string {
   }
   const asset = config?.resource_pack?.assets?.[key] || DEFAULT_ASSETS[key] || '';
   if (!asset) return '';
-  if (/^https?:\/\//.test(asset) || asset.startsWith('/')) return asset;
-  return `${basePath.replace(/\/$/, '')}/${asset}`;
+  let finalAsset = asset;
+  if (_darkAssetSkin && skin === _darkAssetSkin && key !== 'theme_css' && !/^https?:\/\//.test(asset) && !asset.startsWith('/')) {
+    finalAsset = asset.replace(/(\.[^.]+)$/, '-dark$1');
+  }
+  if (/^https?:\/\//.test(finalAsset) || finalAsset.startsWith('/')) return finalAsset;
+  return `${basePath.replace(/\/$/, '')}/${finalAsset}`;
 }
 
 export function assetHref(config?: DashboardConfig, key?: string): string {
