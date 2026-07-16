@@ -5262,3 +5262,55 @@ input:focus-visible,
     padding: 4px 1px !important;
   }
 }
+
+
+/* Terracotta Wayfinding final low-vision contrast and room-containment gate. */
+.mc-app,
+.mc-app .stage,
+.mc-app .stage-grid,
+.mc-app .weather-block,
+.mc-app .weather-current,
+.mc-app .weather-forecast,
+.mc-app .weather-forecast *,
+.mc-app .device,
+.mc-app .device-name,
+.mc-app .device-updated,
+.mc-app .time-card,
+.mc-app .time-card *,
+.mc-app .side,
+.mc-app .side h2,
+.mc-app .side h3,
+.mc-app .side p,
+.mc-app .side span,
+.mc-app .env-row,
+.mc-app .env-label,
+.mc-app .env-value,
+.mc-app .energy-value,
+.mc-app .energy-footer,
+.mc-app .media-title,
+.mc-app .media-artist,
+.mc-app .media-source,
+.mc-app .scene,
+.mc-app .scene * {
+  color: #FFF7E8 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.88) !important;
+}
+.mc-app .status,
+.mc-app .room-active span,
+.mc-app .nav-button.active {
+  color: #26150F !important;
+  text-shadow: none !important;
+}
+@media (min-width: 641px) and (orientation: landscape) {
+  .mc-app .room { overflow: hidden !important; }
+  .mc-app .room .room-label {
+    left: 10px !important; right: 10px !important; bottom: 10px !important;
+    max-width: none !important; padding-right: 96px !important; box-sizing: border-box !important;
+  }
+  .mc-app .room .room-active {
+    top: 10px !important; bottom: auto !important; left: 10px !important; right: auto !important;
+    width: auto !important; max-width: 180px !important; height: auto !important;
+    display: flex !important; flex-direction: row !important; flex-wrap: wrap !important;
+    align-items: flex-start !important; gap: 4px !important;
+  }
+}
