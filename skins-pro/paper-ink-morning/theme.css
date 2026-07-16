@@ -5004,3 +5004,49 @@ input:focus-visible,
     max-width: none !important;
   }
 }
+
+
+/* Paper Ink Morning desktop surface contrast and room-chip containment. */
+@media (min-width: 641px) and (orientation: landscape) {
+  .mc-app .weather-block,
+  .mc-app .weather-block .weather-description,
+  .mc-app .weather-block .weather-range,
+  .mc-app .weather-forecast,
+  .mc-app .weather-forecast * {
+    color: var(--pim-ink) !important;
+    text-shadow: none !important;
+  }
+
+  .mc-app .side .section-title h2,
+  .mc-app .side .section-title p,
+  .mc-app .side .glass-card > h2,
+  .mc-app .side .glass-card > h3 {
+    color: var(--pim-ink) !important;
+    text-shadow: none !important;
+  }
+
+  .mc-app .room {
+    overflow: hidden !important;
+  }
+
+  .mc-app .room .room-label {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    max-width: none !important;
+    padding-right: 96px !important;
+    box-sizing: border-box !important;
+  }
+
+  .mc-app .room .room-chips,
+  .mc-app .room .room-actions {
+    right: 10px !important;
+    top: 10px !important;
+    bottom: auto !important;
+    max-width: 88px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 4px !important;
+  }
+}
