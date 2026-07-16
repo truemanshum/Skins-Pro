@@ -104,7 +104,7 @@ export function renderHomeView(
       <aside class="side">
         ${hasCamera ? cameraCard : html`
         <section class="time-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;width:100%;cursor:pointer" @click=${() => ctx.onToggleTheme()} title=${ctx.translate('toggleTheme')}>
+          <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
             <div class="time-main">${timeText(ctx.hass, ctx.language)}</div>
             <div class="time-sub" style="font-size:var(--sp-font-sm)">${dateText(ctx.hass, ctx.language)}</div>
           </div>
