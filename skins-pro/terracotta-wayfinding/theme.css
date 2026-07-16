@@ -4957,6 +4957,9 @@ input:focus-visible,
    - Preserve a full bottom safety gap above the fixed navigation.
    ======================================================================== */
 .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
   min-height: 48px !important;
   color: #201819 !important;
   background: #FFF4E6 !important;
@@ -5073,6 +5076,9 @@ input:focus-visible,
   .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
   .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
     position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
     inset: auto !important;
     top: auto !important;
     left: auto !important;
@@ -5147,5 +5153,112 @@ input:focus-visible,
   .mc-app .mobile-nav .nav-button span {
     font-size: 14px !important;
     line-height: 16px !important;
+  }
+}
+
+/* ========================================================================
+   Terracotta Wayfinding v4 final local HA candidate polish
+   - keep runtime search as visible flex on mobile
+   - keep all seven mobile tabs in one no-scroll row with >=44px targets
+   - contain scene/right-rail labels and lift small text minimally
+   ======================================================================== */
+.mc-app .panel-scenes {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.mc-app .panel-scenes .scene-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  max-height: min(34vh, 260px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0 4px 2px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.mc-app .panel-scenes .scene,
+.mc-app .side .scene {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 62px !important;
+  overflow: hidden !important;
+}
+
+.mc-app .scene strong,
+.mc-app .scene span,
+.mc-app .time-sub,
+.mc-app .env-label,
+.mc-app .env-value,
+.mc-app .energy-footer,
+.mc-app .media-title,
+.mc-app .media-artist,
+.mc-app .media-source {
+  font-size: max(var(--sp-font-xs), 16px) !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-overflow: unset !important;
+}
+
+.mc-app[data-view="scenes"] .page-shell,
+.mc-app[data-view="scenes"] .page-body,
+.mc-app[data-view="scenes"] .page-scroll {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+}
+
+.mc-app[data-view="scenes"] .page-scroll {
+  overflow-y: auto !important;
+}
+
+.mc-app[data-view="scenes"] .devices-page-grid,
+.mc-app[data-view="scenes"] .scenes-page {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)) !important;
+}
+
+@media (max-width: 640px), (orientation: portrait) {
+  .stage,
+  .mc-app .stage,
+  .mc-app[data-view="home"] .stage,
+  .mc-app:not([data-view]) .stage {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 48px !important;
+  }
+
+  .mobile-nav,
+  .mc-app .mobile-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    gap: 2px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-nav .nav-button,
+  .mobile-nav .nav-button.active,
+  .mobile-nav .nav-button[aria-current="page"],
+  .mc-app .mobile-nav .nav-button,
+  .mc-app .mobile-nav .nav-button.active,
+  .mc-app .mobile-nav .nav-button[aria-current="page"] {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+    height: 64px !important;
+    padding: 4px 1px !important;
   }
 }
