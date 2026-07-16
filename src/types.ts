@@ -338,6 +338,7 @@ export type TranslationKey =
   | 'enabled'
   | 'disabled'
   | 'snapshot'
+  | 'toggleTheme'
   | 'loadingRegistry'
   | 'noAreas'
   | 'automationsSubtitle'
