@@ -680,7 +680,9 @@ ha-control-slider { border-radius:var(--sp-radius-pill)!important; box-shadow:3p
 :host([data-sp-theme="dark"]) .device:active,:host([data-sp-theme="dark"]) .camera-card:active { box-shadow:inset 3px 3px 6px rgba(0,0,0,.50) !important; }
 :host([data-sp-theme="dark"]) .nav-button.active,:host([data-sp-theme="dark"]) .nav-button:hover { box-shadow:inset 3px 3px 6px rgba(0,0,0,.50); }
 :host([data-sp-theme="dark"]) .chip.active { box-shadow:inset 3px 3px 6px rgba(0,0,0,.50); }
-:host([data-sp-theme="dark"]) .temp-group { background:var(--sp-panel-bg); box-shadow:3px 3px 6px rgba(0,0,0,.50),-3px -3px 6px rgba(255,255,255,.04); }\n:host([data-sp-theme="dark"]) .temp-group:active { box-shadow:inset 3px 3px 6px rgba(0,0,0,.50); }\n:host([data-sp-theme="dark"]) .device .control-row ha-icon { background:var(--sp-panel-bg); box-shadow:3px 3px 6px rgba(0,0,0,.50),-3px -3px 6px rgba(255,255,255,.04); }
+:host([data-sp-theme="dark"]) .temp-group { background:var(--sp-panel-bg); box-shadow:3px 3px 6px rgba(0,0,0,.50),-3px -3px 6px rgba(255,255,255,.04); }
+:host([data-sp-theme="dark"]) .temp-group:active { box-shadow:inset 3px 3px 6px rgba(0,0,0,.50); }
+:host([data-sp-theme="dark"]) .device .control-row ha-icon { background:var(--sp-panel-bg); box-shadow:3px 3px 6px rgba(0,0,0,.50),-3px -3px 6px rgba(255,255,255,.04); }
 :host([data-sp-theme="dark"]) ha-control-switch { box-shadow:3px 3px 6px rgba(0,0,0,.50),-3px -3px 6px rgba(255,255,255,.04); }
 :host([data-sp-theme="dark"]) ha-control-slider { box-shadow:3px 3px 6px rgba(0,0,0,.50),-3px -3px 6px rgba(255,255,255,.04); }
 :host([data-sp-theme="dark"]) .device-name,:host([data-sp-theme="dark"]) .scene strong,:host([data-sp-theme="dark"]) .media-title,:host([data-sp-theme="dark"]) .media-artist,:host([data-sp-theme="dark"]) .media-source,:host([data-sp-theme="dark"]) .profile h2,:host([data-sp-theme="dark"]) .env-value,:host([data-sp-theme="dark"]) .energy-value,:host([data-sp-theme="dark"]) .section-title h2,:host([data-sp-theme="dark"]) .page-header h1,:host([data-sp-theme="dark"]) .time-main { text-shadow:1px 1px 1px rgba(0,0,0,.40),-1px -1px 1px rgba(255,255,255,.03); }
