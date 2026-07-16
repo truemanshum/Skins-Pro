@@ -56,6 +56,8 @@ Download additional skins directly from the card editor. Clicking **Download** f
 
 ![modern](screenshots/modern.png)
 
+![modern dark](screenshots/modern-dark.png)
+
 ![Advanced Feature](screenshots/Advanced_Feature.png)
 
 ### Skin Switching Demo
