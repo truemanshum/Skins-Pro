@@ -614,7 +614,7 @@ button { font:inherit; }
 /* Neumorphism raised elements */
 .chip,.action-btn,.filter-select,.weather-row,.scene,.media-cover,.media-cover-null,.media-btn,.media-playbtn,.media-volbtn,.sp-card button,.sp-del,.dot,.time-icon,.time-main,.section-title h2,.page-header h1,.weather-state-icon,.status,.state-word,.energy-value,.env-value,.media-voltrack { box-shadow:3px 3px 6px rgba(0,0,0,.20),-3px -3px 6px rgba(255,255,255,.90); }
 .chip:active,.action-btn:active,.action-btn:hover,.scene:active,.status:active,.media-btn:active,.media-playbtn:active,.media-volbtn:active,.sp-card button:active,.sp-del:active { box-shadow:inset 3px 3px 6px rgba(0,0,0,.10),inset -3px -3px 6px rgba(255,255,255,.85); }
-.device .control-row ha-icon { width:32px; height:32px; display:grid; place-items:center; border-radius:var(--sp-radius-pill); background:var(--sp-glass-bg); box-shadow:3px 3px 6px rgba(0,0,0,.20),-3px -3px 6px rgba(255,255,255,.90); }
+.device .control-row ha-icon { width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--sp-radius-pill); background:var(--sp-glass-bg); box-shadow:3px 3px 6px rgba(0,0,0,.20),-3px -3px 6px rgba(255,255,255,.90); }
 .device .control-row ha-icon:active { box-shadow:inset 3px 3px 6px rgba(0,0,0,.10),inset -3px -3px 6px rgba(255,255,255,.85); }
 
 /* Neumorphism inset elements */
