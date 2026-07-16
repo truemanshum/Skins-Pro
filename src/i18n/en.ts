@@ -124,6 +124,7 @@ const en: Record<TranslationKey, string> = {
   enabled: 'Enabled',
   disabled: 'Disabled',
   snapshot: 'Snapshot',
+  toggleTheme: 'Toggle dark/light theme',
   loadingRegistry: 'Loading Home Assistant data…',
   noAreas: 'No Home Assistant areas found',
   automationsSubtitle: 'Home Assistant automations',

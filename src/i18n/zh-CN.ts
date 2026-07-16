@@ -124,6 +124,7 @@ const zh: Record<TranslationKey, string> = {
   enabled: '已启用',
   disabled: '已停用',
   snapshot: '实时快照',
+  toggleTheme: '切换深色/浅色模式',
   loadingRegistry: '正在加载 Home Assistant 数据…',
   noAreas: '没有读取到 Home Assistant 房间',
   automationsSubtitle: 'Home Assistant 自动化',

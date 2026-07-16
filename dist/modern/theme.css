@@ -599,3 +599,35 @@ button { font:inherit; }
   .room-scene-chip { padding: 1px 8px; font-size: var(--sp-font-3xs); max-width: 80px; }
   .room-active-chip { padding: 1px 8px; font-size: var(--sp-font-3xs); }
   .camera-preview { aspect-ratio: 16/9; min-height: 60px; }
+}
+
+:host([data-sp-theme="dark"]) {
+  --sp-glass-bg:rgba(26,29,46,.72); --sp-panel-bg:#181b2a;
+  --sp-app-overlay:linear-gradient(135deg,#0f111a,#15182a);
+  --sp-stage-overlay:linear-gradient(rgba(15,17,26,.72),rgba(15,17,26,.72));
+  --sp-room-overlay:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55));
+  --sp-text-main:#e8eaf0; --sp-text-muted:rgba(232,234,240,.55); --sp-text-muted-dim:rgba(232,234,240,.42);
+  --sp-text-tertiary:rgba(232,234,240,.42); --sp-text-muted-bright:rgba(232,234,240,.70); --sp-text-alt:#8ab8cc;
+  --sp-text-dark:#e8eaf0; --sp-text-dark-dim:rgba(232,234,240,.55); --sp-text-dark-alpha:rgba(232,234,240,.10);
+  --sp-text-down:#8ab8cc;
+  --sp-accent-alpha:rgba(138,184,204,.15); --sp-accent-active:rgba(138,184,204,.22); --sp-accent-border:rgba(138,184,204,.30);
+  --sp-accent-red:#d49a92;
+  --sp-border-muted:rgba(232,234,240,.10); --sp-border-glass:rgba(255,255,255,.12); --sp-border-weather:rgba(232,234,240,.10);
+  --sp-border-device:rgba(232,234,240,.08); --sp-border-empty:rgba(232,234,240,.10); --sp-border-chip:rgba(232,234,240,.10);
+  --sp-shadow-sm:0 8px 32px rgba(0,0,0,.25); --sp-shadow-md:0 12px 40px rgba(0,0,0,.30);
+  --sp-shadow-lg:0 20px 60px rgba(0,0,0,.35); --sp-shadow-xl:0 16px 48px rgba(0,0,0,.30);
+  --sp-shadow-card:0 12px 36px rgba(0,0,0,.20); --sp-shadow-glass:0 10px 40px rgba(0,0,0,.25);
+  --sp-shadow-scene:0 8px 24px rgba(0,0,0,.20); --sp-shadow-device:0 6px 20px rgba(0,0,0,.18);
+  --sp-shadow-switch:0 2px 8px rgba(0,0,0,.25);
+  --sp-device-bg:#1e2235; --sp-device-unavailable:rgba(60,60,75,.80);
+  --sp-env-temp-bg:rgba(200,168,144,.15); --sp-env-hum-bg:rgba(138,184,204,.15); --sp-env-pm-bg:rgba(180,180,200,.15);
+  --sp-switch-knob:#e8eaf0; --sp-switch-bg:rgba(232,234,240,.15);
+  --sp-glass-light:rgba(255,255,255,.10); --sp-glass-dim:rgba(255,255,255,.06);
+  --sp-camera-bg:rgba(0,0,0,.30); --sp-scrollbar-track:rgba(232,234,240,.04); --sp-scrollbar-thumb:rgba(232,234,240,.12);
+  --sp-item-icon-bg:rgba(255,255,255,.10); --sp-time-icon-bg:rgba(138,184,204,.15);
+  --sp-maintenance-divider:rgba(232,234,240,.08); --sp-weather-bg:rgba(138,184,204,.15);
+}
+:host([data-sp-theme="dark"]) .mobile-nav { background:rgba(20,23,35,.92) !important; }
+:host([data-sp-theme="dark"]) .profile-img { border-color:rgba(255,255,255,.15) !important; }
+:host([data-sp-theme="dark"]) .item-img,:host([data-sp-theme="dark"]) .item-icon { border-color:rgba(255,255,255,.12) !important; }
+:host([data-sp-theme="dark"]) .filter-select option { background:var(--sp-panel-bg); color:var(--sp-text-main); }
