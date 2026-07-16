@@ -75,10 +75,10 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
       </div>
       <div class="control-row" style="gap:4px" @click=${e=>e.stopPropagation()}>
         ${c&&void 0!==d?X`
-        <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${e=>{e.stopPropagation();const t=Math.max(u,d-m);x("set_humidity",{humidity:t})}}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
+        <div class="temp-group" style="display:flex;align-items:center;gap:1px;flex-shrink:0">
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${e=>{e.stopPropagation();const t=Math.max(u,d-m);x("set_humidity",{humidity:t})}}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:24px;text-align:center">${Math.round(d)}%</span>
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${e=>{e.stopPropagation();const t=Math.min(p,d+m);x("set_humidity",{humidity:t})}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${e=>{e.stopPropagation();const t=Math.min(p,d+m);x("set_humidity",{humidity:t})}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>`:""}
         ${c&&v.length>0?X`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),x("set_mode",{mode:e.target.value})}} @click=${e=>e.stopPropagation()}>
@@ -129,10 +129,10 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
         <p class="muted">${y}</p>
       </div>
       <div class="control-row" style="gap:2px" @click=${e=>e.stopPropagation()}>
-        <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${e=>{e.stopPropagation(),$(-g)}}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
+        <div class="temp-group" style="display:flex;align-items:center;gap:1px;flex-shrink:0">
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${e=>{e.stopPropagation(),$(-g)}}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:22px;text-align:center">${void 0!==d?f(d):"--"}</span>
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${e=>{e.stopPropagation(),$(g)}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${e=>{e.stopPropagation(),$(g)}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>
         ${u.length>1?X`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),_("set_operation_mode",{operation_mode:e.target.value})}} @click=${e=>e.stopPropagation()}>
@@ -157,10 +157,10 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
         <p class="muted">${b||i.subtitle}</p>
       </div>
       <div class="control-row" style="gap:2px" @click=${e=>e.stopPropagation()}>
-        <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${e=>{e.stopPropagation(),k(-y)}}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
-          <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:20px;text-align:center">${void 0!==h?x(h):"--"}</span>
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${e=>{e.stopPropagation(),k(y)}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
+<div class="temp-group" style="display:flex;align-items:center;gap:1px;flex-shrink:0">
+            <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${e=>{e.stopPropagation(),k(-y)}}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
+            <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:20px;text-align:center">${void 0!==h?x(h):"--"}</span>
+            <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${e=>{e.stopPropagation(),k(y)}}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${e=>{e.stopPropagation(),w("set_hvac_mode",{hvac_mode:e.target.value})}} @click=${e=>e.stopPropagation()}>
           ${u.map(e=>X`<option value=${e} ?selected=${e===l}>${Yt(e,Bt,n)}</option>`)}
@@ -307,7 +307,7 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
           <img alt="" src=${i} style="width:100%;height:auto;display:block;object-fit:contain;">
         </div>
       </section>
-    `})():ee,p=bi(e.energyHistory||[]),m=window.matchMedia("(orientation: landscape)").matches?"display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);grid-template-columns:none;overflow-x:auto;overflow-y:hidden;":"";return X`
+    `})():ee,p=bi(e.energyHistory||[]),m=window.matchMedia("(orientation: landscape)").matches?"display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);grid-template-columns:none;overflow-x:auto;overflow-y:hidden;padding:var(--sp-space-xs);":"padding:var(--sp-space-xs);";return X`
     <div class="stage-grid">
       <div
         style="position:absolute;top:var(--sp-space-sm,8px);${window.matchMedia("(orientation: portrait)").matches?"right:var(--sp-space-sm,8px);width:auto;max-width:60%;":"left:37.5%;transform:translateX(-50%);width:37.5%;"}z-index:10;display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:var(--sp-radius-pill,999px);background:var(--sp-glass-bg,rgba(255,255,255,0.12));border:1px solid var(--sp-glass-border,rgba(255,255,255,0.15));cursor:pointer;color:var(--sp-text-secondary,rgba(255,255,255,0.5));font-size:15px;"
