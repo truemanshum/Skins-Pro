@@ -62,8 +62,8 @@ export function renderHomeView(
 
   const energyBars = renderBars(ctx.energyHistory || []);
   const homeDevicesStyle = window.matchMedia('(orientation: landscape)').matches
-    ? 'display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);grid-template-columns:none;overflow-x:auto;overflow-y:hidden;'
-    : '';
+    ? 'display:grid;grid-auto-flow:column;grid-auto-columns:minmax(140px,1fr);grid-template-columns:none;overflow-x:auto;overflow-y:hidden;padding:var(--sp-space-xs);'
+    : 'padding:var(--sp-space-xs);';
 
   return html`
     <div class="stage-grid">
