@@ -5235,3 +5235,25 @@ input:focus-visible,
     padding: 4px 1px !important;
   }
 }
+
+
+/* Sunflower Signal final room-visibility and chip-containment gate. */
+.mc-app .room > div:first-child {
+  filter: brightness(1.75) contrast(1.12) saturate(1.08) !important;
+}
+.mc-app .room::after {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 28%, rgba(0, 0, 0, 0.72) 100%) !important;
+}
+@media (min-width: 641px) and (orientation: landscape) {
+  .mc-app .room { overflow: hidden !important; }
+  .mc-app .room .room-label {
+    left: 10px !important; right: 10px !important; bottom: 10px !important;
+    max-width: none !important; padding-right: 96px !important; box-sizing: border-box !important;
+  }
+  .mc-app .room .room-active {
+    top: 10px !important; bottom: auto !important; left: 10px !important; right: auto !important;
+    width: auto !important; max-width: 180px !important; height: auto !important;
+    display: flex !important; flex-direction: row !important; flex-wrap: wrap !important;
+    align-items: flex-start !important; gap: 4px !important;
+  }
+}
