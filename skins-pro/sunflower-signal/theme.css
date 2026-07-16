@@ -5239,7 +5239,7 @@ input:focus-visible,
 
 /* Sunflower Signal final room-visibility and chip-containment gate. */
 .mc-app .room > div:first-child {
-  filter: brightness(2.45) contrast(1.18) saturate(1.1) !important;
+  filter: brightness(4.2) contrast(1.14) saturate(1.08) !important;
 }
 .mc-app .room::after {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 28%, rgba(0, 0, 0, 0.72) 100%) !important;
