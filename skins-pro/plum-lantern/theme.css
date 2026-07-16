@@ -5046,3 +5046,56 @@ input:focus-visible,
     justify-content: stretch !important;
   }
 }
+
+
+/* Plum Lantern final collision and mobile-label gate. */
+@media (min-width: 641px) and (orientation: landscape) {
+  .mc-app .room {
+    overflow: hidden !important;
+  }
+  .mc-app .room .room-label {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    max-width: none !important;
+    padding-right: 96px !important;
+    box-sizing: border-box !important;
+  }
+  .mc-app .room .room-active {
+    top: 10px !important;
+    bottom: auto !important;
+    left: 10px !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: 180px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+}
+
+@media (max-width: 640px), (orientation: portrait) {
+  .mobile-nav .nav-button,
+  .mc-app .mobile-nav .nav-button {
+    height: 64px !important;
+    min-height: 64px !important;
+    padding: 4px 1px !important;
+    overflow: visible !important;
+  }
+  .mobile-nav .nav-button span,
+  .mc-app .mobile-nav .nav-button span {
+    display: block !important;
+    height: 16px !important;
+    min-height: 16px !important;
+    line-height: 16px !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+  .mobile-nav .nav-button.active::after,
+  .mc-app .mobile-nav .nav-button.active::after {
+    display: none !important;
+  }
+}
