@@ -5011,6 +5011,8 @@ input:focus-visible,
   .mc-app .weather-block,
   .mc-app .weather-block .weather-description,
   .mc-app .weather-block .weather-range,
+  .mc-app .weather-current-hl,
+  .mc-app .weather-current-cond,
   .mc-app .weather-forecast,
   .mc-app .weather-forecast * {
     color: var(--pim-ink) !important;
@@ -5039,7 +5041,8 @@ input:focus-visible,
   }
 
   .mc-app .room .room-chips,
-  .mc-app .room .room-actions {
+  .mc-app .room .room-actions,
+  .mc-app .room .room-active {
     right: 10px !important;
     top: 10px !important;
     bottom: auto !important;
