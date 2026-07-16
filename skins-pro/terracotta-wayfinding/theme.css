@@ -5314,3 +5314,30 @@ input:focus-visible,
     align-items: flex-start !important; gap: 4px !important;
   }
 }
+
+
+/* Terracotta runtime leaf-text specificity gate. */
+.mc-app .weather-current-hl,
+.mc-app .weather-current-cond,
+.mc-app .forecast-day,
+.mc-app .forecast-day span,
+.mc-app .forecast-high,
+.mc-app .forecast-low,
+.mc-app .device .device-name,
+.mc-app .device .muted,
+.mc-app .side .section-title h2,
+.mc-app .side .section-title p,
+.mc-app .side .env-row .env-label,
+.mc-app .side .env-row .env-value,
+.mc-app .panel-energy .energy-value,
+.mc-app .panel-energy .energy-footer,
+.mc-app .panel-media .media-title,
+.mc-app .panel-media .media-artist,
+.mc-app .panel-media .media-source,
+.mc-app .panel-scenes .scene,
+.mc-app .panel-scenes .scene strong,
+.mc-app .panel-scenes .scene span {
+  color: #FFF7E8 !important;
+  -webkit-text-fill-color: #FFF7E8 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.92) !important;
+}
