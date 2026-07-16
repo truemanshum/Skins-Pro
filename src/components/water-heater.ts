@@ -74,10 +74,10 @@ export function renderWaterHeaterCard(
         <p class="muted">${lastTime}</p>
       </div>
       <div class="control-row" style="gap:2px" @click=${(e: Event) => e.stopPropagation()}>
-        <div style="display:flex;align-items:center;gap:1px;flex-shrink:0">
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(-step); }}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
+        <div class="temp-group" style="display:flex;align-items:center;gap:1px;flex-shrink:0">
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(-step); }}><ha-icon icon="mdi:minus" style="--mdc-icon-size:14px"></ha-icon></div>
           <span style="font-weight:700;font-size:var(--sp-font-2xs);min-width:22px;text-align:center">${targetTemp !== undefined ? tempDisplay(targetTemp) : '--'}</span>
-          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(step); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
+          <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(step); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>
         ${operationList.length > 1 ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_operation_mode', { operation_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
