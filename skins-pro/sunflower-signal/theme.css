@@ -4957,6 +4957,9 @@ input:focus-visible,
    - Preserve a full bottom safety gap above the fixed navigation.
    ======================================================================== */
 .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
   min-height: 48px !important;
   color: #111111 !important;
   background: #F7C928 !important;
@@ -5060,6 +5063,9 @@ input:focus-visible,
   .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
   .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
     position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
     inset: auto !important;
     top: auto !important;
     left: auto !important;
@@ -5134,5 +5140,98 @@ input:focus-visible,
   .mc-app .mobile-nav .nav-button span {
     font-size: 14px !important;
     line-height: 16px !important;
+  }
+}
+
+/* ========================================================================
+   Sunflower Signal v4 final local HA candidate polish
+   - keep runtime search as visible flex on mobile
+   - keep all seven mobile tabs in one no-scroll row with >=44px targets
+   - lift dark artwork and dark-surface small labels without changing assets
+   ======================================================================== */
+.mc-app .weather-block .weather-current-hl,
+.mc-app .weather-block .weather-current-cond,
+.mc-app .weather-block .forecast-weekday,
+.mc-app .weather-block .forecast-high,
+.mc-app .weather-block .forecast-low,
+.mc-app .device .device-name,
+.mc-app .device .muted,
+.mc-app .device .state-word,
+.mc-app .side .section-title h2,
+.mc-app .side .section-title p,
+.mc-app .side .time-main,
+.mc-app .side .time-sub,
+.mc-app .side .env-row,
+.mc-app .side .env-label,
+.mc-app .side .env-value,
+.mc-app .side .energy-value,
+.mc-app .side .energy-footer,
+.mc-app .side .media-title,
+.mc-app .side .media-artist,
+.mc-app .side .media-source,
+.mc-app .side .scene,
+.mc-app .side .scene strong,
+.mc-app .side .scene span {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.mc-app .device .status,
+.mc-app .chip.active,
+.mc-app .nav-button.active,
+.mc-app .nav-button[aria-current="page"] {
+  color: #111111 !important;
+  background: #F7C928 !important;
+}
+
+.mc-app .room img,
+.mc-app .sidebar-art img,
+.mc-app .item-img,
+.mc-app .item-icon {
+  filter: brightness(1.44) contrast(1.12) saturate(1.10) !important;
+}
+
+@media (max-width: 640px), (orientation: portrait) {
+  .stage,
+  .mc-app .stage,
+  .mc-app[data-view="home"] .stage,
+  .mc-app:not([data-view]) .stage {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .mc-app .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app[data-view="home"] .stage-grid > div[style*="position:absolute"][style*="translateX"],
+  .mc-app:not([data-view]) .stage-grid > div[style*="position:absolute"][style*="translateX"] {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    min-height: 48px !important;
+  }
+
+  .mobile-nav,
+  .mc-app .mobile-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    gap: 2px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-nav .nav-button,
+  .mobile-nav .nav-button.active,
+  .mobile-nav .nav-button[aria-current="page"],
+  .mc-app .mobile-nav .nav-button,
+  .mc-app .mobile-nav .nav-button.active,
+  .mc-app .mobile-nav .nav-button[aria-current="page"] {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+    height: 64px !important;
+    padding: 4px 1px !important;
   }
 }
