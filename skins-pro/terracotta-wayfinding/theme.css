@@ -5341,3 +5341,19 @@ input:focus-visible,
   -webkit-text-fill-color: #FFF7E8 !important;
   text-shadow: 0 1px 2px rgba(0,0,0,.92) !important;
 }
+
+
+/* Terracotta final runtime contrast exceptions. */
+.mc-app .time-card .time-main,
+.mc-app .time-card .time-sub,
+.mc-app .room-active span,
+.mc-app .room .room-active span {
+  color: #FFF7E8 !important;
+  -webkit-text-fill-color: #FFF7E8 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.95) !important;
+}
+.mc-app .room-active span,
+.mc-app .room .room-active span {
+  background: #3B2118 !important;
+  border-color: #FFF1D2 !important;
+}
