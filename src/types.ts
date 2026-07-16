@@ -26,6 +26,7 @@ export interface HomeAssistant {
     ) => Promise<() => Promise<void>>;
   };
   auth?: { data?: { access_token?: string } };
+  themes?: { darkMode?: boolean };
 }
 
 export interface AreaRegistryEntry {

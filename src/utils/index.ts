@@ -273,6 +273,9 @@ export function selectedSkin(config?: DashboardConfig): string {
 }
 
 const DARK_SUPPORTED_SKINS = new Set(['modern']);
+export function skinSupportsDark(skin: string): boolean {
+  return DARK_SUPPORTED_SKINS.has(skin);
+}
 let _darkAssetSkin: string | null = null;
 export function setDarkAssetSkin(skin: string | null): void {
   _darkAssetSkin = skin && DARK_SUPPORTED_SKINS.has(skin) ? skin : null;

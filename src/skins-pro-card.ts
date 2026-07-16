@@ -24,6 +24,7 @@ import {
   normalizeLanguage,
   selectedSkin,
   setDarkAssetSkin,
+  skinSupportsDark,
   stateValue,
   weatherIcon,
   t,
@@ -97,9 +98,6 @@ export class SkinsProCard extends LitElement {
   private _autoFullscreenDone = false;
   private _loadedSkinMetadata?: string;
   private readonly _handleWindowResize = () => this._applyLayout();
-
-  @state() private _themeMode: 'auto' | 'light' | 'dark' =
-    (localStorage.getItem('sp-theme-mode') as 'light' | 'dark') || 'auto';
 
   public get hass(): HomeAssistant | undefined {
     return this._hass;
@@ -353,7 +351,6 @@ export class SkinsProCard extends LitElement {
       setHideUnassigned: (h) => { this._hideUnassigned = h; },
       setSelectedFloor: (f) => { this._selectedFloor = f; },
       resolvedTheme: this._resolveTheme(),
-      onToggleTheme: () => this._toggleTheme(),
     };
   }
 
@@ -439,22 +436,12 @@ export class SkinsProCard extends LitElement {
   }
 
   private _resolveTheme(): 'light' | 'dark' {
-    if (this._themeMode === 'light') return 'light';
-    if (this._themeMode === 'dark') return 'dark';
-    const sun = this._hass?.states?.['sun.sun'];
-    return sun?.state === 'below_horizon' ? 'dark' : 'light';
+    if (!skinSupportsDark(selectedSkin(this._config))) return 'light';
+    return this._hass?.themes?.darkMode ? 'dark' : 'light';
   }
 
   private _applyThemeAttribute(): void {
     this.setAttribute('data-sp-theme', this._resolveTheme());
-  }
-
-  private _toggleTheme(): void {
-    const next = this._resolveTheme() === 'dark' ? 'light' : 'dark';
-    this._themeMode = next;
-    localStorage.setItem('sp-theme-mode', next);
-    this._applyThemeAttribute();
-    this.requestUpdate();
   }
 
   private handleAction(entityId: string, action: string): void {

@@ -59,7 +59,6 @@ export interface RenderContext {
   setSelectedFloor: (f: string) => void;
 
   resolvedTheme: 'light' | 'dark';
-  onToggleTheme: () => void;
 }
 
 export function renderImage(
