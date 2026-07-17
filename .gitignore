@@ -5,6 +5,8 @@ npm-debug.log*
 *.log
 src/skins.generated.ts
 scripts/store-worker.js
+scripts/gen-organic-ai.cjs
+scripts/gen-organic-assets.cjs
 
 store/
 __stage/
