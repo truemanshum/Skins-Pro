@@ -1,5 +1,5 @@
 import type { DashboardConfig } from '../types';
-import { assetUrl, selectedSkin } from '../utils';
+import { assetUrl } from '../utils';
 
 export function applyLayoutHeight(host: HTMLElement | null | undefined): void {
   if (!host) return;
@@ -31,9 +31,7 @@ export function applyThemeVariables(host: HTMLElement | null | undefined, config
   }
   const stageUrl = config?.background_image || assetUrl(config, 'stage');
   host.style.setProperty('--sp-stage-texture', `url("${stageUrl}")`);
-  if (selectedSkin(config) !== 'visionOS') {
-    host.style.setProperty('--sp-base-texture', `url("${assetUrl(config, 'base')}")`);
-  }
+  host.style.setProperty('--sp-base-texture', `url("${assetUrl(config, 'base')}")`);
 }
 
 export function applyFullscreenHeight(host: HTMLElement | null | undefined): void {

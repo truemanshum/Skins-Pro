@@ -12,9 +12,9 @@
   /* === Backgrounds — sage wall + cream paper + AI textures === */
   --sp-glass-bg:#EBEFEA;
   --sp-panel-bg:#EBEFEA;
-  --sp-base-texture:none; /* injected by JS from base-texture.jpg */
-  --sp-stage-texture:none; /* injected by JS from background.jpg */
-  --sp-app-overlay:linear-gradient(165deg,rgba(159,176,168,.88) 0%,rgba(137,156,149,.92) 100%);
+  --sp-base-texture:none;
+  --sp-stage-texture:none; /* injected by JS from background */
+  --sp-app-overlay:linear-gradient(165deg,rgba(159,176,168,.72) 0%,rgba(137,156,149,.78) 100%);
   --sp-stage-overlay:linear-gradient(180deg,rgba(235,239,234,.55) 0%,rgba(235,239,234,.28) 40%,rgba(235,239,234,.18) 100%);
   --sp-room-overlay:linear-gradient(180deg,transparent 40%,rgba(45,55,52,.45));
 
@@ -171,7 +171,8 @@ ha-card { overflow:hidden; border:0; background:transparent; box-shadow:none; bo
   padding:var(--sp-app-padding); padding-bottom:calc(var(--sp-app-padding) + env(safe-area-inset-bottom));
   box-sizing:border-box; color:var(--sp-text-main);
   display:grid; grid-template-columns:var(--sp-sidebar-width) minmax(0,1fr); gap:18px;
-  background-image:var(--sp-app-overlay),var(--sp-base-texture);
+  /* organic: no base-texture — reuse stage background everywhere */
+  background-image:var(--sp-app-overlay),var(--sp-stage-texture);
   background-size:cover,cover; background-position:center,center;
   background-repeat:no-repeat,no-repeat; background-color:transparent; overflow:hidden;
 }
