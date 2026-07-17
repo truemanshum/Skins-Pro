@@ -142,6 +142,7 @@ const en: Record<TranslationKey, string> = {
   editorSkinStoreRemove: 'Remove',
   editorSkinStoreRedownload: 'Update',
   editorSkinStoreSearch: 'Search skins...',
+  editorStoreClearCache: 'If the layout breaks after updating, try clearing your browser cache first.',
   editorEnergy: 'Energy',
   editorMediaPlayer: 'Media Player',
   editorCamera: 'Camera',

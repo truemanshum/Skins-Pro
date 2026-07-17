@@ -142,6 +142,7 @@ const zh: Record<TranslationKey, string> = {
   editorSkinStoreRemove: '移除',
   editorSkinStoreRedownload: '更新',
   editorSkinStoreSearch: '搜索皮肤...',
+  editorStoreClearCache: '如果更新后页面布局不正常，可以先尝试清除浏览器缓存。',
   editorEnergy: '能源',
   editorMediaPlayer: '媒体播放器',
   editorCamera: '摄像头',

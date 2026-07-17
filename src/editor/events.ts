@@ -244,6 +244,7 @@ function bindSkinStore(host: EditorHost): void {
       if (result.success) {
         host.onChange({ skinStore: { ...host.state.skinStore, open: false } });
         host.reload();
+        alert(t(host.state.language, 'editorStoreClearCache'));
       } else {
         alert(result.errorMessage || t(host.state.language, 'editorSkinStoreDependency'));
         btn.textContent = origText;
