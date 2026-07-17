@@ -601,7 +601,7 @@ button {
 }
 .themed-scrollbar { scrollbar-width:thin; scrollbar-color:var(--sp-scrollbar-thumb) var(--sp-scrollbar-track); }
 .floor-tabs { flex-wrap:wrap; }
-.env-floor-header { font-size:var(--sp-font-2xs); font-weight:var(--sp-font-weight-bold); color:var(--sp-text-muted-bright); margin-top:var(--sp-space-xs); padding-bottom:var(--sp-space-3xs); border-bottom:0.5px solid var(--sp-border-subtle); }
+.env-floor-header { font-size:var(--sp-font-2xs); font-weight:var(--sp-font-weight-bold); color:var(--sp-text-muted); margin-top:var(--sp-space-xs); padding-bottom:var(--sp-space-3xs); border-bottom:0.5px solid var(--sp-border-subtle); }
 .env-floor-header:first-child { margin-top:0; }
 
 /* ==========================================================================
@@ -2692,5 +2692,248 @@ ha-control-switch {
     backdrop-filter:none !important;
     -webkit-backdrop-filter:none !important;
     background:var(--sp-fusion-stage-control-solid) !important;
+  }
+}
+
+/* bronze-oracle-archive-20260717-v14
+ * Balanced archive desk: broad reading field, measured right rail, camera-ready. */
+:host {
+  --sp-text-primary:#1F2824;
+  --sp-text-secondary:#39473F;
+  --sp-text-muted:#4B5A52;
+  --sp-text-tertiary:#58675F;
+  --sp-border-glass:rgba(108,88,59,.46);
+  --sp-shadow-card:0 6px 16px rgba(38,49,46,.11);
+  --sp-shadow-lg:0 12px 28px rgba(38,49,46,.15);
+}
+
+.section-title h2 { font-size:15px; font-weight:700; letter-spacing:.045em; }
+.section-title .muted { font-weight:600; }
+.env-label,.media-artist,.media-source,.energy-footer { color:var(--sp-text-secondary); }
+
+@media (min-width:1181px) and (orientation:landscape) {
+  :host { --sp-sidebar-width:220px; }
+  .mc-app { gap:14px; }
+  .stage-grid {
+    grid-template-columns:minmax(0,1fr) 300px;
+    grid-template-rows:292px minmax(0,1fr);
+    grid-template-areas:"welcome side" "bottom side";
+    column-gap:18px;
+    row-gap:14px;
+    padding:18px 20px 20px;
+  }
+  .stage-grid > :where(button,div):first-child {
+    left:auto !important;
+    right:338px !important;
+    top:18px !important;
+    width:min(420px,30vw) !important;
+    max-width:420px !important;
+    min-height:44px;
+    transform:none !important;
+  }
+  .welcome-group {
+    padding:60px 18px 16px;
+    min-width:0;
+    box-sizing:border-box;
+    background:rgba(232,224,208,.93);
+    background-image:repeating-linear-gradient(0deg,transparent 0 23px,rgba(128,109,78,.045) 23px 24px);
+    border:1px solid rgba(108,88,59,.46);
+    border-left:4px solid var(--sp-accent);
+    box-shadow:var(--sp-shadow-card);
+  }
+  .welcome { max-width:560px; }
+  .welcome h1 { font-size:32px; font-weight:600; }
+  .quote { font-size:14px; font-weight:600; }
+  .weather-with-meta { gap:18px; justify-content:space-between; margin-top:8px; align-items:center; }
+  .weather-block { max-width:340px; margin-top:0; }
+  .weather-current-temp { font-size:25px; font-weight:700; }
+  .weather-current-cond,.weather-current-hl { color:var(--sp-text-secondary); font-weight:600; }
+  .forecast-weekday,.forecast-high,.forecast-low { font-size:12px; }
+
+  .welcome-meta {
+    flex:0 0 500px;
+    max-width:500px;
+    align-items:stretch;
+    gap:8px;
+    padding:10px 14px;
+    box-sizing:border-box;
+    text-align:left;
+    background:rgba(232,224,208,.90);
+    border:1px solid rgba(108,88,59,.40);
+    border-left:4px solid var(--sp-accent);
+    box-shadow:var(--sp-shadow-card);
+  }
+  .welcome-meta .time-main { font-size:25px; }
+  .welcome-meta .env-list-inline { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px 12px; }
+  .welcome-meta .env-row {
+    display:grid;
+    grid-template-columns:18px minmax(0,1fr);
+    grid-template-rows:auto auto;
+    min-height:42px;
+    gap:1px 7px;
+    border:0;
+  }
+  .welcome-meta .env-row > .muted {
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:11px;
+  }
+  .welcome-meta .env-value {
+    grid-column:2;
+    text-align:left;
+    white-space:nowrap;
+    word-break:keep-all;
+    overflow-wrap:normal;
+    font-size:13px;
+  }
+
+  .side { width:100%; max-width:none; justify-self:stretch; gap:12px; order:0; }
+  .side:has(> .panel-camera) {
+    grid-template-rows:216px 180px 120px 180px;
+    align-content:start;
+  }
+  .side:not(:has(> .panel-camera)) { grid-template-rows:max-content max-content 190px 122px minmax(150px,1fr); align-content:start; }
+  .side > section { padding:14px; }
+  .panel-camera { min-height:216px; overflow:hidden; border-top:4px solid var(--sp-accent); cursor:pointer; }
+  .panel-camera .section-title { margin-bottom:8px; }
+  .panel-camera .camera-preview {
+    position:relative;
+    width:100%;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    aspect-ratio:16 / 9 !important;
+    margin-top:0;
+    overflow:hidden;
+    isolation:isolate;
+    background:#CFC4AF !important;
+    border:1px solid rgba(108,88,59,.55);
+    box-shadow:inset 0 0 0 2px rgba(232,224,208,.12);
+  }
+  .panel-camera .camera-preview::before {
+    content:"摄像头画面 · 点击查看详情";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    display:grid;
+    place-items:center;
+    padding:16px;
+    color:var(--sp-text-secondary);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.035em;
+    text-align:center;
+  }
+  .panel-camera .camera-preview img,
+  .panel-camera .camera-preview video,
+  .panel-camera .camera-preview canvas,
+  .panel-camera .camera-preview ha-camera-stream {
+    width:100% !important;
+    height:100% !important;
+    position:relative;
+    z-index:1;
+    display:block !important;
+    object-fit:cover !important;
+  }
+  .panel-energy { height:180px; }
+  .panel-energy .bars { height:48px; margin-top:8px; }
+  .panel-media { min-height:122px; max-height:122px; }
+  .panel-media .media-content { margin-top:4px; }
+  .panel-media .media-cover { width:42px; height:42px; }
+  .panel-scenes { min-height:150px; max-height:180px; }
+  .panel-scenes .scene-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+
+  .bottom-stack {
+    align-self:stretch;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:210px minmax(0,1fr);
+    gap:14px;
+  }
+  .bottom-devices .devices {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-auto-flow:row;
+    grid-auto-columns:auto;
+    overflow-x:auto;
+    overflow-y:hidden;
+    gap:12px;
+    padding:4px 4px 10px;
+  }
+  .bottom-devices .device { min-width:0; min-height:160px; padding:14px; }
+  .bottom-devices .device:nth-child(n+5) { display:none; }
+  .bottom-devices .control-row { gap:2px !important; padding-right:6px; box-sizing:border-box; }
+  .bottom-devices .temp-group { gap:2px !important; }
+  .bottom-devices .filter-select { min-width:50px !important; width:50px; padding-right:12px !important; }
+  .rooms,.mc-app[data-view="rooms"] .rooms,.rooms-page,.rooms-page-medium,.rooms-page-dense {
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+  }
+  .room { min-height:164px; aspect-ratio:16 / 9; }
+  .room-scenes,.room-active { max-width:46%; gap:3px; }
+  .room-scene-chip,.room-active-chip {
+    min-height:24px;
+    max-width:100px;
+    padding:2px 8px;
+    font-size:11px;
+  }
+  .room-scene-chip:nth-child(n+3),.room-active-chip:nth-child(n+3) { display:none; }
+}
+
+@media (max-width:480px) and (orientation:portrait) {
+  .stage-grid {
+    grid-template-areas:"welcome" "bottom" "side";
+    padding-bottom:132px;
+  }
+  .mobile-nav .nav-button { color:var(--sp-text-secondary); }
+  .room-label h3,
+  .room-label .muted,
+  .room-stats {
+    color:#FFF9EE;
+    text-shadow:0 1px 2px rgba(0,0,0,.72);
+  }
+  :where(.room-scene-chip,.room-active-chip,.media-btn,.media-volbtn) {
+    min-width:44px;
+    min-height:44px;
+  }
+  .device .filter-select {
+    min-width:72px !important;
+    min-height:44px !important;
+    padding:0 20px 0 8px !important;
+    font-size:12px !important;
+  }
+  .device .control-row { flex-wrap:wrap; gap:6px; }
+  .panel-camera .camera-preview {
+    width:100%;
+    height:auto !important;
+    min-height:0 !important;
+    aspect-ratio:16 / 9 !important;
+    overflow:hidden;
+    isolation:isolate;
+    background:#CFC4AF !important;
+  }
+  .panel-camera .camera-preview::before {
+    content:"摄像头画面 · 点击查看详情";
+    position:absolute;
+    inset:0;
+    z-index:0;
+    display:grid;
+    place-items:center;
+    padding:16px;
+    color:var(--sp-text-secondary);
+    font-size:12px;
+    font-weight:600;
+    text-align:center;
+  }
+  .panel-camera .camera-preview img,
+  .panel-camera .camera-preview video,
+  .panel-camera .camera-preview canvas,
+  .panel-camera .camera-preview ha-camera-stream {
+    width:100% !important;
+    height:100% !important;
+    position:relative;
+    z-index:1;
+    display:block !important;
+    object-fit:cover !important;
   }
 }
