@@ -2,7 +2,7 @@ import type { AreaRegistryEntry, TranslationKey } from '../types';
 import type { Language } from '../i18n';
 import { entityPicker, listPicker, areaPicker, CONTROLLABLE_DOMAINS } from './pickers';
 
-const HOME_DEVICE_DOMAINS = CONTROLLABLE_DOMAINS.filter((d) => d !== 'automation' && d !== 'group');
+const HOME_DEVICE_DOMAINS = CONTROLLABLE_DOMAINS.filter((d) => !['automation', 'group', 'input_boolean', 'siren', 'lock'].includes(d));
 import { buildSkinOptions, type DashboardConfigRecord } from './config';
 import { renderNavDialog } from './nav-dialog';
 import { renderSkinStore, type SkinStoreState } from './skin-store';
