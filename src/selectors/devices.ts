@@ -45,6 +45,7 @@ export function getRealDevicesForRender(
       const domain = preferredEntity.split('.')[0] || 'sensor';
       const icon = String(stateObj?.attributes?.icon || iconForDomain(domain));
       const name = String(stateObj?.attributes?.friendly_name || preferredEntity);
+      if (/pre-?release/i.test(name)) return undefined;
       const subtitle = areaNameForEntity(preferredEntity, entityRegistry, deviceRegistry, areas) || '';
       const detail = domain || '--';
 
@@ -63,7 +64,6 @@ export function getRealDevicesForRender(
       if (filters.filterRoom && d.subtitle !== filters.filterRoom) return false;
       if (filters.filterType && deviceTypeGroupKey(d.detail) !== filters.filterType) return false;
       if (filters.hideUnassigned && !d.subtitle) return false;
-      if (/pre-?release/i.test(d.name)) return false;
       return true;
     });
 }
