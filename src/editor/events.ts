@@ -237,14 +237,14 @@ function bindSkinStore(host: EditorHost): void {
     btn.addEventListener('click', async () => {
       const skin = btn.getAttribute('data-store-download');
       if (!skin) return;
-      const origText = btn.textContent || '';
+      const alreadyInstalled = (host.state.config.downloaded_skins || []).includes(skin);
       btn.textContent = t(host.state.language, 'editorDownloading');
       (btn as HTMLButtonElement).disabled = true;
       const result = await downloadSkin(host.el, host.state.config, host.state.hass, skin, host.state.language);
       if (result.success) {
         host.onChange({ skinStore: { ...host.state.skinStore, open: false } });
         host.reload();
-        alert(t(host.state.language, 'editorStoreClearCache'));
+        if (alreadyInstalled) alert(t(host.state.language, 'editorStoreClearCache'));
       } else {
         alert(result.errorMessage || t(host.state.language, 'editorSkinStoreDependency'));
         btn.textContent = origText;
