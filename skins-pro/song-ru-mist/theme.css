@@ -734,7 +734,7 @@ button {
 }
 .themed-scrollbar { scrollbar-width:thin; scrollbar-color:var(--sp-scrollbar-thumb) var(--sp-scrollbar-track); }
 .floor-tabs { flex-wrap:wrap; }
-.env-floor-header { font-size:var(--sp-font-2xs); font-weight:var(--sp-font-weight-bold); color:var(--sp-text-muted-bright); margin-top:var(--sp-space-xs); padding-bottom:var(--sp-space-3xs); border-bottom:0.5px solid var(--sp-border-subtle); }
+.env-floor-header { font-size:var(--sp-font-2xs); font-weight:var(--sp-font-weight-bold); color:var(--sp-text-muted); margin-top:var(--sp-space-xs); padding-bottom:var(--sp-space-3xs); border-bottom:0.5px solid var(--sp-border-subtle); }
 .env-floor-header:first-child { margin-top:0; }
 
 /* ==========================================================================
