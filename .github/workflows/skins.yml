@@ -38,30 +38,30 @@ jobs:
       - name: Detect changed skins
         id: skins
         run: |
-          # Detect added/modified skins (exclude deletions)
-          SKIN_CHANGED=$(git diff --diff-filter=d --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
+          # Any path change under skins-pro/<skin>/ counts as a skin change (add/modify/delete of files)
+          SKIN_TOUCHED=$(git diff --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
             | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
-          SCREENSHOT_CHANGED=$(git diff --diff-filter=d --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
+          SCREENSHOT_TOUCHED=$(git diff --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
             | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
             | grep -v '^thumbnails$' | grep -v '^registry$' || true)
-          CHANGED=$(printf '%s\n%s\n' "$SKIN_CHANGED" "$SCREENSHOT_CHANGED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
-          if [ -z "$CHANGED" ]; then
-            echo "target=" >> "$GITHUB_OUTPUT"
-            echo "No specific skins changed"
-          else
-            echo "target=$CHANGED" >> "$GITHUB_OUTPUT"
-            echo "Changed skins: $CHANGED"
-          fi
 
-          # Detect deleted skins
-          SKIN_DELETED=$(git diff --diff-filter=D --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
-            | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
-          SCREENSHOT_DELETED=$(git diff --diff-filter=D --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
-            | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
-            | grep -v '^thumbnails$' | grep -v '^registry$' || true)
-          DELETED=$(printf '%s\n%s\n' "$SKIN_DELETED" "$SCREENSHOT_DELETED" | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//' || true)
+          CHANGED=""
+          DELETED=""
+          for skin in $(printf '%s\n%s\n' "$SKIN_TOUCHED" "$SCREENSHOT_TOUCHED" | grep -v '^$' | sort -u); do
+            # Only treat as deleted theme when the whole skin directory is gone
+            if [ -d "skins-pro/$skin" ]; then
+              CHANGED="$CHANGED $skin"
+            else
+              DELETED="$DELETED $skin"
+            fi
+          done
+          CHANGED=$(echo "$CHANGED" | xargs || true)
+          DELETED=$(echo "$DELETED" | xargs || true)
+
+          echo "target=$CHANGED" >> "$GITHUB_OUTPUT"
           echo "deleted=$DELETED" >> "$GITHUB_OUTPUT"
-          if [ -n "$DELETED" ]; then echo "Deleted skins: $DELETED"; fi
+          echo "Changed skins: ${CHANGED:-<none>}"
+          echo "Deleted themes: ${DELETED:-<none>}"
 
       - name: Fetch existing store assets
         run: |
@@ -74,16 +74,17 @@ jobs:
             git show "origin/store:$p" > "$p" 2>/dev/null && echo "Restored: $p"
           done
 
-      - name: Remove deleted skin assets
+      - name: Remove deleted theme store assets
         run: |
           DELETED="${{ steps.skins.outputs.deleted }}"
           if [ -z "$DELETED" ]; then
-            echo "No skins to delete"
+            echo "No themes to delete"
             exit 0
           fi
           for skin in $DELETED; do
+            # Whole theme directory is gone — drop local store artifacts before rebuild/sync
             rm -f "store/${skin}.zip" "screenshots/thumbnails/${skin}.jpg"
-            echo "Removed store assets for deleted skin: $skin"
+            echo "Removed store assets for deleted theme: $skin"
           done
 
       - name: Build skins
@@ -107,12 +108,14 @@ jobs:
 
           if [ -z "$TARGET" ] && [ -z "$DELETED" ]; then
             echo "Full sync (no specific changes detected)"
-            aws s3 sync store/ "s3://skinspro/store/" --endpoint-url "$ENDPOINT" --delete
-            aws s3 sync screenshots/thumbnails/ "s3://skinspro/screenshots/thumbnails/" --endpoint-url "$ENDPOINT" --delete
+            # overwrite only — no --delete
+            aws s3 sync store/ "s3://skinspro/store/" --endpoint-url "$ENDPOINT"
+            aws s3 sync screenshots/thumbnails/ "s3://skinspro/screenshots/thumbnails/" --endpoint-url "$ENDPOINT"
             for f in screenshots/*.*; do
               [ -f "$f" ] && aws s3 cp "$f" "s3://skinspro/screenshots/$(basename "$f")" --endpoint-url "$ENDPOINT"
             done
           else
+            # Changed themes: overwrite upload
             for skin in $TARGET; do
               [ -f "store/${skin}.zip" ] && aws s3 cp "store/${skin}.zip" "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT"
               [ -f "screenshots/thumbnails/${skin}.jpg" ] && aws s3 cp "screenshots/thumbnails/${skin}.jpg" "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT"
@@ -120,6 +123,7 @@ jobs:
                 [ -f "$f" ] && aws s3 cp "$f" "s3://skinspro/screenshots/$(basename "$f")" --endpoint-url "$ENDPOINT"
               done
             done
+            # Whole theme deleted only: remove remote assets
             for skin in $DELETED; do
               aws s3 rm "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT" 2>/dev/null || true
               aws s3 rm "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT" 2>/dev/null || true
