@@ -1,6 +1,8 @@
 import type { AreaRegistryEntry, TranslationKey } from '../types';
 import type { Language } from '../i18n';
 import { entityPicker, listPicker, areaPicker, CONTROLLABLE_DOMAINS } from './pickers';
+
+const HOME_DEVICE_DOMAINS = CONTROLLABLE_DOMAINS.filter((d) => d !== 'automation' && d !== 'group');
 import { buildSkinOptions, type DashboardConfigRecord } from './config';
 import { renderNavDialog } from './nav-dialog';
 import { renderSkinStore, type SkinStoreState } from './skin-store';
@@ -88,7 +90,7 @@ export function renderEditorTemplate(data: EditorTemplateData): string {
       <div class="sp-row">
         <div class="sp-card">
           <h3>${loc('editorHomeDevices')}</h3>
-          ${listPicker(loc('devices'), 'home_selection.devices', hs.devices || [], CONTROLLABLE_DOMAINS, hl.devices || 5)}
+          ${listPicker(loc('devices'), 'home_selection.devices', hs.devices || [], HOME_DEVICE_DOMAINS, hl.devices || 5)}
         </div>
         <div class="sp-card">
           <h3>${loc('editorHomeRooms')}</h3>
