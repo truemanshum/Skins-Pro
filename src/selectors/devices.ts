@@ -63,6 +63,7 @@ export function getRealDevicesForRender(
       if (filters.filterRoom && d.subtitle !== filters.filterRoom) return false;
       if (filters.filterType && deviceTypeGroupKey(d.detail) !== filters.filterType) return false;
       if (filters.hideUnassigned && !d.subtitle) return false;
+      if (/pre-?release/i.test(d.name)) return false;
       return true;
     });
 }
