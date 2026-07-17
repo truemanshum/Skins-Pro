@@ -16,12 +16,13 @@ function escapeAttr(value: string): string {
   return value.replace(/"/g, '&quot;');
 }
 
-export function entityPicker(label: string, path: string, value: string, domains?: string[]): string {
-  const filter = domains?.length ? ` include-domains='${JSON.stringify(domains)}'` : '';
+export function entityPicker(label: string, path: string, value: string, domains?: string[], deviceClasses?: string[]): string {
+  const dFilter = domains?.length ? ` include-domains='${JSON.stringify(domains)}'` : '';
+  const dcFilter = deviceClasses?.length ? ` include-device-classes='${JSON.stringify(deviceClasses)}'` : '';
   return `
     <label>
       <span>${label}</span>
-      <${ENTITY_PICKER_TAG} data-path="${path}"${filter} value="${escapeAttr(value || '')}"></${ENTITY_PICKER_TAG}>
+      <${ENTITY_PICKER_TAG} data-path="${path}"${dFilter}${dcFilter} value="${escapeAttr(value || '')}"></${ENTITY_PICKER_TAG}>
     </label>
   `;
 }

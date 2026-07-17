@@ -73,7 +73,7 @@ export function renderEditorTemplate(data: EditorTemplateData): string {
       <div class="sp-row" style="grid-template-columns:1fr 1fr 1fr">
         <div class="sp-card">
           <h3>${loc('editorEnergy')}</h3>
-          ${entityPicker(loc('editorEnergyEntity'), 'energy.entity', c.energy?.entity || hs.energy_entity || '', ['sensor'])}
+          ${entityPicker(loc('editorEnergyEntity'), 'energy.entity', c.energy?.entity || hs.energy_entity || '', ['sensor'], ['energy', 'power'])}
         </div>
         <div class="sp-card">
           <h3>${loc('editorMediaPlayer')}</h3>
