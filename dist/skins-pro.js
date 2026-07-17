@@ -360,7 +360,7 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
           </div>
           <div class="time-icon" @click=${l?()=>e.onHandleAction(l,"more-info"):void 0} style=${l?"cursor:pointer":""}><ha-icon icon=${h}></ha-icon></div>
         </section>
-        <section class="glass-card">
+        <section class="glass-card panel-environment">
           <div class="section-title"><h2>${e.translate("environment")}</h2></div>
           <div class="env-list" style="gap:clamp(4px,1.2vw,12px);margin-top:clamp(4px,1.2vw,12px);">${_i(e.config,e.hass,e.areas,e.entityRegistry,e.deviceRegistry,e.floors,e.language)}</div>
         </section>`}

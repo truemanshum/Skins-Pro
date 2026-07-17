@@ -174,7 +174,7 @@ ha-card { overflow:hidden; border:0; background:transparent; box-shadow:none; bo
   /* organic: no base-texture — reuse stage background everywhere */
   background-image:var(--sp-app-overlay),var(--sp-stage-texture);
   background-size:cover,cover; background-position:center,center;
-  background-repeat:no-repeat,no-repeat; background-color:transparent; overflow:hidden;
+  background-repeat:no-repeat,no-repeat; background-color:transparent; overflow:clip;
 }
 h1,h2,h3,p { margin:0; font:inherit; }
 h1 { font-size:var(--sp-font-lg); line-height:1.15; font-weight:700; color:var(--sp-text-main); }
@@ -216,7 +216,7 @@ button { font:inherit; }
 
 /* === Stage — cream wash over AI background texture === */
 .stage {
-  min-height:0; height:100%; border-radius:var(--sp-stage-radius); overflow:hidden;
+  min-height:0; height:100%; border-radius:var(--sp-stage-radius); overflow:clip;
   position:relative;
   background-color:var(--sp-panel-bg);
   background-image:var(--sp-stage-overlay),var(--sp-stage-texture);
@@ -233,7 +233,7 @@ button { font:inherit; }
   display:grid; grid-template-columns:minmax(0,3fr) minmax(280px,1fr);
   grid-template-rows:auto minmax(0,1fr) auto;
   grid-template-areas:"welcome side" "spacer side" "bottom side";
-  gap:var(--sp-space-lg); overflow:visible;
+  gap:var(--sp-space-lg); overflow:hidden;
 }
 .welcome-group { grid-area:welcome; display:grid; grid-template-rows:auto auto; gap:0; background:transparent; }
 
@@ -286,7 +286,7 @@ button { font:inherit; }
 .forecast-low { font-size:var(--sp-font-4xs); color:var(--sp-text-muted); }
 
 /* === Bottom === */
-.bottom-stack { grid-area:bottom; align-self:end; min-height:0; display:grid; gap:var(--sp-space-sm); padding:var(--sp-space-xs); }
+.bottom-stack { grid-area:bottom; align-self:end; min-height:0; display:grid; gap:var(--sp-space-sm); }
 .bottom-block { min-height:0; }
 
 /* === Pages === */
@@ -413,7 +413,7 @@ select option:checked { background:#DDE3DC; color:#2D3734; }
 .room-active-chip:hover { background:rgba(45,55,52,.70); }
 
 /* === Side Panel === */
-.side { grid-area:side; min-height:0; height:100%; display:grid; grid-template-rows:max-content max-content auto auto; gap:var(--sp-space-lg); align-content:stretch; overflow:visible; }
+.side { grid-area:side; min-height:0; height:100%; display:grid; grid-template-rows:max-content minmax(min-content,1fr); grid-auto-rows:max-content; gap:var(--sp-space-lg); align-content:stretch; overflow:hidden; }
 
 /* === Glass Card / Time Card === */
 .glass-card,.time-card {
@@ -425,6 +425,8 @@ select option:checked { background:#DDE3DC; color:#2D3734; }
   color:var(--sp-text-main);
 }
 .side > section { min-height:0; }
+.panel-environment { display:flex; flex-direction:column; min-height:0; }
+.panel-environment .env-list { flex:1; min-height:0; align-content:start; }
 
 /* === Energy Panel === */
 .panel-energy {
@@ -498,7 +500,7 @@ select option:checked { background:#DDE3DC; color:#2D3734; }
   padding:var(--sp-space-lg);
   box-shadow:var(--sp-shadow-glass);
 }
-.panel-scenes .scene-grid { min-height:0; flex:1; align-content:start; overflow:visible; padding:var(--sp-space-3xs) 0; }
+.panel-scenes .scene-grid { min-height:0; flex:1; align-content:start; overflow:hidden; padding:var(--sp-space-3xs) 0; }
 
 /* === Time === */
 .time-card { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-space-md); }
@@ -529,8 +531,10 @@ select option:checked { background:#DDE3DC; color:#2D3734; }
 
 /* === Maintenance === */
 .maintenance-block { margin-top:var(--sp-space-md); padding-top:var(--sp-space-md); border-top:1px solid var(--sp-maintenance-divider); }
+.maintenance-card .maintenance-block { margin-top:0; padding-top:0; border-top:0; }
 .maintenance-title { margin-bottom:var(--sp-space-xs); }
 .maintenance-list { display:grid; gap:var(--sp-space-sm); margin-top:var(--sp-space-md); }
+.maintenance-card .maintenance-list { margin-top:var(--sp-space-xs); }
 .maintenance-item { display:grid; grid-template-columns:10px minmax(0,1fr) auto; gap:var(--sp-space-sm); align-items:center; color:var(--sp-text-muted-bright); font-size:var(--sp-font-3xs); }
 .maintenance-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .maintenance-value { font-weight:700; text-align:right; }

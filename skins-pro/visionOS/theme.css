@@ -1202,7 +1202,8 @@ button {
   min-height: 0;
   height: 100%;
   display: grid;
-  grid-template-rows: max-content max-content auto auto;
+  grid-template-rows: max-content minmax(min-content,1fr);
+  grid-auto-rows: max-content;
   gap: var(--sp-space-lg);
   align-content: stretch;
   overflow: hidden;
@@ -1211,6 +1212,9 @@ button {
 .side > section {
   min-height: 0;
 }
+
+.panel-environment { display:flex; flex-direction:column; min-height:0; }
+.panel-environment .env-list { flex:1; min-height:0; align-content:start; }
 
 /* ---- Glass Card (generic side panel) ---- */
 
@@ -1643,6 +1647,7 @@ button {
   padding-top: var(--sp-space-md);
   border-top: var(--sp-border-w) solid var(--sp-border-subtle);
 }
+.maintenance-card .maintenance-block { margin-top:0; padding-top:0; border-top:0; }
 
 .maintenance-title {
   margin-bottom: var(--sp-space-xs);
@@ -1653,6 +1658,7 @@ button {
   gap: var(--sp-space-sm);
   margin-top: var(--sp-space-md);
 }
+.maintenance-card .maintenance-list { margin-top: var(--sp-space-xs); }
 
 .maintenance-item {
   display: grid;
