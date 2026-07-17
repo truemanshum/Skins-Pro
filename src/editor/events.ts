@@ -238,6 +238,7 @@ function bindSkinStore(host: EditorHost): void {
       const skin = btn.getAttribute('data-store-download');
       if (!skin) return;
       const alreadyInstalled = (host.state.config.downloaded_skins || []).includes(skin);
+      const origText = btn.textContent || '';
       btn.textContent = t(host.state.language, 'editorDownloading');
       (btn as HTMLButtonElement).disabled = true;
       const result = await downloadSkin(host.el, host.state.config, host.state.hass, skin, host.state.language);
