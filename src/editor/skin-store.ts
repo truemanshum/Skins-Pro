@@ -53,6 +53,7 @@ export interface SkinStoreState {
   loading: boolean;
   error: string;
   themes: SkinStoreTheme[];
+  searchQuery: string;
 }
 
 export function renderSkinStore(
@@ -69,7 +70,11 @@ export function renderSkinStore(
     content = `<p style="text-align:center;padding:40px 0;color:var(--sp-error,#e44)">${t(language, 'editorSkinStoreLoadFailed')}</p>`;
   } else {
     const downloaded: string[] = config.downloaded_skins || [];
-    content = `<div class="store-grid">${state.themes.map(theme => {
+    const query = (state.searchQuery || '').toLowerCase().trim();
+    const filtered = query ? state.themes.filter(th => th.id.toLowerCase().includes(query) || (th.name || '').toLowerCase().includes(query) || (th.author || '').toLowerCase().includes(query)) : state.themes;
+    content = `
+      <input type="text" class="store-search" data-store-search placeholder="${t(language, 'editorSkinStoreSearch')}" value="${state.searchQuery || ''}" style="width:100%;box-sizing:border-box;padding:10px 14px;border-radius:var(--sp-radius-pill,999px);border:1px solid var(--sp-border-muted,var(--divider-color,rgba(0,0,0,0.12)));background:var(--sp-device-bg,rgba(128,128,128,0.06));color:var(--sp-text-main,inherit);font:inherit;font-size:var(--sp-font-xs,14px);outline:none;margin-bottom:var(--sp-space-md,16px);">
+      <div class="store-grid">${filtered.map(theme => {
       const installed = downloaded.includes(theme.id);
       const dlCount = theme.downloads ?? '-';
       const likeCount = theme.likes ?? 0;
@@ -86,7 +91,7 @@ export function renderSkinStore(
             </button>
           </div>
           ${installed
-            ? `<button class="store-remove" data-store-remove="${theme.id}">${t(language, 'editorSkinStoreRemove')}</button>`
+            ? `<div style="display:flex;gap:6px"><button class="store-download" data-store-download="${theme.id}">${t(language, 'editorSkinStoreRedownload')}</button><button class="store-remove" data-store-remove="${theme.id}">${t(language, 'editorSkinStoreRemove')}</button></div>`
             : `<button class="store-download" data-store-download="${theme.id}">${t(language, 'editorSkinStoreDownload')}</button>`
           }
         </div>

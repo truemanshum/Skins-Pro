@@ -140,6 +140,8 @@ const en: Record<TranslationKey, string> = {
   editorSkinStoreLoadFailed: 'Failed to load, please check your network',
   editorSkinStoreDownload: 'Download',
   editorSkinStoreRemove: 'Remove',
+  editorSkinStoreRedownload: 'Update',
+  editorSkinStoreSearch: 'Search skins...',
   editorEnergy: 'Energy',
   editorMediaPlayer: 'Media Player',
   editorCamera: 'Camera',

@@ -140,6 +140,8 @@ const zh: Record<TranslationKey, string> = {
   editorSkinStoreLoadFailed: '加载失败，请检查网络',
   editorSkinStoreDownload: '下载',
   editorSkinStoreRemove: '移除',
+  editorSkinStoreRedownload: '更新',
+  editorSkinStoreSearch: '搜索皮肤...',
   editorEnergy: '能源',
   editorMediaPlayer: '媒体播放器',
   editorCamera: '摄像头',

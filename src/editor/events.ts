@@ -190,7 +190,7 @@ function bindSkinStore(host: EditorHost): void {
   const storeBtn = host.root.querySelector<HTMLElement>('[data-skin-store]');
   if (storeBtn) {
     storeBtn.addEventListener('click', async () => {
-      host.onChange({ skinStore: { ...host.state.skinStore, open: true, loading: true, error: '' } });
+      host.onChange({ skinStore: { ...host.state.skinStore, open: true, loading: true, error: '', searchQuery: '' } });
       host.reload();
       try {
         const themes = await fetchSkinThemes();
@@ -201,7 +201,7 @@ function bindSkinStore(host: EditorHost): void {
           likes: skinStats[t.id]?.liked ?? 0,
           userLiked: isSkinLiked(t.id),
         }));
-        host.onChange({ skinStore: { open: true, loading: false, error: '', themes: merged } });
+        host.onChange({ skinStore: { open: true, loading: false, error: '', themes: merged, searchQuery: host.state.skinStore.searchQuery || '' } });
       } catch (err) {
         host.onChange({ skinStore: { ...host.state.skinStore, loading: false, error: String(err) } });
       }
@@ -251,6 +251,15 @@ function bindSkinStore(host: EditorHost): void {
       }
     });
   });
+  const searchInput = host.root.querySelector<HTMLInputElement>('[data-store-search]');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      host.onChange({ skinStore: { ...host.state.skinStore, searchQuery: searchInput.value } });
+      host.reload();
+      const restored = host.root.querySelector<HTMLInputElement>('[data-store-search]');
+      if (restored && restored !== searchInput) { restored.focus(); restored.setSelectionRange(searchInput.value.length, searchInput.value.length); }
+    });
+  }
   host.root.querySelectorAll<HTMLElement>('[data-store-like]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const skin = btn.getAttribute('data-store-like');

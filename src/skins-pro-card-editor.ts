@@ -10,7 +10,7 @@ export class SkinsProCardEditor extends HTMLElement {
     hass: undefined,
     language: 'en',
     navDialogOpen: false,
-    skinStore: { open: false, loading: false, error: '', themes: [] },
+    skinStore: { open: false, loading: false, error: '', themes: [], searchQuery: '' },
   };
   private _areas: AreaRegistryEntry[] = [];
   private _areasLoaded = false;

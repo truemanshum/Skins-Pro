@@ -355,6 +355,8 @@ export type TranslationKey =
   | 'editorSkinStoreLoadFailed'
   | 'editorSkinStoreDownload'
   | 'editorSkinStoreRemove'
+  | 'editorSkinStoreRedownload'
+  | 'editorSkinStoreSearch'
   | 'editorEnergy'
   | 'editorMediaPlayer'
   | 'editorCamera'
