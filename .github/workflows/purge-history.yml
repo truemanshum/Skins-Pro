@@ -1,0 +1,180 @@
+name: Purge History
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (analyze only, no force push)'
+        type: boolean
+        default: true
+      extra_paths:
+        description: 'Extra paths to purge (space-separated, optional)'
+        type: string
+        default: ''
+      skip_backup:
+        description: 'Skip backup branch creation (not recommended)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: purge-history
+  cancel-in-progress: false
+
+jobs:
+  purge:
+    name: Purge asset blobs from master history
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Detect purgeable paths
+        id: detect
+        run: |
+          set -euo pipefail
+
+          # Find all skin dirs that ever existed in history under skins-pro/
+          HISTORICAL_SKINS=$(git log --all --pretty=format: --name-only --diff-filter=A -- 'skins-pro/' 2>/dev/null \
+            | grep '^skins-pro/[^/]\+/' | cut -d/ -f2 | sort -u | grep -v '^\.gitkeep$' || true)
+
+          # Skins currently on master HEAD
+          CURRENT_SKINS=$(find skins-pro/ -maxdepth 1 -mindepth 1 -type d 2>/dev/null | cut -d/ -f2 | sort -u || true)
+
+          # Set difference: historical - current = already removed but blobs still in history
+          PURGE_SKINS=$(comm -23 \
+            <(printf '%s\n' "$HISTORICAL_SKINS" | grep -v '^$' | sort -u) \
+            <(printf '%s\n' "$CURRENT_SKINS" | grep -v '^$' | sort -u) \
+            || true)
+
+          # Find screenshot files that ever existed but no longer on HEAD
+          HISTORICAL_SHOTS=$(git log --all --pretty=format: --name-only --diff-filter=A -- 'screenshots/' 2>/dev/null \
+            | grep '^screenshots/[^/]\+\.[^/]\+$' | sed 's|^screenshots/||' | sort -u \
+            | grep -v '^\.gitkeep$' | grep -v '^thumbnails/' | grep -v '^registry' || true)
+
+          CURRENT_SHOTS=$(find screenshots/ -maxdepth 1 -type f ! -name '.gitkeep' 2>/dev/null \
+            | xargs -n1 basename 2>/dev/null | sort -u || true)
+
+          PURGE_SHOTS=$(comm -23 \
+            <(printf '%s\n' "$HISTORICAL_SHOTS" | grep -v '^$' | sort -u) \
+            <(printf '%s\n' "$CURRENT_SHOTS" | grep -v '^$' | sort -u) \
+            || true)
+
+          # Build path list
+          PATHS=""
+          for skin in $PURGE_SKINS; do
+            PATHS="$PATHS skins-pro/$skin"
+          done
+          for shot in $PURGE_SHOTS; do
+            PATHS="$PATHS screenshots/$shot"
+          done
+
+          # Append user-provided extra paths
+          EXTRA="${{ github.event.inputs.extra_paths }}"
+          if [ -n "$EXTRA" ]; then
+            PATHS="$PATHS $EXTRA"
+          fi
+
+          PATHS=$(echo "$PATHS" | xargs || true)
+
+          echo "purge_paths=$PATHS" >> "$GITHUB_OUTPUT"
+          echo "Historical skins (gone from HEAD): ${PURGE_SKINS:-<none>}"
+          echo "Historical screenshots (gone from HEAD): ${PURGE_SHOTS:-<none>}"
+          echo "Paths to purge: ${PATHS:-<none>}"
+
+          if [ -z "$PATHS" ]; then
+            echo "::warning::No purgeable paths detected. Nothing to do."
+          fi
+
+      - name: Nothing to purge
+        if: steps.detect.outputs.purge_paths == ''
+        run: |
+          echo "No paths to purge. Exiting."
+          exit 0
+
+      - name: Show repo size before
+        if: steps.detect.outputs.purge_paths != ''
+        run: |
+          echo "=== Repo size before ==="
+          du -sh .git
+          echo ""
+          echo "=== Largest blobs in history ==="
+          git rev-list --objects --all \
+            | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+            | awk '$1 == "blob" {print $3, $4}' \
+            | sort -n -r | head -20
+
+      - name: Install git-filter-repo
+        if: steps.detect.outputs.purge_paths != ''
+        run: |
+          pip install --user git-filter-repo
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Create backup branch
+        if: |-
+          steps.detect.outputs.purge_paths != '' &&
+          github.event.inputs.skip_backup != 'true'
+        run: |
+          BACKUP="backup/pre-purge-$(date -u +%Y%m%d-%H%M%S)"
+          git branch "$BACKUP"
+          git push origin "$BACKUP"
+          echo "Backup pushed to: $BACKUP"
+
+      - name: Run filter-repo
+        if: steps.detect.outputs.purge_paths != ''
+        run: |
+          set -euo pipefail
+          PATHS="${{ steps.detect.outputs.purge_paths }}"
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+
+          # Build --path args
+          PATH_ARGS=""
+          for p in $PATHS; do
+            PATH_ARGS="$PATH_ARGS --path $p"
+          done
+
+          echo "Paths args:$PATH_ARGS"
+          echo ""
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "=== DRY RUN ==="
+            echo "Would execute: git filter-repo$PATH_ARGS --invert-paths --force"
+            echo ""
+            git filter-repo $PATH_ARGS --invert-paths --force --dry-run
+            echo ""
+            echo "Dry run complete. No changes pushed."
+            echo "To actually purge, re-run this workflow with dry_run=false."
+          else
+            echo "=== REAL RUN ==="
+            git filter-repo $PATH_ARGS --invert-paths --force
+
+            # filter-repo removes origin by default, re-add it
+            git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+
+            echo "=== Force pushing master ==="
+            git push origin master --force
+
+            echo ""
+            echo "Purge complete. Backup branch preserved for rollback."
+          fi
+
+      - name: Show repo size after
+        if: |-
+          steps.detect.outputs.purge_paths != '' &&
+          github.event.inputs.dry_run != 'true'
+        run: |
+          echo "=== Repo size after ==="
+          du -sh .git
+          echo ""
+          echo "=== Skins remaining on HEAD ==="
+          find skins-pro/ -maxdepth 1 -mindepth 1 -type d 2>/dev/null | sort || echo "(none)"
+          echo ""
+          echo "=== Screenshots remaining on HEAD ==="
+          find screenshots/ -maxdepth 1 -type f ! -name '.gitkeep' 2>/dev/null | sort || echo "(none)"
