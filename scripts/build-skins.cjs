@@ -42,7 +42,7 @@ if (invalid.length > 0) {
   process.exit(1);
 }
 const dirs = targetSkins.length > 0
-  ? ['modern', ...targetSkins.filter(s => s !== 'modern')].filter(s => s === 'modern' || allDirs.includes(s))
+  ? [...new Set(targetSkins)].filter(s => s === 'modern' || allDirs.includes(s))
   : [...allDirs, 'modern'];
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.bmp', '.gif', '.webp'];
