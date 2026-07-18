@@ -66,12 +66,12 @@ jobs:
           echo "Changed skins: ${CHANGED:-<none>}"
           echo "Deleted themes: ${DELETED:-<none>}"
 
-      - name: Prepare asset worktrees (outside workspace)
+      - name: Prepare asset worktrees
         run: |
           git fetch origin skin-assets --depth=1
           git fetch origin screenshot-assets --depth=1
-          git worktree add "$HOME/skin-assets-work" origin/skin-assets
-          git worktree add "$HOME/screenshot-assets-work" origin/screenshot-assets
+          git worktree add skin-assets origin/skin-assets
+          git worktree add screenshot-assets origin/screenshot-assets
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -129,7 +129,7 @@ jobs:
             echo "No new skins to publish"
             exit 0
           fi
-          cd "$HOME/skin-assets-work"
+          cd skin-assets
           for skin in $TARGET; do
             if [ -d "${{ github.workspace }}/skins-pro/$skin" ]; then
               rm -rf "$skin"
@@ -153,7 +153,9 @@ jobs:
             echo "No new screenshots to publish"
             exit 0
           fi
-          cd "$HOME/screenshot-assets-work"
+          cd screenshot-assets
+          # Copy new screenshots from master workspace (build already wrote
+          # thumbnails/registry.json directly here since this is the worktree)
           for skin in $TARGET; do
             for ext in png jpg jpeg webp bmp gif mp4; do
               if [ -f "${{ github.workspace }}/screenshots/$skin.$ext" ]; then
@@ -162,13 +164,6 @@ jobs:
               fi
             done
           done
-          if [ -d "${{ github.workspace }}/screenshot-assets/thumbnails" ]; then
-            mkdir -p thumbnails
-            cp -r "${{ github.workspace }}/screenshot-assets/thumbnails/." thumbnails/
-          fi
-          if [ -f "${{ github.workspace }}/screenshot-assets/registry.json" ]; then
-            cp "${{ github.workspace }}/screenshot-assets/registry.json" registry.json
-          fi
           git add .
           if git diff --cached --quiet; then
             echo "No changes to screenshot-assets"
@@ -213,5 +208,5 @@ jobs:
       - name: Clean up worktrees
         if: always()
         run: |
-          git worktree remove --force "$HOME/skin-assets-work" 2>/dev/null || true
-          git worktree remove --force "$HOME/screenshot-assets-work" 2>/dev/null || true
+          git worktree remove --force skin-assets 2>/dev/null || true
+          git worktree remove --force screenshot-assets 2>/dev/null || true
