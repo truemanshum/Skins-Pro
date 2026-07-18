@@ -160,7 +160,7 @@ All styles are customized via CSS variables on `:host`. Each skin has its own `t
 - `author` — Your GitHub username (without `@`). Displayed in the store and linked to your profile.
 - `icon_map` — Maps entity domains to icon image filenames. Unmapped domains fall back automatically.
 
-> **Best reference** — Use [`skins-pro/visionOS/`](skins-pro/visionOS/) as the starting point when creating a new skin. It has the most complete `icon_map`, `theme.css`, and icon assets.
+> **Best reference** — Use [`visionOS/`](https://github.com/ha-china/Skins-Pro/tree/skin-assets/visionOS) as the starting point when creating a new skin. It has the most complete `icon_map`, `theme.css`, and icon assets.
 
 ## Development
 
@@ -245,7 +245,7 @@ We welcome skin contributions! Simply:
 2. **Add a preview screenshot** `screenshots/<skin-name>.png` (1920×1080 recommended)
 3. **Submit a PR** using the PR template — fill in all required fields
 
-Once merged, CI automatically builds the card, packages your skin to the store branch, and makes it available in the card editor's skin store.
+Once merged, CI automatically builds the card and makes it available in the card editor's skin store.
 
 > ⚠️ **Copyright Notice** — When contributing skins, please ensure your image assets do not infringe on others' copyright. We recommend using AI-generated or original images. Skins with valid copyright complaints will be removed from the store.
 
@@ -263,7 +263,7 @@ After submitting, a bot will automatically post a **Screenshot Preview** comment
 
 ### Tips
 
-- Use [`skins-pro/visionOS/`](skins-pro/visionOS/) as the reference — it has the most complete `icon_map` and assets
+- Use [`visionOS/`](https://github.com/ha-china/Skins-Pro/tree/skin-assets/visionOS) as the reference — it has the most complete `icon_map` and assets
 - Images are auto-processed on build (resize, JPG output) — no manual optimization needed
 - `icon_map` in `strings.json` maps entity domains to icon filenames; unmapped domains fall back automatically
 

@@ -160,7 +160,7 @@ skins-pro/你的皮肤名/
 - `author` — 你的 GitHub 用户名（不含 `@`），在商店中显示并链接到你的主页。
 - `icon_map` — 定义实体域→图标图片的映射，未覆盖的域自动 fallback。
 
-> **最佳参考** — 创建新皮肤时请以 [`skins-pro/visionOS/`](skins-pro/visionOS/) 为起点，它拥有最完整的 `icon_map`、`theme.css` 和图标资源。
+> **最佳参考** — 创建新皮肤时请以 [`visionOS/`](https://github.com/ha-china/Skins-Pro/tree/skin-assets/visionOS) 为起点，它拥有最完整的 `icon_map`、`theme.css` 和图标资源。
 
 ## 开发
 
@@ -245,7 +245,7 @@ npm run type-check  # 代码检查
 2. 在 `screenshots/<皮肤名>.png` 添加预览截图（1920×1080 为宜）
 3. 使用 PR 模板提交 PR，填写所有必填字段
 
-合并后 CI 会自动构建卡片、将皮肤打包到 store 分支、并在卡片编辑器的皮肤商店中上架。
+合并后 CI 会自动构建卡片并在卡片编辑器的皮肤商店中上架。
 
 > ⚠️ **版权提醒** — 贡献皮肤时请确保图片资源不侵犯他人版权，建议使用 AI 生成或原创图片。如收到版权投诉，对应皮肤将从商店中移除。
 
@@ -263,7 +263,7 @@ npm run type-check  # 代码检查
 
 ### 建议
 
-- 以 [`skins-pro/visionOS/`](skins-pro/visionOS/) 为参考 — 它包含最完整的 `icon_map` 和资源
+- 以 [`visionOS/`](https://github.com/ha-china/Skins-Pro/tree/skin-assets/visionOS) 为参考 — 它包含最完整的 `icon_map` 和资源
 - 构建时会自动处理图片（缩放、转 JPG），无需手动优化
 - `strings.json` 中的 `icon_map` 映射实体域名→图标文件名，未覆盖的域名自动 fallback
 
