@@ -189,7 +189,7 @@ button { font:inherit; }
 .room-active-chip:hover { background:rgba(0,0,0,.60); }
 .side { grid-area:side; min-height:0; min-width:0; height:100%; display:grid; grid-template-rows:max-content minmax(min-content,1fr); grid-auto-rows:max-content; gap:var(--sp-space-lg); align-content:stretch; overflow:hidden; }
 .glass-card,.time-card { min-width:0; border-radius:var(--sp-radius-glass); padding:var(--sp-space-lg); box-sizing:border-box; background:var(--sp-glass-bg); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:var(--sp-border-width) solid var(--sp-border-glass); box-shadow:var(--sp-shadow-glass); color:var(--sp-text-main); }
-.side > * { min-height:0; overflow:hidden; }
+.side > * { min-height:0; }
 .panel-environment { display:flex; flex-direction:column; min-height:0; }
 .panel-environment .env-list { flex:1; min-height:0; align-content:start; }
 .panel-energy { width:100%; min-width:0; justify-self:stretch; align-self:stretch; min-height:0; height:auto; overflow:hidden; display:flex; flex-direction:column; background:var(--sp-glass-bg); border-radius:var(--sp-radius-glass); padding:var(--sp-space-lg); box-shadow:3px 3px 6px rgba(0,0,0,.20),-3px -3px 6px rgba(255,255,255,.90); }
