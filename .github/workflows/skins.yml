@@ -22,40 +22,37 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-
-      - name: Fetch asset branches
-        run: |
-          git fetch origin skin-assets --depth=1
-          git fetch origin screenshot-assets --depth=1
-          git worktree add skin-assets origin/skin-assets
-          git worktree add screenshot-assets origin/screenshot-assets
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
+          fetch-depth: 2
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Detect changed skins
         id: skins
         run: |
           HAS_PARENT=$(git rev-parse --verify HEAD~1 2>/dev/null && echo 1 || echo 0)
 
-          SKIN_TOUCHED=$([ "$HAS_PARENT" = 1 ] && git diff --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
-            | grep '^skins-pro/' | cut -d/ -f2 | sort -u | grep -v '^modern$' || true)
-          SCREENSHOT_TOUCHED=$([ "$HAS_PARENT" = 1 ] && git diff --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
-            | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
+          # Changes from diff (for new pushes)
+          SKIN_TOUCHED=""
+          SCREENSHOT_TOUCHED=""
+          if [ "$HAS_PARENT" = 1 ]; then
+            SKIN_TOUCHED=$(git diff --name-only HEAD~1 HEAD -- skins-pro/ 2>/dev/null \
+              | grep '^skins-pro/' | cut -d/ -f2 | sort -u \
+              | grep -v '^\.gitkeep$' || true)
+            SCREENSHOT_TOUCHED=$(git diff --name-only HEAD~1 HEAD -- screenshots/ 2>/dev/null \
+              | grep '^screenshots/' | cut -d/ -f2 | sed 's/\.[^.]*$//' | sort -u \
+              | grep -v '^thumbnails$' | grep -v '^registry$' | grep -v '^\.gitkeep$' || true)
+          fi
+
+          # Scan for residual assets on master (cleanup leftover from failed prior runs)
+          SKIN_PRESENT=$(find skins-pro/ -maxdepth 1 -mindepth 1 -type d 2>/dev/null | cut -d/ -f2 | sort -u || true)
+          SCREENSHOT_PRESENT=$(find screenshots/ -maxdepth 1 -type f ! -name '.gitkeep' 2>/dev/null \
+            | xargs -n1 basename 2>/dev/null | sed 's/\.[^.]*$//' | sort -u \
             | grep -v '^thumbnails$' | grep -v '^registry$' || true)
 
           CHANGED=""
           DELETED=""
-          for skin in $(printf '%s\n%s\n' "$SKIN_TOUCHED" "$SCREENSHOT_TOUCHED" | grep -v '^$' | sort -u); do
+          for skin in $(printf '%s\n%s\n%s\n%s\n' "$SKIN_TOUCHED" "$SCREENSHOT_TOUCHED" "$SKIN_PRESENT" "$SCREENSHOT_PRESENT" | grep -v '^$' | sort -u); do
             if [ -d "skins-pro/$skin" ]; then
               CHANGED="$CHANGED $skin"
             else
@@ -69,14 +66,30 @@ jobs:
           echo "Changed skins: ${CHANGED:-<none>}"
           echo "Deleted themes: ${DELETED:-<none>}"
 
+      - name: Prepare asset worktrees (outside workspace)
+        run: |
+          git fetch origin skin-assets --depth=1
+          git fetch origin screenshot-assets --depth=1
+          git worktree add "$HOME/skin-assets-work" origin/skin-assets
+          git worktree add "$HOME/screenshot-assets-work" origin/screenshot-assets
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build skins
         run: |
           TARGET="${{ steps.skins.outputs.target }}"
-          if [ "$TARGET" = "__all__" ]; then
-            npm run build
-          elif [ -n "$TARGET" ]; then
+          if [ -n "$TARGET" ]; then
+            echo "Incremental build for: $TARGET"
             npm run build -- $TARGET
           else
+            echo "Full build"
             npm run build
           fi
 
@@ -98,6 +111,7 @@ jobs:
             aws s3 sync screenshot-assets/thumbnails/ "s3://skinspro/screenshots/thumbnails/" --endpoint-url "$ENDPOINT"
             aws s3 cp screenshot-assets/registry.json "s3://skinspro/screenshots/registry.json" --endpoint-url "$ENDPOINT"
           else
+            echo "Incremental sync for: target=$TARGET deleted=$DELETED"
             for skin in $TARGET; do
               [ -f "store/${skin}.zip" ] && aws s3 cp "store/${skin}.zip" "s3://skinspro/store/${skin}.zip" --endpoint-url "$ENDPOINT"
               [ -f "screenshot-assets/thumbnails/${skin}.jpg" ] && aws s3 cp "screenshot-assets/thumbnails/${skin}.jpg" "s3://skinspro/screenshots/thumbnails/${skin}.jpg" --endpoint-url "$ENDPOINT"
@@ -105,67 +119,99 @@ jobs:
                 [ -f "screenshot-assets/${skin}.${ext}" ] && aws s3 cp "screenshot-assets/${skin}.${ext}" "s3://skinspro/screenshots/${skin}.${ext}" --endpoint-url "$ENDPOINT"
               done
             done
+            [ -f "screenshot-assets/registry.json" ] && aws s3 cp "screenshot-assets/registry.json" "s3://skinspro/screenshots/registry.json" --endpoint-url "$ENDPOINT"
           fi
 
-      - name: Push new skins to skin-assets branch
+      - name: Push new skin sources to skin-assets branch
         run: |
           TARGET="${{ steps.skins.outputs.target }}"
-          if [ -z "$TARGET" ] || [ "$TARGET" = "__all__" ]; then
+          if [ -z "$TARGET" ]; then
             echo "No new skins to publish"
             exit 0
           fi
-          git fetch origin skin-assets --depth=1 2>/dev/null || true
-          git checkout --orphan _skin_push
-          find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
-          git checkout origin/skin-assets -- . 2>/dev/null || true
+          cd "$HOME/skin-assets-work"
           for skin in $TARGET; do
             if [ -d "${{ github.workspace }}/skins-pro/$skin" ]; then
               rm -rf "$skin"
               cp -r "${{ github.workspace }}/skins-pro/$skin" "$skin"
-              echo "Copied new skin: $skin"
+              echo "Copied skin source: $skin"
             fi
           done
-          printf '%s\n' '# Skins Pro — Skin Assets' '' 'Published skin sources.' 'Pushed automatically by CI.' > README.md
           git add .
           if git diff --cached --quiet; then
-            echo "No changes to push"
+            echo "No changes to skin-assets"
           else
             git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
-              commit -m "Update skin sources: $TARGET [skip ci]"
-            git push origin _skin_push:skin-assets --force
+              commit -m "Add skin sources: $TARGET [skip ci]"
+            git push origin HEAD:skin-assets
           fi
 
       - name: Push new screenshots to screenshot-assets branch
         run: |
-          NEW_SCREENSHOTS=$(find screenshots/ -maxdepth 1 -type f ! -name '.gitkeep' 2>/dev/null | while read f; do basename "$f"; done || true)
-          if [ -z "$NEW_SCREENSHOTS" ]; then
+          TARGET="${{ steps.skins.outputs.target }}"
+          if [ -z "$TARGET" ]; then
             echo "No new screenshots to publish"
             exit 0
           fi
-          git fetch origin screenshot-assets --depth=1 2>/dev/null || true
-          git checkout --orphan _ss_push
-          find . -maxdepth 1 -not -name '.git' -not -name '.' -exec rm -rf {} +
-          git checkout origin/screenshot-assets -- . 2>/dev/null || true
-          for ss in $NEW_SCREENSHOTS; do
-            if [ -f "${{ github.workspace }}/screenshots/$ss" ]; then
-              rm -f "$ss"
-              cp "${{ github.workspace }}/screenshots/$ss" "$ss"
-              echo "Copied new screenshot: $ss"
-            fi
+          cd "$HOME/screenshot-assets-work"
+          for skin in $TARGET; do
+            for ext in png jpg jpeg webp bmp gif mp4; do
+              if [ -f "${{ github.workspace }}/screenshots/$skin.$ext" ]; then
+                cp "${{ github.workspace }}/screenshots/$skin.$ext" "$skin.$ext"
+                echo "Copied screenshot: $skin.$ext"
+              fi
+            done
           done
+          if [ -d "${{ github.workspace }}/screenshot-assets/thumbnails" ]; then
+            mkdir -p thumbnails
+            cp -r "${{ github.workspace }}/screenshot-assets/thumbnails/." thumbnails/
+          fi
+          if [ -f "${{ github.workspace }}/screenshot-assets/registry.json" ]; then
+            cp "${{ github.workspace }}/screenshot-assets/registry.json" registry.json
+          fi
           git add .
           if git diff --cached --quiet; then
-            echo "No changes to push"
+            echo "No changes to screenshot-assets"
           else
             git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
-              commit -m "Update screenshots [skip ci]"
-            git push origin _ss_push:screenshot-assets --force
+              commit -m "Add screenshots: $TARGET [skip ci]"
+            git push origin HEAD:screenshot-assets
+          fi
+
+      - name: Clean moved assets from master
+        run: |
+          TARGET="${{ steps.skins.outputs.target }}"
+          if [ -z "$TARGET" ]; then
+            echo "No cleanup needed"
+            exit 0
+          fi
+          cd "${{ github.workspace }}"
+          for skin in $TARGET; do
+            if [ -d "skins-pro/$skin" ]; then
+              git rm -r "skins-pro/$skin"
+              echo "Removed skins-pro/$skin from master"
+            fi
+            for ext in png jpg jpeg webp bmp gif mp4; do
+              if [ -f "screenshots/$skin.$ext" ]; then
+                git rm "screenshots/$skin.$ext"
+                echo "Removed screenshots/$skin.$ext from master"
+              fi
+            done
+          done
+          mkdir -p skins-pro screenshots
+          [ -f "skins-pro/.gitkeep" ] || touch skins-pro/.gitkeep
+          [ -f "screenshots/.gitkeep" ] || touch screenshots/.gitkeep
+          git add skins-pro/.gitkeep screenshots/.gitkeep 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Nothing to clean"
+          else
+            git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+              commit -m "chore: move $TARGET assets to asset branches [skip ci]"
+            git push origin HEAD:master
           fi
 
       - name: Clean up worktrees
         if: always()
         run: |
-          git worktree remove skin-assets 2>/dev/null || true
-          git worktree remove screenshot-assets 2>/dev/null || true
-
-
+          git worktree remove --force "$HOME/skin-assets-work" 2>/dev/null || true
+          git worktree remove --force "$HOME/screenshot-assets-work" 2>/dev/null || true
