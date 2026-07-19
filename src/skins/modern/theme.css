@@ -1,6 +1,6 @@
 :host {
   display:block; width:100%;
-  --sp-sidebar-width:200px; --sp-app-padding:16px; --sp-stage-radius:24px;
+  --sp-sidebar-width:200px; --sp-app-padding:clamp(6px,0.5vw + 5px,16px); --sp-stage-radius:24px;
   --sp-runtime-height:560px; --sp-runtime-min-height:560px;
   --sp-glass-bg:#d4d9e0; --sp-panel-bg:#d4d9e0;
   --sp-base-texture:none; --sp-stage-texture:none;
@@ -34,11 +34,25 @@
   --sp-radius-device:16px; --sp-radius-camera:18px; --sp-radius-scene:14px;
   --sp-radius-glass:18px; --sp-radius-time:12px; --sp-radius-empty:18px;
   --sp-radius-editor:12px; --sp-radius-input:8px; --sp-radius-btn:10px;
-  --sp-font-xxl:32px; --sp-font-xl:28px; --sp-font-lg:22px; --sp-font-md:15px;
-  --sp-font-sm:14px; --sp-font-xs:13px; --sp-font-2xs:12px; --sp-font-3xs:11px;
-  --sp-font-4xs:10px;
-  --sp-space-xl:24px; --sp-space-lg:16px; --sp-space-md:12px; --sp-space-sm:10px;
-  --sp-space-xs:8px; --sp-space-2xs:6px; --sp-space-3xs:4px;
+  /* Fluid type scale — smooth interpolation between 360px and 1920px viewports.
+     Replaces the previous 3 discrete font tables (desktop / portrait / 480). */
+  --sp-font-xxl:clamp(20px,1vw + 18px,32px);
+  --sp-font-xl:clamp(17px,0.7vw + 14px,28px);
+  --sp-font-lg:clamp(14px,0.5vw + 12px,22px);
+  --sp-font-md:clamp(12px,0.2vw + 12px,15px);
+  --sp-font-sm:clamp(11px,0.2vw + 11px,14px);
+  --sp-font-xs:clamp(10px,0.2vw + 10px,13px);
+  --sp-font-2xs:clamp(9px,0.2vw + 9px,12px);
+  --sp-font-3xs:clamp(8px,0.2vw + 8px,11px);
+  --sp-font-4xs:clamp(7px,0.2vw + 7px,10px);
+  /* Fluid spacing scale — same idea. */
+  --sp-space-xl:clamp(12px,0.8vw + 8px,24px);
+  --sp-space-lg:clamp(10px,0.4vw + 9px,16px);
+  --sp-space-md:clamp(6px,0.4vw + 6px,12px);
+  --sp-space-sm:clamp(4px,0.3vw + 4px,10px);
+  --sp-space-xs:clamp(3px,0.3vw + 3px,8px);
+  --sp-space-2xs:clamp(2px,0.25vw + 2px,6px);
+  --sp-space-3xs:clamp(2px,0.15vw + 2px,4px);
   --sp-device-bg:#d4d9e0;
   --sp-device-unavailable:#c8cdd4;
   --sp-env-temp-bg:rgba(220,200,180,.15); --sp-env-temp:#c8a890;
@@ -65,7 +79,7 @@ ha-control-switch{--control-switch-on-color:var(--sp-accent)!important;--control
 ha-control-slider{--control-slider-color:var(--sp-accent)!important;--control-slider-background:var(--sp-device-bg)!important;--control-slider-background-opacity:1!important;--control-slider-thickness:32px!important;--control-slider-border-radius:var(--sp-radius-pill)!important}
 ha-card { overflow:hidden; border:0; background:transparent; box-shadow:none; box-sizing:border-box; }
 .loading-state { padding:var(--sp-space-lg); color:var(--sp-text-main); }
-.mc-app { width:100%; height:var(--sp-runtime-height); min-height:var(--sp-runtime-min-height); padding:var(--sp-app-padding); padding-bottom:calc(var(--sp-app-padding) + env(safe-area-inset-bottom)); box-sizing:border-box; color:var(--sp-text-main); display:grid; grid-template-columns:var(--sp-sidebar-width) minmax(0,1fr); gap:16px; background-image:var(--sp-app-overlay),var(--sp-base-texture); background-size:cover,cover; background-position:center,center; background-repeat:no-repeat,no-repeat; background-color:transparent; overflow:clip; }
+.mc-app { width:100%; height:var(--sp-runtime-height); min-height:var(--sp-runtime-min-height); padding:max(var(--sp-app-padding),env(safe-area-inset-top)) max(var(--sp-app-padding),env(safe-area-inset-right)) max(var(--sp-app-padding),env(safe-area-inset-bottom)) max(var(--sp-app-padding),env(safe-area-inset-left)); box-sizing:border-box; color:var(--sp-text-main); display:grid; grid-template-columns:var(--sp-sidebar-width) minmax(0,1fr); gap:16px; background-image:var(--sp-app-overlay),var(--sp-base-texture); background-size:cover,cover; background-position:center,center; background-repeat:no-repeat,no-repeat; background-color:transparent; overflow:clip; container-type:inline-size; container-name:sp; }
 h1,h2,h3,p { margin:0; font:inherit; }
 h1 { font-size:var(--sp-font-lg); line-height:1.15; font-weight:700; color:var(--sp-text-main); }
 h2 { font-size:var(--sp-font-md); font-weight:700; color:var(--sp-text-main); }
@@ -476,14 +490,9 @@ button { font:inherit; }
   .rooms { gap:var(--sp-space-sm); align-content:start; }
 }
 @media (orientation: portrait) {
-  :host {
-    --sp-font-xxl:24px; --sp-font-xl:20px; --sp-font-lg:16px; --sp-font-md:13px;
-    --sp-font-sm:12px; --sp-font-xs:11px; --sp-font-2xs:10px; --sp-font-3xs:9px; --sp-font-4xs:8px;
-    --sp-space-xl:16px; --sp-space-lg:12px; --sp-space-md:8px; --sp-space-sm:6px;
-    --sp-space-xs:4px; --sp-space-2xs:3px; --sp-space-3xs:2px;
-    --sp-app-padding:10px;
-  }
-  .mc-app { grid-template-columns:minmax(0,1fr); height:auto !important; min-height:100vh !important; padding:var(--sp-space-sm); overflow:visible; }
+  /* Font/space tokens are now fluid via clamp() on :host — no per-breakpoint
+     overrides needed. This block only handles layout reflow for portrait. */
+  .mc-app { grid-template-columns:minmax(0,1fr); height:auto !important; min-height:100dvh !important; padding:var(--sp-space-sm); overflow:visible; }
   .sidebar { display:none; }
   .stage { height:auto; overflow:visible; }
   .stage-grid,.page-shell { height:auto; padding:var(--sp-space-lg); overflow:visible; }
@@ -492,7 +501,7 @@ button { font:inherit; }
   .weather-block { max-width:none; }
   .side { height:auto; grid-template-rows:auto; overflow:visible; }
   .bottom-stack { gap:var(--sp-space-xs); }
-  .mobile-nav { display:flex; flex-direction:row; flex-wrap:nowrap; position:fixed; bottom:0; left:0; right:0; width:100%; z-index:100; background:var(--sp-glass-bg); border-top:0; padding:var(--sp-space-xs) var(--sp-space-sm); justify-content:space-around; box-shadow:0 -4px 12px rgba(0,0,0,.08); }
+  .mobile-nav { display:flex; flex-direction:row; flex-wrap:nowrap; position:fixed; bottom:0; left:0; right:0; width:100%; z-index:100; background:var(--sp-glass-bg); border-top:0; padding:var(--sp-space-xs) var(--sp-space-sm) calc(var(--sp-space-xs) + env(safe-area-inset-bottom)) var(--sp-space-sm); justify-content:space-around; box-shadow:0 -4px 12px rgba(0,0,0,.08); }
   .mobile-nav .nav-button { display:flex; flex-direction:column; align-items:center; gap:4px; background:transparent; border:0; color:var(--sp-text-muted); cursor:pointer; padding:8px 12px; font-size:var(--sp-font-xs); font-weight:600; min-width:48px; }
   .mobile-nav .nav-button.active { color:var(--sp-accent); }
   .mobile-nav .nav-button ha-icon { --mdc-icon-size:24px; }
@@ -519,13 +528,8 @@ button { font:inherit; }
   .room-scene-chip { padding:2px 10px; max-width:110px; }
 }
 @media (max-width: 480px) {
-  :host {
-    --sp-font-xxl:20px; --sp-font-xl:17px; --sp-font-lg:14px; --sp-font-md:12px;
-    --sp-font-sm:11px; --sp-font-xs:10px; --sp-font-2xs:9px; --sp-font-3xs:8px; --sp-font-4xs:7px;
-    --sp-space-xl:12px; --sp-space-lg:10px; --sp-space-md:6px; --sp-space-sm:4px;
-    --sp-space-xs:3px; --sp-space-2xs:2px; --sp-space-3xs:2px;
-    --sp-app-padding:6px;
-  }
+  /* Fluid clamp() tokens already scale down at this width — only keep
+     layout-specific tweaks here. */
   .page-body.single-column.energy-detail-page { grid-template-columns:minmax(0,1fr); }
   .profile-img { width:36px; height:36px; }
   .item-img,.item-icon { width:36px; height:36px; }
@@ -558,8 +562,20 @@ button { font:inherit; }
   .nav-dialog { max-width:none; width:100%; min-height:100%; border-radius:0; padding:var(--sp-space-lg); }
 }
 @media (orientation: landscape) and (max-height: 768px) {
+  /* Landscape phone / small landscape window. Height is the scarce dimension,
+     so scale fonts against vh. Also overrides the vw-based clamp() defaults
+     on :host, which otherwise assume width is the limiting axis. */
   :host {
     --sp-app-padding: 6px;
+    --sp-font-xxl: clamp(18px, 3vh, 26px);
+    --sp-font-xl: clamp(16px, 2.5vh, 22px);
+    --sp-font-lg: clamp(13px, 2vh, 18px);
+    --sp-font-md: clamp(11px, 1.7vh, 14px);
+    --sp-font-sm: clamp(10px, 1.5vh, 13px);
+    --sp-font-xs: clamp(9px, 1.4vh, 12px);
+    --sp-font-2xs: clamp(8px, 1.2vh, 11px);
+    --sp-font-3xs: clamp(7px, 1.1vh, 10px);
+    --sp-font-4xs: clamp(6px, 1vh, 9px);
     --sp-space-xl: 8px;
     --sp-space-lg: 6px;
     --sp-space-md: 5px;
@@ -589,8 +605,11 @@ button { font:inherit; }
   .device-name { font-size: var(--sp-font-xs); }
   .devices-page-grid .device { min-height: 64px; }
   .scene { min-height: 48px; padding: var(--sp-space-xs) var(--sp-space-sm); }
-  .room { min-height: 160px; }
-  .mc-app[data-view="rooms"] .room { min-height: 130px; }
+  /* Rooms on home view: keep 4-col single row but make each room shorter
+     (wider aspect ratio + lower min-height) so the bottom-stack fits the
+     scarce landscape height without overflowing upward into welcome. */
+  .room { min-height: 90px; aspect-ratio: 16/9; }
+  .mc-app[data-view="rooms"] .room { min-height: 130px; aspect-ratio: unset; }
   .side { gap: var(--sp-space-sm); }
   .glass-card, .panel-energy, .panel-media, .panel-camera { padding: var(--sp-space-sm); }
   .panel-scenes { padding: var(--sp-space-sm); }
@@ -618,6 +637,53 @@ button { font:inherit; }
   .room-scene-chip { padding: 1px 8px; font-size: var(--sp-font-3xs); max-width: 80px; }
   .room-active-chip { padding: 1px 8px; font-size: var(--sp-font-3xs); }
   .camera-preview { aspect-ratio: 16/9; min-height: 60px; }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Container Queries — react to the CARD's own width, not viewport.
+   Crucial when the card is placed inside a narrow HA Sections column
+   on a wide screen (where viewport-based media queries would lie).
+   The container is `.mc-app` itself (see container-type above).
+
+   NOTE: `.rooms` is intentionally NOT touched here. `.room` has
+   aspect-ratio:4/3 + min-height, so reducing column count makes each
+   room taller and blows the bottom-stack out of its grid cell →
+   upward overlap with the welcome area. Letting the default 4-col
+   grid shrink rooms horizontally is the only layout that actually
+   fits all 4 rooms in landscape. `.devices` doesn't have this issue
+   because device cards have no aspect-ratio constraint.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Mid-width: collapse 5-col device grid to 4. */
+@container sp (max-width: 1280px) {
+  .devices { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+
+/* Narrow: collapse internal grids to fewer columns. */
+@container sp (max-width: 880px) {
+  .stage-grid {
+    grid-template-columns: minmax(0,1fr) minmax(0,240px);
+    grid-template-areas: "welcome side" "bottom side";
+    grid-template-rows: auto minmax(0,1fr);
+  }
+  .devices { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .scenes-page { grid-template-columns: repeat(auto-fill, minmax(var(--sp-scene-min-width), 1fr)); }
+}
+
+/* Very narrow (e.g. half-screen Sections column on a laptop). */
+@container sp (max-width: 560px) {
+  .stage-grid {
+    grid-template-columns: minmax(0,1fr);
+    grid-template-areas: "welcome" "side" "bottom";
+    grid-template-rows: auto auto auto;
+  }
+  .devices,
+  .scene-grid,
+  .devices-page-grid,
+  .security-cameras,
+  .security-devices,
+  .automations-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .scene-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
 }
 
 /* Neumorphism raised elements */

@@ -66,7 +66,7 @@ export function renderHomeEnergyCard(
     <section class="glass-card panel-energy" style="height:auto;min-height:0;flex:0 0 auto;align-self:auto;">
       <div class="section-title"><h2>${ctx.translate('todayEnergy')}</h2></div>
       <div class="energy-value">${energyValue}<small> ${energyUnit}</small></div>
-      <div class="bars" style="height:clamp(32px,7vw,72px);margin-top:clamp(4px,1.2vw,12px);">${energyBars}</div>
+      <div class="bars" style="height:clamp(12px,4vw,48px);margin-top:clamp(4px,1.2vw,12px);">${energyBars}</div>
       <div class="energy-footer"><span class="muted">${localizedText(ctx.config.energy?.compare_text, ctx.config.energy?.compare_text_zh, ctx.config.energy?.compare_text_en, ctx.language, ctx.translate('compareYesterday'))}</span><span class="down">${compareValue || '--'}</span></div>
     </section>
   `;

@@ -49,6 +49,7 @@ export type { Language } from '../i18n';
 export type { TranslationKey } from '../types';
 
 export * from './actions';
+export * from './breakpoints';
 
 export function normalizeLanguage(language?: string): Language {
   if ((language || '').toLowerCase().startsWith('zh')) {

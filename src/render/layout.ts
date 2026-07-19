@@ -1,23 +1,36 @@
 import type { DashboardConfig } from '../types';
 import { assetUrl } from '../utils';
+import { isPortrait, isShortLandscape } from '../utils/breakpoints';
+
+// Layout floors — kept intentionally low so small containers
+// (narrow HA columns, sections dashboards, half-height panels)
+// don't get force-stretched past their actual box.
+const FLOOR_NORMAL = 320;
+const FLOOR_SHORT_LANDSCAPE = 240;
 
 export function applyLayoutHeight(host: HTMLElement | null | undefined): void {
   if (!host) return;
 
-  if (window.matchMedia('(orientation: portrait)').matches) {
+  // Portrait: let the document flow; use 100dvh (mobile-friendly, accounts for URL bar).
+  if (isPortrait()) {
     host.style.setProperty('--sp-runtime-height', 'auto');
-    host.style.setProperty('--sp-runtime-min-height', '100vh');
+    host.style.setProperty('--sp-runtime-min-height', '100dvh');
     return;
   }
 
   const rect = host.getBoundingClientRect();
-  const paddingBottom = 0;
-  const isShortLandscape = window.matchMedia('(orientation: landscape)').matches && window.innerHeight < 500;
-  const availableHeight = isShortLandscape
-    ? Math.max(240, Math.floor(window.innerHeight - rect.top - paddingBottom))
-    : Math.max(560, Math.floor(window.innerHeight - rect.top - paddingBottom));
-  host.style.setProperty('--sp-runtime-height', `${availableHeight}px`);
-  host.style.setProperty('--sp-runtime-min-height', `${availableHeight}px`);
+  const shortLand = isShortLandscape();
+  const floor = shortLand ? FLOOR_SHORT_LANDSCAPE : FLOOR_NORMAL;
+
+  // host may not be laid out yet (top/width == 0); skip this pass — ResizeObserver
+  // or the next updated() cycle will pick it up.
+  if (rect.width === 0 && rect.top === 0 && rect.height === 0) return;
+
+  // Use viewport-minus-top as the primary signal (Lovelace cards aren't height-constrained
+  // by their parent), but never go below the floor.
+  const available = Math.max(floor, Math.floor(window.innerHeight - rect.top));
+  host.style.setProperty('--sp-runtime-height', `${available}px`);
+  host.style.setProperty('--sp-runtime-min-height', `${available}px`);
 }
 
 export function applyThemeVariables(host: HTMLElement | null | undefined, config: DashboardConfig | undefined): void {
@@ -36,10 +49,8 @@ export function applyThemeVariables(host: HTMLElement | null | undefined, config
 
 export function applyFullscreenHeight(host: HTMLElement | null | undefined): void {
   if (!host) return;
-  const isShortLandscape = window.matchMedia('(orientation: landscape)').matches && window.innerHeight < 500;
-  const h = isShortLandscape
-    ? Math.max(240, Math.floor(window.innerHeight))
-    : Math.max(560, Math.floor(window.innerHeight));
+  const floor = isShortLandscape() ? FLOOR_SHORT_LANDSCAPE : FLOOR_NORMAL;
+  const h = Math.max(floor, Math.floor(window.innerHeight));
   host.style.setProperty('--sp-runtime-height', `${h}px`);
   host.style.setProperty('--sp-runtime-min-height', `${h}px`);
 }
@@ -48,7 +59,8 @@ export function applyKioskExitHeight(host: HTMLElement | null | undefined): void
   if (!host) return;
   requestAnimationFrame(() => {
     const r = host.getBoundingClientRect();
-    const h = Math.max(560, Math.floor(window.innerHeight - r.top));
+    const floor = isShortLandscape() ? FLOOR_SHORT_LANDSCAPE : FLOOR_NORMAL;
+    const h = Math.max(floor, Math.floor(window.innerHeight - r.top));
     host.style.setProperty('--sp-runtime-height', `${h}px`);
     host.style.setProperty('--sp-runtime-min-height', `${h}px`);
   });
