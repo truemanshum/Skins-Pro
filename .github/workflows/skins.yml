@@ -68,10 +68,16 @@ jobs:
 
       - name: Prepare asset worktrees
         run: |
-          git fetch origin skin-assets --depth=1
-          git fetch origin screenshot-assets --depth=1
-          git worktree add skin-assets origin/skin-assets
-          git worktree add screenshot-assets origin/screenshot-assets
+          rm -rf skin-assets screenshot-assets
+          for branch in skin-assets screenshot-assets; do
+            if git fetch origin "$branch" --depth=1 2>/dev/null; then
+              git worktree add "$branch" "origin/$branch"
+            else
+              git worktree add --detach "$branch"
+              git -C "$branch" checkout --orphan "$branch"
+              git -C "$branch" rm -rf . 2>/dev/null || true
+            fi
+          done
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
