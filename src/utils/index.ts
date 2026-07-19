@@ -152,16 +152,16 @@ export function formatNumber(value: string, decimals: number): string {
 }
 
 export function stateValue(hass: HomeAssistant | undefined, entityId?: string, _language?: Language): string {
-  // Return HA's raw state directly. HA already formats sensor values, dates, etc.
-  // in the user's locale. The previous formatRawState() pass was redundant and
-  // also re-translated dates using the card's language instead of HA's locale.
-  // Callers that need display precision (e.g. 1 decimal place) wrap this with
-  // formatNumber(); raw string callers (info entities, weather state) just want
-  // the value as-is.
   if (!entityId || !hass) {
     return '';
   }
-  return hass.states[entityId]?.state || '';
+  const raw = hass.states[entityId]?.state || '';
+  if (!raw) return raw;
+  const num = Number(raw);
+  if (Number.isFinite(num)) {
+    return parseFloat(num.toFixed(2)).toString();
+  }
+  return raw;
 }
 
 export function timeText(hass: HomeAssistant | undefined, language: Language): string {
