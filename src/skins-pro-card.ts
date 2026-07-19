@@ -96,6 +96,23 @@ export class SkinsProCard extends LitElement {
   @state() private _searchQuery = '';
   @state() private _searchFilter = 'all';
 
+  @state() private _sidebarHidden = false;
+  // Manual double-click detector state. We can't rely on the native `dblclick`
+  // event because DevTools device-emulation mode (and real touch devices)
+  // translate clicks to touch events where `dblclick` is suppressed to make
+  // room for double-tap-to-zoom. Manual timing works everywhere.
+  private _lastWelcomeClick = 0;
+
+  private _handleWelcomeClick(): void {
+    const now = Date.now();
+    if (now - this._lastWelcomeClick < 350) {
+      this._sidebarHidden = !this._sidebarHidden;
+      this._lastWelcomeClick = 0;
+    } else {
+      this._lastWelcomeClick = now;
+    }
+  }
+
   private _autoFullscreenDone = false;
   private _loadedSkinMetadata?: string;
   private _raf = 0;
@@ -382,6 +399,9 @@ export class SkinsProCard extends LitElement {
       onHandleAction: (entityId, action) => this.handleAction(entityId, action),
       onBatchControl: (state) => { void this.batchControl(state, translate); },
       onToggleKiosk: () => this.toggleKioskFullscreen(),
+      onToggleSidebar: () => { this._sidebarHidden = !this._sidebarHidden; },
+      onWelcomeClick: () => this._handleWelcomeClick(),
+      sidebarHidden: this._sidebarHidden,
       onMoreInfo: (entityId) => moreInfo(this, entityId),
       onTurnOffAreaType: (entityIds) => turnOffAreaTypeAction(this._hass, entityIds),
       searchOpen: this._searchOpen,
@@ -439,7 +459,7 @@ export class SkinsProCard extends LitElement {
       <link rel="stylesheet" href="${assetHref(this._config, 'theme_css')}">
       <ha-card>
         ${registriesLoading}
-        <div class="mc-app" data-view=${this._view}>
+        <div class="mc-app" data-view=${this._view} data-sidebar=${this._sidebarHidden ? 'hidden' : 'visible'}>
           ${renderSidebar(ctx)}
           <main class="stage">${stage}</main>
           ${renderMobileNav(ctx)}

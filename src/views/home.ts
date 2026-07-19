@@ -75,7 +75,7 @@ export function renderHomeView(
         <span>${ctx.translate('searchPlaceholder')}</span>
       </div>
       <div class="welcome-group">
-        <section class="welcome" data-section="home">
+        <section class="welcome" data-section="home" @click=${() => ctx.onWelcomeClick()}>
           <h1>${ctx.config.title || localizedText(undefined, ctx.config.title_zh || skinString(selectedSkin(ctx.config), 'title_zh'), ctx.config.title_en || skinString(selectedSkin(ctx.config), 'title_en'), ctx.language)}</h1>
           <p class="quote">${quote}</p>
         </section>
