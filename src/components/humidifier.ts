@@ -1,20 +1,10 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 
-import type { DashboardConfig, HomeAssistant, RenderedDevice, TranslationKey } from '../types';
+import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
-import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin, t } from '../utils';
+import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin } from '../utils';
 import { renderImage } from '../render/context';
-
-const MODE_LABELS: Record<string, TranslationKey> = {
-  normal: 'hvacAuto', eco: 'presetEco', away: 'presetAway', boost: 'presetBoost',
-  comfort: 'presetNone', home: 'home', sleep: 'presetSleep', auto: 'hvacAuto', baby: 'presetNone',
-};
-
-function modeLabel(mode: string, language: Language): string {
-  const key = MODE_LABELS[mode];
-  return key ? t(language, key) : mode;
-}
 
 export function renderHumidifierCard(
   config: DashboardConfig | undefined,
@@ -52,9 +42,9 @@ export function renderHumidifierCard(
 
   const actionLabel = (() => {
     if (!isOn) return undefined;
-    if (action === 'humidifying') return t(language, 'humidifying');
-    if (action === 'drying') return t(language, 'drying');
-    if (action === 'idle' || action === 'off' || !action) return isDehumidifier ? t(language, 'drying') : t(language, 'humidifying');
+    if (action === 'humidifying') return hass.localize('component.humidifier.state.humidifying') || 'Humidifying';
+    if (action === 'drying') return hass.localize('component.humidifier.state.drying') || 'Drying';
+    if (action === 'idle' || action === 'off' || !action) return isDehumidifier ? (hass.localize('component.humidifier.state.drying') || 'Drying') : (hass.localize('component.humidifier.state.humidifying') || 'Humidifying');
     return undefined;
   })();
 
@@ -86,7 +76,7 @@ export function renderHumidifierCard(
         </div>` : ''}
         ${isOn && modes.length > 0 ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_mode', { mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${modes.map(m => html`<option value=${m} ?selected=${m === mode}>${modeLabel(m, language)}</option>`)}
+          ${modes.map(m => html`<option value=${m} ?selected=${m === mode}>${hass.localize(`component.humidifier.state.${m}`) || m}</option>`)}
         </select>` : ''}
         <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isOn ? 'turn_off' : 'turn_on', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>

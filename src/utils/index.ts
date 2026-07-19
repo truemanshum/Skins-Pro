@@ -77,28 +77,20 @@ export function deviceStateLabel(
   hass?: HomeAssistant,
   domain?: string,
 ): string {
-  if (state === 'unavailable' || state === 'unknown') {
-    return STRINGS[language].offline;
-  }
-  if (state === 'on' || state === 'playing' || state === 'cool' || state === 'heat' || state === 'armed') {
-    return STRINGS[language].on;
-  }
-  if (state === 'open' || state === 'unlocked') {
-    return STRINGS[language].open;
-  }
-  if (state === 'locked' || state === 'closed') {
-    return STRINGS[language].closed;
-  }
-  if (state === 'off' || state === 'idle' || state === 'standby') {
-    return STRINGS[language].off;
-  }
-  if (/^armed_|^disarmed|^triggered|^pending|^arming/.test(state)) {
-    if (hass && domain && (hass as any).localize) {
-      const localized = (hass as any).localize(`state_badge.${domain}.${state}`);
-      if (localized) return localized;
+  // Always prefer Home Assistant's own localization first.
+  if (hass && state && hass.localize) {
+    const keys: string[] = [];
+    if (domain) keys.push(`component.${domain}.state.${state}`);
+    keys.push(`state.default.${state}`);
+    if (domain) keys.push(`state_badge.${domain}.${state}`);
+    for (const key of keys) {
+      const s = hass.localize(key);
+      if (s) return s;
     }
-    return state.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
+  // No localize available (tests, no HA context) — just format the raw state.
+  // Previously this used STRINGS table for on/off/open/closed, but that forced
+  // every non-zh/en HA instance to display status in the wrong language.
   return formatRawState(state, language);
 }
 
@@ -162,11 +154,17 @@ export function formatNumber(value: string, decimals: number): string {
   return Number.isFinite(parsed) ? parsed.toFixed(decimals) : '--';
 }
 
-export function stateValue(hass: HomeAssistant | undefined, entityId?: string, language?: Language): string {
+export function stateValue(hass: HomeAssistant | undefined, entityId?: string, _language?: Language): string {
+  // Return HA's raw state directly. HA already formats sensor values, dates, etc.
+  // in the user's locale. The previous formatRawState() pass was redundant and
+  // also re-translated dates using the card's language instead of HA's locale.
+  // Callers that need display precision (e.g. 1 decimal place) wrap this with
+  // formatNumber(); raw string callers (info entities, weather state) just want
+  // the value as-is.
   if (!entityId || !hass) {
     return '';
   }
-  return formatRawState(hass.states[entityId]?.state || '', language || 'en');
+  return hass.states[entityId]?.state || '';
 }
 
 export function timeText(hass: HomeAssistant | undefined, language: Language): string {

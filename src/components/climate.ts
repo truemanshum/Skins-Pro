@@ -1,24 +1,15 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 
-import type { DashboardConfig, HomeAssistant, RenderedDevice, TranslationKey } from '../types';
+import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
-import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin, t } from '../utils';
+import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin } from '../utils';
 import { renderImage } from '../render/context';
 
-const HVAC_LABELS: Record<string, TranslationKey> = {
-  auto: 'hvacAuto', cool: 'hvacCool', heat: 'hvacHeat',
-  'fan_only': 'hvacFanOnly', dry: 'hvacDry', off: 'hvacOff',
-};
-const FAN_LABELS: Record<string, TranslationKey> = {
-  auto: 'fanAuto', low: 'fanLow', medium: 'fanMedium',
-  high: 'fanHigh', on: 'fanOn', off: 'fanOff',
-};
 const HVAC_ORDER = ['auto', 'cool', 'heat', 'fan_only', 'dry', 'off'];
 
-function lab(mode: string, map: Record<string, TranslationKey>, lang: Language): string {
-  const key = map[mode];
-  return key ? t(lang, key) : mode;
+function lab(mode: string, hass: HomeAssistant): string {
+  return hass.localize(`component.climate.state.${mode}`) || mode;
 }
 
 export function renderClimateCard(
@@ -76,7 +67,7 @@ const lastTime = stateForTime?.last_changed
       <div class="device-top">
         ${renderImage(config, assetKey, device.name, 'item-img')}
         <div class="tag-stack">
-          <div class="status" style="font-size:var(--sp-font-4xs);font-weight:700">${currentTemp !== undefined ? tempDisplay(currentTemp) : lab(hvacMode, HVAC_LABELS, language)}</div>
+          <div class="status" style="font-size:var(--sp-font-4xs);font-weight:700">${currentTemp !== undefined ? tempDisplay(currentTemp) : lab(hvacMode, hass)}</div>
         </div>
       </div>
       <div class="device-copy">
@@ -90,11 +81,11 @@ const lastTime = stateForTime?.last_changed
             <div class="media-volbtn" role="button" style="width:28px;height:32px;padding:0;box-shadow:none" @click=${(e: Event) => { e.stopPropagation(); adjustTemp(step); }}><ha-icon icon="mdi:plus" style="--mdc-icon-size:14px"></ha-icon></div>
         </div>
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_hvac_mode', { hvac_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${hvacModes.map(m => html`<option value=${m} ?selected=${m === hvacMode}>${lab(m, HVAC_LABELS, language)}</option>`)}
+          ${hvacModes.map(m => html`<option value=${m} ?selected=${m === hvacMode}>${lab(m, hass)}</option>`)}
         </select>
         ${showFan ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_fan_mode', { fan_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${fanModes.map(m => html`<option value=${m} ?selected=${m === fanMode}>${lab(m, FAN_LABELS, language)}</option>`)}
+          ${fanModes.map(m => html`<option value=${m} ?selected=${m === fanMode}>${lab(m, hass)}</option>`)}
         </select>` : ''}
       </div>
     </button>

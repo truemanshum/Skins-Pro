@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 
-import type { DashboardConfig, HomeAssistant, RenderedDevice, TranslationKey } from '../types';
+import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
 import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin, t } from '../utils';
 import { renderImage } from '../render/context';
@@ -59,7 +59,7 @@ export function renderFanCard(
         ` : ''}
         ${isOn && presetModes.length > 0 ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_preset_mode', { preset_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${presetModes.map(m => html`<option value=${m} ?selected=${m === presetMode}>${fanPresetLabel(m, language)}</option>`)}
+          ${presetModes.map(m => html`<option value=${m} ?selected=${m === presetMode}>${hass.localize(`component.fan.preset.${m}`) || hass.localize(`component.fan.state.${m}`) || m}</option>`)}
         </select>` : ''}
         ${isOn && oscillating !== undefined ? html`
         <div class="media-volbtn" role="button" style="width:32px;height:32px;padding:0;flex-shrink:0" title=${t(language, 'fanOscillate')} @click=${(e: Event) => { e.stopPropagation(); doService('oscillate', { oscillating: !oscillating }); }}><ha-icon icon=${oscillating ? 'mdi:rotate-3d-variant' : 'mdi:rotate-360'} style="--mdc-icon-size:14px"></ha-icon></div>` : ''}
@@ -71,11 +71,3 @@ export function renderFanCard(
   `;
 }
 
-const FAN_PRESET_LABELS: Record<string, TranslationKey> = {
-  auto: 'fanAuto', low: 'fanLow', medium: 'fanMedium', high: 'fanHigh', on: 'fanOn', off: 'fanOff',
-};
-
-function fanPresetLabel(mode: string, language: Language): string {
-  const key = FAN_PRESET_LABELS[mode];
-  return key ? t(language, key) : mode;
-}
