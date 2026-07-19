@@ -21,7 +21,7 @@ export function renderSecurityView(ctx: RenderContext): TemplateResult {
     html``,
     cards !== nothing
       ? html`<div class="page-scroll themed-scrollbar"><div class="devices security-grid">${cards}</div></div>`
-      : html`<div class="empty-state">${ctx.translate('offline')}</div>`
+      : html``
   );
 }
 

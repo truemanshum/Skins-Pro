@@ -42,9 +42,9 @@ export function renderHumidifierCard(
 
   const actionLabel = (() => {
     if (!isOn) return undefined;
-    if (action === 'humidifying') return hass.localize('component.humidifier.state.humidifying') || 'Humidifying';
-    if (action === 'drying') return hass.localize('component.humidifier.state.drying') || 'Drying';
-    if (action === 'idle' || action === 'off' || !action) return isDehumidifier ? (hass.localize('component.humidifier.state.drying') || 'Drying') : (hass.localize('component.humidifier.state.humidifying') || 'Humidifying');
+    if (action === 'humidifying') return hass.localize('component.humidifier.entity_component._.state.humidifying') || hass.localize('component.humidifier.state.humidifying') || 'Humidifying';
+    if (action === 'drying') return hass.localize('component.humidifier.entity_component._.state.drying') || hass.localize('component.humidifier.state.drying') || 'Drying';
+    if (action === 'idle' || action === 'off' || !action) return isDehumidifier ? (hass.localize('component.humidifier.entity_component._.state.drying') || hass.localize('component.humidifier.state.drying') || 'Drying') : (hass.localize('component.humidifier.entity_component._.state.humidifying') || hass.localize('component.humidifier.state.humidifying') || 'Humidifying');
     return undefined;
   })();
 
@@ -76,7 +76,7 @@ export function renderHumidifierCard(
         </div>` : ''}
         ${isOn && modes.length > 0 ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_mode', { mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${modes.map(m => html`<option value=${m} ?selected=${m === mode}>${hass.localize(`component.humidifier.state.${m}`) || m}</option>`)}
+          ${modes.map(m => html`<option value=${m} ?selected=${m === mode}>${hass.localize(`component.humidifier.entity_component._.state.${m}`) || hass.localize(`component.humidifier.state.${m}`) || m}</option>`)}
         </select>` : ''}
         <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isOn ? 'turn_off' : 'turn_on', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>
