@@ -2,27 +2,16 @@ import { html, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
 
 import type { RenderedDevice, DeviceColor } from '../types';
-import type { TranslationKey } from '../types';
 import type { RenderContext } from '../render/context';
 import { renderDeviceCard } from '../components/device-card';
 import { deviceTypeGroupKey } from '../selectors/devices';
+import { domainGroupLabel } from '../selectors/areas';
 
 const SEARCH_DOMAINS = /^(light|switch|climate|media_player|fan|humidifier|water_heater|cover|valve|vacuum|input_boolean|lock|alarm_control_panel|sensor|binary_sensor)\./;
 const DEVICE_COLORS: DeviceColor[] = ['yellow', 'green', 'blue', 'purple', 'red', 'brown'];
 
 const RECENT_KEY = 'skins-pro-search-recent';
 const RECENT_MAX = 10;
-
-const GROUP_LABELS: Record<string, TranslationKey> = {
-  lights: 'groupLights',
-  switches: 'groupSwitches',
-  climate: 'groupClimate',
-  covers: 'groupCovers',
-  media: 'groupMedia',
-  security: 'groupSecurity',
-  cleaning: 'groupCleaning',
-  others: 'groupOthers',
-};
 
 function loadRecent(): string[] {
   try {
@@ -129,7 +118,7 @@ export function renderSearchOverlay(
       .sort(([, a], [, b]) => b - a)
       .map(([key, count]) => ({
         key,
-        label: ctx.translate(GROUP_LABELS[key] || 'groupOthers'),
+        label: domainGroupLabel(key, ctx.hass, ctx.language),
         count,
       })),
   ];

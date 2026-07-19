@@ -11,7 +11,8 @@ import type {
   HomeAssistant,
 } from '../types';
 import type { Language } from '../i18n';
-import { stateValue, t } from '../utils';
+import { stateValue } from '../utils';
+import { domainGroupLabel } from '../selectors/areas';
 
 export function renderEnvironment(
   config: DashboardConfig,
@@ -76,7 +77,7 @@ export function renderEnvironment(
       }
     }
     if (orphanMetrics.length > 0) {
-      rows.push(html`<div class="env-floor-header">${t(language, 'groupOthers')}</div>`);
+      rows.push(html`<div class="env-floor-header">${domainGroupLabel('others', hass, language)}</div>`);
       for (const metric of orphanMetrics) {
         rows.push(renderEnvRow(hass, metric, language));
       }

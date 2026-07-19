@@ -27,6 +27,16 @@ const DOMAIN_GROUP_MAP: Record<string, string> = {
   lawn_mower: 'cleaning',
 };
 
+const GROUP_HA_PATH: Record<string, string> = {
+  lights: 'domain.light',
+  switches: 'domain.switch',
+  climate: 'domain.climate',
+  covers: 'domain.cover',
+  media: 'domain.media_player',
+  security: 'domain.alarm_control_panel',
+  cleaning: 'domain.vacuum',
+};
+
 const GROUP_LABEL_KEY: Record<string, TranslationKey> = {
   lights: 'groupLights',
   switches: 'groupSwitches',
@@ -42,7 +52,12 @@ export function domainGroupKey(domain: string): string {
   return DOMAIN_GROUP_MAP[domain] || 'others';
 }
 
-export function domainGroupLabel(groupKey: string, language: Language): string {
+export function domainGroupLabel(groupKey: string, hass: HomeAssistant, language: Language): string {
+  const haPath = GROUP_HA_PATH[groupKey];
+  if (haPath) {
+    const haLabel = hass.localize(haPath);
+    if (haLabel) return haLabel;
+  }
   const key = GROUP_LABEL_KEY[groupKey];
   return key ? t(language, key) : groupKey;
 }
@@ -181,7 +196,7 @@ export function areaActiveCounts(
   return [...byGroup.entries()]
     .map(([groupKey, entityIds]) => ({
       domain: groupKey,
-      label: domainGroupLabel(groupKey, language),
+      label: domainGroupLabel(groupKey, hass, language),
       count: entityIds.length,
       entityIds,
     }))

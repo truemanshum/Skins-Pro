@@ -5,7 +5,7 @@ import type {
   HomeAssistant,
   StatisticsResponse,
 } from '../types';
-import type { TranslationKey } from '../types';
+
 import { formatNumber } from '../utils';
 
 export async function fetchEnergySources(
@@ -47,7 +47,7 @@ async function tryGetEnergyPrefs(
     const gridEntity = config?.energy?.entity;
     const energyUnit = config?.energy?.unit || 'kWh';
     const ids: string[] = [];
-    const entries: Array<{ key: TranslationKey; entityId: string; icon: string; unit: string }> = [];
+    const entries: Array<{ key: string; entityId: string; icon: string; unit: string }> = [];
     const added = new Set<string>();
 
     for (const src of prefs.energy_sources) {

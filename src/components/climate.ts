@@ -9,7 +9,15 @@ import { renderImage } from '../render/context';
 const HVAC_ORDER = ['auto', 'cool', 'heat', 'fan_only', 'dry', 'off'];
 
 function lab(mode: string, hass: HomeAssistant): string {
-  return hass.localize(`component.climate.state.${mode}`) || mode;
+  return hass.localize(`component.climate.entity_component._.state.${mode}`)
+    || hass.localize(`component.climate.state.${mode}`)
+    || mode;
+}
+function fanLab(mode: string, hass: HomeAssistant): string {
+  return hass.localize(`component.climate.entity_component._.state_attributes.fan_mode.state.${mode}`)
+    || hass.localize(`component.climate.fan.${mode}`)
+    || hass.localize(`component.climate.state.${mode}`)
+    || mode;
 }
 
 export function renderClimateCard(
@@ -85,7 +93,7 @@ const lastTime = stateForTime?.last_changed
         </select>
         ${showFan ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_fan_mode', { fan_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${fanModes.map(m => html`<option value=${m} ?selected=${m === fanMode}>${lab(m, hass)}</option>`)}
+          ${fanModes.map(m => html`<option value=${m} ?selected=${m === fanMode}>${fanLab(m, hass)}</option>`)}
         </select>` : ''}
       </div>
     </button>

@@ -3,7 +3,7 @@ import type { TemplateResult } from 'lit';
 
 import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
-import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin, t } from '../utils';
+import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin } from '../utils';
 import { renderImage } from '../render/context';
 
 export function renderVacuumCard(
@@ -47,10 +47,10 @@ export function renderVacuumCard(
 
   const btnStyle = 'width:32px;height:32px;padding:0;flex-shrink:0';
 
-  const startBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumStart')} @click=${(e: Event) => { e.stopPropagation(); doService('start'); }}><ha-icon icon="mdi:play" style="--mdc-icon-size:14px"></ha-icon></div>`;
-  const pauseBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumPause')} @click=${(e: Event) => { e.stopPropagation(); doService('pause'); }}><ha-icon icon="mdi:pause" style="--mdc-icon-size:14px"></ha-icon></div>`;
-  const dockBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumDock')} @click=${(e: Event) => { e.stopPropagation(); doService('return_to_base'); }}><ha-icon icon="mdi:home" style="--mdc-icon-size:14px"></ha-icon></div>`;
-  const locateBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${t(language, 'vacuumLocate')} @click=${(e: Event) => { e.stopPropagation(); doService('locate'); }}><ha-icon icon="mdi:map-marker" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const startBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${hass.localize('ui.card.vacuum.start')} @click=${(e: Event) => { e.stopPropagation(); doService('start'); }}><ha-icon icon="mdi:play" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const pauseBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${hass.localize('ui.card.vacuum.pause')} @click=${(e: Event) => { e.stopPropagation(); doService('pause'); }}><ha-icon icon="mdi:pause" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const dockBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${hass.localize('ui.card.vacuum.return_to_base')} @click=${(e: Event) => { e.stopPropagation(); doService('return_to_base'); }}><ha-icon icon="mdi:home" style="--mdc-icon-size:14px"></ha-icon></div>`;
+  const locateBtn = html`<div class="media-volbtn" role="button" style=${btnStyle} title=${hass.localize('ui.card.vacuum.locate')} @click=${(e: Event) => { e.stopPropagation(); doService('locate'); }}><ha-icon icon="mdi:map-marker" style="--mdc-icon-size:14px"></ha-icon></div>`;
 
   return html`
     <button class="device ${statusClass}" @click=${() => onHandleAction(device.entityId, 'more-info')}>
