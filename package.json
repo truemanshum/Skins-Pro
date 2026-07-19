@@ -1,6 +1,6 @@
 {
   "name": "skins-pro",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "Skins Pro for Home Assistant",
   "main": "dist/skins-pro.js",
   "type": "module",
@@ -19,7 +19,7 @@
     "multi-skin",
     "kiosk-mode"
   ],
-  "author": "Skins Pro Contributors",
+  "author": "ha-china",
   "license": "Apache-2.0",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.3",
