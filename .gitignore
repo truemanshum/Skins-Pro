@@ -10,6 +10,8 @@ scripts/gen-organic-assets.cjs
 
 store/
 __stage/
+skin-assets/
+screenshot-assets/
 screenshots/thumbnails/
 screenshots/registry.json
 screenshots/download_skin.gif
