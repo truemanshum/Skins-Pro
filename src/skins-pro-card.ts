@@ -42,6 +42,7 @@ import { fetchEnergyHistory, fetchEnergySources, loadWeatherForecast, loadAreas,
 
 import type { RenderContext } from './render/context';
 import { applyFullscreenHeight, applyKioskExitHeight, applyLayoutHeight, applyThemeVariables } from './render/layout';
+import { subscribeOrientation } from './utils/breakpoints';
 import { getRealDevicesForRender } from './selectors/devices';
 import { CONTROLLABLE_DOMAINS } from './components/device-card';
 import { renderHomeView, renderSidebar, renderMobileNav } from './views/home';
@@ -97,7 +98,19 @@ export class SkinsProCard extends LitElement {
 
   private _autoFullscreenDone = false;
   private _loadedSkinMetadata?: string;
-  private readonly _handleWindowResize = () => this._applyLayout();
+  private _raf = 0;
+  private _ro?: ResizeObserver;
+  private _lastWidth = 0;
+  private _unsubOrientation?: () => void;
+  // rAF-throttled resize handler: avoids layout thrash when the window
+  // or container is being dragged.
+  private readonly _handleWindowResize = (): void => {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    this._raf = requestAnimationFrame(() => {
+      this._raf = 0;
+      this._applyLayout();
+    });
+  };
 
   public get hass(): HomeAssistant | undefined {
     return this._hass;
@@ -112,6 +125,26 @@ export class SkinsProCard extends LitElement {
   public connectedCallback(): void {
     super.connectedCallback();
     window.addEventListener('resize', this._handleWindowResize);
+    window.addEventListener('orientationchange', this._handleWindowResize);
+    // ResizeObserver watches the card's own box — this fires when HA's sidebar
+    // opens/closes, when the card is placed inside a Sections dashboard column,
+    // or whenever the parent reflows. Width changes are the responsive signal;
+    // height is something WE set, so we filter on width to avoid feedback loops.
+    if (typeof ResizeObserver !== 'undefined') {
+      this._ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const w = entry.contentRect.width;
+          if (Math.abs(w - this._lastWidth) > 0.5) {
+            this._lastWidth = w;
+            this._handleWindowResize();
+          }
+        }
+      });
+      this._ro.observe(this);
+    }
+    // Also re-measure on portrait ⇄ landscape flips (covers cases where
+    // window.resize fires before orientationchange settles).
+    this._unsubOrientation = subscribeOrientation(() => this._handleWindowResize());
     if (this._hass && this._config?.weather?.entity && this._weatherForecastEntity !== this._config.weather.entity) {
       void this.loadWeatherForecast();
     }
@@ -120,6 +153,15 @@ export class SkinsProCard extends LitElement {
   public disconnectedCallback(): void {
     super.disconnectedCallback();
     window.removeEventListener('resize', this._handleWindowResize);
+    window.removeEventListener('orientationchange', this._handleWindowResize);
+    this._ro?.disconnect();
+    this._ro = undefined;
+    this._unsubOrientation?.();
+    this._unsubOrientation = undefined;
+    if (this._raf) {
+      cancelAnimationFrame(this._raf);
+      this._raf = 0;
+    }
     void this.unsubscribeWeatherForecast();
   }
 
