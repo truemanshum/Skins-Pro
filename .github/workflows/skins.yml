@@ -78,6 +78,26 @@ jobs:
             fi
           done
 
+      - name: Move source files into full asset worktrees
+        run: |
+          TARGET="${{ steps.skins.outputs.target }}"
+          if [ -z "$TARGET" ]; then
+            exit 0
+          fi
+          for skin in $TARGET; do
+            if [ -d "skins-pro/$skin" ]; then
+              mkdir -p "skin-assets/$skin"
+              cp -r "skins-pro/$skin/." "skin-assets/$skin/"
+              rm -rf "skins-pro/$skin"
+            fi
+            for ext in png jpg jpeg webp bmp gif mp4; do
+              if [ -f "screenshots/$skin.$ext" ]; then
+                cp "screenshots/$skin.$ext" "screenshot-assets/$skin.$ext"
+                rm "screenshots/$skin.$ext"
+              fi
+            done
+          done
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -187,13 +207,11 @@ jobs:
           fi
           cd "${{ github.workspace }}"
           for skin in $TARGET; do
-            if [ -d "skins-pro/$skin" ]; then
-              git rm -r "skins-pro/$skin"
+            if git rm -r --ignore-unmatch "skins-pro/$skin" >/dev/null 2>&1; then
               echo "Removed skins-pro/$skin from master"
             fi
             for ext in png jpg jpeg webp bmp gif mp4; do
-              if [ -f "screenshots/$skin.$ext" ]; then
-                git rm "screenshots/$skin.$ext"
+              if git rm --ignore-unmatch "screenshots/$skin.$ext" >/dev/null 2>&1; then
                 echo "Removed screenshots/$skin.$ext from master"
               fi
             done
