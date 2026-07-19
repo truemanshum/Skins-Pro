@@ -68,7 +68,6 @@ jobs:
 
       - name: Prepare asset worktrees
         run: |
-          rm -rf skin-assets screenshot-assets
           for branch in skin-assets screenshot-assets; do
             if git fetch origin "$branch" --depth=1 2>/dev/null; then
               git worktree add "$branch" "origin/$branch"
