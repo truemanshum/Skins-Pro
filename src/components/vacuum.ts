@@ -1,24 +1,10 @@
 import { html } from 'lit';
 import type { TemplateResult } from 'lit';
 
-import type { DashboardConfig, HomeAssistant, RenderedDevice, TranslationKey } from '../types';
+import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
-import { assetKeyForDomain, formatRelativeTime, selectedSkin, t } from '../utils';
+import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin, t } from '../utils';
 import { renderImage } from '../render/context';
-
-const VACUUM_STATE_LABELS: Record<string, TranslationKey> = {
-  cleaning: 'vacuumCleaning',
-  docked: 'vacuumDocked',
-  returning: 'vacuumReturning',
-  paused: 'vacuumPaused',
-  idle: 'vacuumIdle',
-  error: 'vacuumError',
-};
-
-function vacuumStateLabel(state: string, language: Language): string {
-  const key = VACUUM_STATE_LABELS[state];
-  return key ? t(language, key) : state;
-}
 
 export function renderVacuumCard(
   config: DashboardConfig | undefined,
@@ -33,7 +19,7 @@ export function renderVacuumCard(
 
   if (!stateObj) {
     return html`<button class="device device-off" @click=${() => onHandleAction(device.entityId, 'more-info')}>
-      <div class="device-top">${renderImage(config, assetKey, device.name, 'item-img')}<div class="tag-stack"><div class="status">${vacuumStateLabel(device.state, language)}</div></div></div>
+      <div class="device-top">${renderImage(config, assetKey, device.name, 'item-img')}<div class="tag-stack"><div class="status">${deviceStateLabel(device.state, language, hass, 'vacuum')}</div></div></div>
       <div class="device-copy"><p class="device-name">${device.name}</p><p class="muted">${device.subtitle}</p></div>
     </button>`;
   }
@@ -48,9 +34,9 @@ export function renderVacuumCard(
   const isPaused = state === 'paused';
 
   const statusClass: string = isActive ? `device-on-${device.color}` : (state === 'unavailable' ? 'device-unavailable' : 'device-off');
-  const statusText = batteryLevel !== undefined ? `${batteryLevel}%` : vacuumStateLabel(state, language);
+  const statusText = batteryLevel !== undefined ? `${batteryLevel}%` : deviceStateLabel(state, language, hass, 'vacuum');
   const lastTime = stateObj.last_changed ? formatRelativeTime(new Date(stateObj.last_changed), language) : device.subtitle;
-  const mutedText = batteryLevel !== undefined ? vacuumStateLabel(state, language) : (lastTime || device.subtitle);
+  const mutedText = batteryLevel !== undefined ? deviceStateLabel(state, language, hass, 'vacuum') : (lastTime || device.subtitle);
 
   const doService = (service: string) => {
     void hass.callService('vacuum', service, { entity_id: device.entityId });
