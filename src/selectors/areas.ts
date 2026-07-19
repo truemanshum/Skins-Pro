@@ -6,7 +6,7 @@ import type {
   TranslationKey,
 } from '../types';
 import type { Language } from '../i18n';
-import { formatNumber, stateValue, t } from '../utils';
+import { deviceStateLabel, formatNumber, stateValue, t } from '../utils';
 
 const DOMAIN_GROUP_MAP: Record<string, string> = {
   light: 'lights',
@@ -97,8 +97,8 @@ export function areaSummaryById(
 
   const presence = byClass('presence') || byClass('occupancy') || byClass('motion');
   if (presence) {
-    const occupied = stateValue(hass, presence, language) === 'on';
-    parts.push(t(language, occupied ? 'areaOccupied' : 'areaEmpty'));
+    const occupied = stateValue(hass, presence) === 'on';
+    parts.push(deviceStateLabel(occupied ? 'on' : 'off', language, hass, 'binary_sensor'));
   }
 
   const temp = byClass('temperature');
