@@ -112,7 +112,7 @@ export function renderHomeView(
         </section>
         <section class="glass-card panel-environment">
           <div class="section-title"><h2>${ctx.translate('environment')}</h2></div>
-          <div class="env-list" style="gap:clamp(4px,1.2vw,12px);margin-top:clamp(4px,1.2vw,12px);">${renderEnvironment(ctx.config, ctx.hass, ctx.areas, ctx.entityRegistry, ctx.deviceRegistry, ctx.floors, ctx.language)}</div>
+          <div class="env-list" style="gap:clamp(0px,1.2vw,12px);margin-top:clamp(4px,1.2vw,12px);">${renderEnvironment(ctx.config, ctx.hass, ctx.areas, ctx.entityRegistry, ctx.deviceRegistry, ctx.floors, ctx.language)}</div>
         </section>`}
         ${renderHomeEnergyCard(ctx, energyValue, energyUnit, compareValue, energyBars)}
         ${renderMediaPlayer(ctx.hass, ctx.config.media_player?.entity, ctx.translate)}
