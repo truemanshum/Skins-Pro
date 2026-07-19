@@ -45,6 +45,9 @@ export interface RenderContext {
   onHandleAction: (entityId: string, action: string) => void;
   onBatchControl: (state: 'on' | 'off') => void;
   onToggleKiosk: () => void;
+  onToggleSidebar: () => void;
+  onWelcomeClick: () => void;
+  sidebarHidden: boolean;
   onMoreInfo: (entityId: string) => void;
   onTurnOffAreaType: (entityIds: string[]) => void;
 
