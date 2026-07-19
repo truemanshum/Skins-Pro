@@ -42,7 +42,7 @@ export function renderAlarmControlPanelCard(
   const FEATURE_ARM_VACATION = 16;
 
   type ArmMode = { feature: number; icon: string; service: string; title: string };
-  const aLocal = (st: string) => hass.localize(`component.alarm_control_panel.state.${st}`) || st.replace(/_/g, ' ');
+  const aLocal = (st: string) => hass.localize(`component.alarm_control_panel.entity_component._.state.${st}`) || hass.localize(`component.alarm_control_panel.state.${st}`) || st.replace(/_/g, ' ');
   const armModes: ArmMode[] = [
     { feature: FEATURE_ARM_AWAY, icon: 'mdi:shield-lock', service: 'alarm_arm_away', title: aLocal('armed_away') },
     { feature: FEATURE_ARM_HOME, icon: 'mdi:shield-home', service: 'alarm_arm_home', title: aLocal('armed_home') },
@@ -61,7 +61,7 @@ export function renderAlarmControlPanelCard(
     : '';
 
   const disarmButton = (isArmed || isTriggered)
-    ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${hass.localize('component.alarm_control_panel.state.disarmed') || 'Disarmed'} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, hass, device.entityId, 'alarm_disarm', true); }}></ha-icon>`
+    ? html`<ha-icon icon="mdi:shield-off" style=${iconStyle} title=${hass.localize('component.alarm_control_panel.entity_component._.state.disarmed') || hass.localize('component.alarm_control_panel.state.disarmed') || 'Disarmed'} @click=${(e: Event) => { e.stopPropagation(); void setAlarmMode(e.currentTarget as HTMLElement, hass, device.entityId, 'alarm_disarm', true); }}></ha-icon>`
     : '';
 
   const controlIcons = isPending ? html`<ha-icon icon=${isTriggered ? 'mdi:bell-ring' : (isArmed ? 'mdi:shield-lock' : 'mdi:shield-off')} style="--mdc-icon-size:18px;color:var(--sp-text-primary)"></ha-icon>` : html`${armButtons}${disarmButton}`;

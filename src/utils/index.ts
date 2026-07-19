@@ -77,9 +77,9 @@ export function deviceStateLabel(
   hass?: HomeAssistant,
   domain?: string,
 ): string {
-  // Always prefer Home Assistant's own localization first.
   if (hass && state && hass.localize) {
     const keys: string[] = [];
+    if (domain) keys.push(`component.${domain}.entity_component._.state.${state}`);
     if (domain) keys.push(`component.${domain}.state.${state}`);
     keys.push(`state.default.${state}`);
     if (domain) keys.push(`state_badge.${domain}.${state}`);
@@ -88,9 +88,6 @@ export function deviceStateLabel(
       if (s) return s;
     }
   }
-  // No localize available (tests, no HA context) — just format the raw state.
-  // Previously this used STRINGS table for on/off/open/closed, but that forced
-  // every non-zh/en HA instance to display status in the wrong language.
   return formatRawState(state, language);
 }
 

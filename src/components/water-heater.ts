@@ -69,7 +69,7 @@ export function renderWaterHeaterCard(
         </div>
         ${operationList.length > 1 ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_operation_mode', { operation_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${operationList.map(m => html`<option value=${m} ?selected=${m === operationMode}>${hass.localize(`component.water_heater.state.${m}`) || m}</option>`)}
+          ${operationList.map(m => html`<option value=${m} ?selected=${m === operationMode}>${hass.localize(`component.water_heater.entity_component._.state.${m}`) || hass.localize(`component.water_heater.state.${m}`) || m}</option>`)}
         </select>` : ''}
         <ha-control-switch .checked=${!isOff} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isOff ? 'turn_on' : 'turn_off', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>

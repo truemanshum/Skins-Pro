@@ -3,7 +3,7 @@ import type { TemplateResult } from 'lit';
 
 import type { DashboardConfig, HomeAssistant, RenderedDevice } from '../types';
 import type { Language } from '../i18n';
-import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin, t } from '../utils';
+import { assetKeyForDomain, deviceStateLabel, formatRelativeTime, selectedSkin } from '../utils';
 import { renderImage } from '../render/context';
 
 export function renderFanCard(
@@ -59,12 +59,12 @@ export function renderFanCard(
         ` : ''}
         ${isOn && presetModes.length > 0 ? html`
         <select class="filter-select" style="font-size:var(--sp-font-3xs);min-height:32px;min-width:48px;padding:0 16px 0 4px;background-size:8px;flex-shrink:0" @change=${(e: Event) => { e.stopPropagation(); doService('set_preset_mode', { preset_mode: (e.target as HTMLSelectElement).value }); }} @click=${(e: Event) => e.stopPropagation()}>
-          ${presetModes.map(m => html`<option value=${m} ?selected=${m === presetMode}>${hass.localize(`component.fan.preset.${m}`) || hass.localize(`component.fan.state.${m}`) || m}</option>`)}
+          ${presetModes.map(m => html`<option value=${m} ?selected=${m === presetMode}>${hass.localize(`component.fan.entity_component._.state_attributes.preset_mode.state.${m}`) || hass.localize(`component.fan.preset.${m}`) || hass.localize(`component.fan.state.${m}`) || m}</option>`)}
         </select>` : ''}
         ${isOn && oscillating !== undefined ? html`
-        <div class="media-volbtn" role="button" style="width:32px;height:32px;padding:0;flex-shrink:0" title=${t(language, 'fanOscillate')} @click=${(e: Event) => { e.stopPropagation(); doService('oscillate', { oscillating: !oscillating }); }}><ha-icon icon=${oscillating ? 'mdi:rotate-3d-variant' : 'mdi:rotate-360'} style="--mdc-icon-size:14px"></ha-icon></div>` : ''}
+        <div class="media-volbtn" role="button" style="width:32px;height:32px;padding:0;flex-shrink:0" title=${hass.localize('ui.card.fan.oscillate')} @click=${(e: Event) => { e.stopPropagation(); doService('oscillate', { oscillating: !oscillating }); }}><ha-icon icon=${oscillating ? 'mdi:rotate-3d-variant' : 'mdi:rotate-360'} style="--mdc-icon-size:14px"></ha-icon></div>` : ''}
         ${isOn && currentDirection !== undefined ? html`
-        <div class="media-volbtn" role="button" style="width:32px;height:32px;padding:0;flex-shrink:0" title=${t(language, 'fanDirection')} @click=${(e: Event) => { e.stopPropagation(); doService('set_direction', { direction: currentDirection === 'forward' ? 'reverse' : 'forward' }); }}><ha-icon icon=${currentDirection === 'reverse' ? 'mdi:reload' : 'mdi:swap-vertical'} style="--mdc-icon-size:14px"></ha-icon></div>` : ''}
+        <div class="media-volbtn" role="button" style="width:32px;height:32px;padding:0;flex-shrink:0" title=${hass.localize('ui.card.fan.direction')} @click=${(e: Event) => { e.stopPropagation(); doService('set_direction', { direction: currentDirection === 'forward' ? 'reverse' : 'forward' }); }}><ha-icon icon=${currentDirection === 'reverse' ? 'mdi:reload' : 'mdi:swap-vertical'} style="--mdc-icon-size:14px"></ha-icon></div>` : ''}
         <ha-control-switch .checked=${isOn} style="--control-switch-thickness:24px;--control-switch-border-radius:var(--sp-radius-pill);--control-switch-padding:3px;width:44px;flex-shrink:0;margin-left:auto" @change=${(e: Event) => { e.stopPropagation(); doService(isOn ? 'turn_off' : 'turn_on', {}); }} @click=${(e: Event) => e.stopPropagation()} .label=${device.name}></ha-control-switch>
       </div>
     </button>

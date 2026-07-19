@@ -8,6 +8,13 @@ import { renderMaintenanceCard } from '../components/maintenance';
 import { renderBars } from '../components/energy-bars';
 import { localizedText } from '../utils';
 
+function energyLabel(ctx: RenderContext, key: string): string {
+  if (key === 'todayEnergy' || key === 'gridReturn') {
+    return ctx.translate(key as TranslationKey);
+  }
+  return ctx.hass.localize('ui.panel.energy.' + key) || key;
+}
+
 export function renderEnergyView(
   ctx: RenderContext,
   energyValue: string,
@@ -16,7 +23,7 @@ export function renderEnergyView(
 ): TemplateResult {
   const sources = ctx.energySources.length > 0 ? ctx.energySources : (
     energyValue !== '--' ? [{
-      key: 'todayEnergy' as TranslationKey,
+      key: 'todayEnergy',
       entityId: ctx.config.energy?.entity || '',
       icon: 'mdi:lightning-bolt',
       unit: ctx.config.energy?.unit || 'kWh',
@@ -34,11 +41,12 @@ export function renderEnergyView(
       <div class="page-body single-column energy-detail-page">
         ${sources.map((src) => {
           const bars = renderBars(src.history);
+          const label = energyLabel(ctx, src.key);
           return html`
             <section class="glass-card panel-energy page-energy-card compact-energy-card">
-              <div class="section-title"><h2><ha-icon icon="${src.icon}"></ha-icon> ${ctx.translate(src.key)}</h2></div>
+              <div class="section-title"><h2><ha-icon icon="${src.icon}"></ha-icon> ${label}</h2></div>
               <div class="env-list compact-energy-list">
-                <div class="env-row"><div class="dot temp"><ha-icon icon="${src.icon}"></ha-icon></div><div class="muted">${ctx.translate(src.key)}</div><div class="env-value">${src.today} ${src.unit}</div></div>
+                <div class="env-row"><div class="dot temp"><ha-icon icon="${src.icon}"></ha-icon></div><div class="muted">${label}</div><div class="env-value">${src.today} ${src.unit}</div></div>
                 <div class="env-row"><div class="dot hum"><ha-icon icon="mdi:compare-vertical"></ha-icon></div><div class="muted">${ctx.translate('compareYesterday')}</div><div class="env-value">${src.yesterday || '--'}</div></div>
               </div>
               <div class="bars compact-energy-bars">${bars}</div>

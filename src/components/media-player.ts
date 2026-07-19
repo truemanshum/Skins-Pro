@@ -1,14 +1,13 @@
 import { html, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
 
-import type { HomeAssistant, TranslationKey } from '../types';
+import type { HomeAssistant } from '../types';
 
 const PRE_MUTE_VOLUMES = new WeakMap<object, number>();
 
 export function renderMediaPlayer(
   hass: HomeAssistant,
   entityId: string | undefined,
-  translate: (key: TranslationKey) => string,
 ): TemplateResult | typeof nothing {
   if (!entityId) return nothing;
   const stateObj = hass.states?.[entityId];
@@ -19,9 +18,9 @@ export function renderMediaPlayer(
     const name = (stateObj.attributes?.friendly_name as string) || entityId;
     return html`
       <section class="glass-card panel-media">
-        <div class="section-title"><h2>${translate('mediaPlayer')}</h2></div>
+        <div class="section-title"><h2>${hass.localize('domain.media_player')}</h2></div>
         <div class="media-off-state">
-          <button class="media-volbtn" @click=${() => hass.callService('media_player', 'turn_on', { entity_id: entityId })} title=${translate('turnOn')}><ha-icon icon="mdi:power-standby"></ha-icon></button>
+          <button class="media-volbtn" @click=${() => hass.callService('media_player', 'turn_on', { entity_id: entityId })} title=${hass.localize('ui.card.media_player.turn_on')}><ha-icon icon="mdi:power-standby"></ha-icon></button>
           <span>${name}</span>
         </div>
       </section>
@@ -54,7 +53,7 @@ export function renderMediaPlayer(
   };
   return html`
     <section class="glass-card panel-media">
-      <div class="section-title"><h2>${translate('mediaPlayer')}</h2></div>
+      <div class="section-title"><h2>${hass.localize('domain.media_player')}</h2></div>
       <div class="media-content">
         <div class="media-row">
           ${albumArt ? html`<div class="media-cover"><img alt="" src=${albumArt}></div>` : html`<div class="media-cover media-cover-null"><ha-icon icon="mdi:music"></ha-icon></div>`}
@@ -64,9 +63,9 @@ export function renderMediaPlayer(
             ${source ? html`<div class="media-source">${source}</div>` : ''}
           </div>
           <div class="media-actions">
-            <button class="media-btn" @click=${() => hass.callService('media_player', 'media_previous_track', { entity_id: entityId })} title=${translate('previous')}><ha-icon icon="mdi:skip-previous"></ha-icon></button>
-            <button class="media-btn media-playbtn" @click=${() => hass.callService('media_player', 'media_play_pause', { entity_id: entityId })} title=${isPlaying ? translate('pause') : translate('play')}><ha-icon icon=${isPlaying ? 'mdi:pause-circle' : 'mdi:play-circle'}></ha-icon></button>
-            <button class="media-btn" @click=${() => hass.callService('media_player', 'media_next_track', { entity_id: entityId })} title=${translate('next')}><ha-icon icon="mdi:skip-next"></ha-icon></button>
+            <button class="media-btn" @click=${() => hass.callService('media_player', 'media_previous_track', { entity_id: entityId })} title=${hass.localize('ui.card.media_player.media_previous')}><ha-icon icon="mdi:skip-previous"></ha-icon></button>
+            <button class="media-btn media-playbtn" @click=${() => hass.callService('media_player', 'media_play_pause', { entity_id: entityId })} title=${isPlaying ? hass.localize('ui.card.media_player.media_pause') : hass.localize('ui.card.media_player.media_play')}><ha-icon icon=${isPlaying ? 'mdi:pause-circle' : 'mdi:play-circle'}></ha-icon></button>
+            <button class="media-btn" @click=${() => hass.callService('media_player', 'media_next_track', { entity_id: entityId })} title=${hass.localize('ui.card.media_player.media_next')}><ha-icon icon="mdi:skip-next"></ha-icon></button>
           </div>
         </div>
         ${volPct !== undefined ? html`

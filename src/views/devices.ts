@@ -32,7 +32,7 @@ export function renderDevicesView(ctx: RenderContext): TemplateResult {
         </select>
         <select class="filter-select" style="min-height:32px" @change=${(e: Event) => ctx.setFilterType((e.target as HTMLSelectElement).value)}>
           <option value="">${ctx.translate('allTypes')}</option>
-          ${types.map((t) => html`<option value="${t}" .selected=${t === ctx.filterType}>${domainGroupLabel(t, ctx.language)}</option>`)}
+          ${types.map((t) => html`<option value="${t}" .selected=${t === ctx.filterType}>${domainGroupLabel(t, ctx.hass, ctx.language)}</option>`)}
         </select>
         <select class="filter-select" style="min-height:32px" @change=${(e: Event) => ctx.setHideUnassigned((e.target as HTMLSelectElement).value === 'true')}>
           <option value="true" .selected=${ctx.hideUnassigned}>${ctx.translate('hideUnassigned')}</option>
@@ -67,7 +67,7 @@ function renderRealDeviceGroups(ctx: RenderContext, devices: ReturnType<typeof g
 
   return html`${Array.from(groups.entries()).map(([group, items]) => {
     const groupLabel = ctx.deviceGrouping === 'domain'
-      ? items.length > 0 ? domainGroupLabel(deviceTypeGroupKey(items[0]!.detail), ctx.language) : group
+      ? items.length > 0 ? domainGroupLabel(deviceTypeGroupKey(items[0]!.detail), ctx.hass, ctx.language) : group
       : group;
     return html`
       <section class="device-group">
