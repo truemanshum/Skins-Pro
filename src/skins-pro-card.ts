@@ -490,7 +490,14 @@ export class SkinsProCard extends LitElement {
     applyThemeVariables(this._host(), this._config);
     this._applyLayout();
     this._applyThemeAttribute();
-    if (this._config?.fullscreen && !this._autoFullscreenDone) {
+    if (!this._hass?.user?.is_admin) {
+      this._lockKiosk();
+      if (!this._autoFullscreenDone) {
+        this._autoFullscreenDone = true;
+        applyFullscreenHeight(this._host());
+        toggleKiosk();
+      }
+    } else if (this._config?.fullscreen && !this._autoFullscreenDone) {
       this._autoFullscreenDone = true;
       applyFullscreenHeight(this._host());
       toggleKiosk();
@@ -532,7 +539,17 @@ export class SkinsProCard extends LitElement {
     }
   }
 
+  private _lockKiosk(): void {
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key))) {
+        e.preventDefault();
+      }
+    });
+  }
+
   private toggleKioskFullscreen(): void {
+    if (!this._hass?.user?.is_admin) return;
     const host = this._host();
     if (document.body.classList.contains('skins-pro-kiosk')) {
       toggleKiosk();
