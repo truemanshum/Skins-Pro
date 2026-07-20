@@ -59,7 +59,7 @@ jobs:
 
       - name: Fail if architecture files changed
         if: steps.check.outputs.blocked == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             core.setFailed('Skin-contribution PRs must not modify architecture files (src/, scripts/, tsconfig.json, rollup.config.js, .github/workflows/, .github/PULL_REQUEST_TEMPLATE.md). Please revert these changes.');
