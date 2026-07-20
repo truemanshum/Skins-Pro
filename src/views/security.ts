@@ -90,7 +90,7 @@ function renderSecurityCards(ctx: RenderContext): TemplateResult | typeof nothin
       const isTriggered = entity.state === 'triggered';
       const isPending = entity.state === 'pending' || entity.state === 'arming' || entity.state === 'disarming';
       const iconStyle = '--mdc-icon-size:18px;color:var(--sp-text-primary);display:flex;cursor:pointer';
-      const aLocal = (st: string) => ctx.hass?.localize?.(`component.alarm_control_panel.state.${st}`) || st.replace(/_/g, ' ');
+      const aLocal = (st: string) => ctx.hass?.localize?.(`component.alarm_control_panel.entity_component._.state.${st}`) || ctx.hass?.localize?.(`component.alarm_control_panel.state.${st}`) || st.replace(/_/g, ' ');
       const armModes = [
         { f: 2, i: 'mdi:shield-lock', s: 'alarm_arm_away', title: aLocal('armed_away') },
         { f: 1, i: 'mdi:shield-home', s: 'alarm_arm_home', title: aLocal('armed_home') },
