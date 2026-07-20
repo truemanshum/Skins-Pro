@@ -268,7 +268,7 @@ export function selectedSkin(config?: DashboardConfig): string {
   return matchedSkin || DEFAULT_SKIN;
 }
 
-const DARK_SUPPORTED_SKINS = new Set(['modern', 'neo-tactile']);
+const DARK_SUPPORTED_SKINS = new Set(['modern', 'neo-tactile', 'prism-tide']);
 export function skinSupportsDark(skin: string): boolean {
   return DARK_SUPPORTED_SKINS.has(skin);
 }

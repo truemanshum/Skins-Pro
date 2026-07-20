@@ -61,7 +61,7 @@ function getResizeOptions(filename) {
   if (name.startsWith('decor')) {
     return { height: 400, fit: 'inside' };
   }
-  if (name.startsWith('base-') || name.startsWith('stage-') || name.startsWith('background.')) {
+  if (name.startsWith('base-') || name.startsWith('stage-') || name.startsWith('background.') || name.startsWith('background-')) {
     return { width: 2560 };
   }
   return { width: 1200 };
