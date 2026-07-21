@@ -93,7 +93,7 @@ On first add, it automatically scans your Home Assistant and organizes content b
 
 ## Development
 
-Skin development guide, build instructions, and contributing guide have been moved to the [Wiki](https://github.com/ha-china/Skins-Pro/wiki).
+Skin development guide, build instructions, and contributing guide have been moved to the [Wiki](https://github.com/ha-china/Skins-Pro/wiki). ([中文版](https://github.com/ha-china/Skins-Pro/wiki/Home-zh-CN))
 
 ## Credits
 
