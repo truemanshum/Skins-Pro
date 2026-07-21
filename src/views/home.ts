@@ -27,7 +27,6 @@ import {
 
 export function renderHomeView(
   ctx: RenderContext,
-  weatherIconName: string,
   quote: string,
   energyValue: string,
   energyUnit: string,
@@ -80,7 +79,7 @@ export function renderHomeView(
           <p class="quote">${quote}</p>
         </section>
         <div class="weather-with-meta">
-          ${renderWeather(ctx.config, ctx.hass, weatherIconName, ctx.weatherForecast, ctx.onMoreInfo)}
+          ${renderWeather(ctx.config, ctx.hass, ctx.weatherForecast, ctx.onMoreInfo)}
           ${hasCamera ? html`
           <div class="welcome-meta">
             <div style="display:flex;justify-content:space-between;align-items:center">

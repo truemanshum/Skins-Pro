@@ -204,23 +204,6 @@ export function formatRelativeTime(isoDate: Date, language: Language): string {
   return rtf.format(-years, 'years');
 }
 
-export function weatherIcon(state: string): string {
-  const iconMap: Record<string, string> = {
-    sunny: 'mdi:weather-sunny',
-    clear: 'mdi:weather-sunny',
-    cloudy: 'mdi:weather-cloudy',
-    partlycloudy: 'mdi:weather-partly-cloudy',
-    rainy: 'mdi:weather-rainy',
-    pouring: 'mdi:weather-pouring',
-    snowy: 'mdi:weather-snowy',
-    fog: 'mdi:weather-fog',
-    windy: 'mdi:weather-windy',
-    hail: 'mdi:weather-hail',
-    lightning: 'mdi:weather-lightning',
-  };
-  return iconMap[state] || 'mdi:weather-partly-cloudy';
-}
-
 export function iconForDomain(domain: string): string {
   const icons: Record<string, string> = {
     light: 'mdi:lightbulb',

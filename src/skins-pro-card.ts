@@ -26,7 +26,6 @@ import {
   setDarkAssetSkin,
   skinSupportsDark,
   stateValue,
-  weatherIcon,
   t,
   moreInfo,
   navigatePath,
@@ -436,7 +435,6 @@ export class SkinsProCard extends LitElement {
     const translate = getTranslate(language);
     const ctx = this._buildContext(language, translate);
 
-    const weatherIconName = weatherIcon(stateValue(this._hass, this._config.weather?.entity, language));
     const quote = stateValue(this._hass, this._config.info?.entity, language) || translate('loadingQuote');
     const energyEntityId = this._config.energy?.entity || '';
     const energyValue = this._config.energy?.entity ? formatNumber(stateValue(this._hass, this._config.energy.entity, language), 1) : '--';
@@ -452,7 +450,7 @@ export class SkinsProCard extends LitElement {
       case 'automations': stage = renderAutomationsView(ctx); break;
       case 'security': stage = renderSecurityView(ctx); break;
       case 'energy': stage = renderEnergyView(ctx, energyValue, energyUnit, compareValue); break;
-      default: stage = renderHomeView(ctx, weatherIconName, quote, energyValue, energyUnit, compareValue);
+      default: stage = renderHomeView(ctx, quote, energyValue, energyUnit, compareValue);
     }
 
     return html`

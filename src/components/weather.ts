@@ -3,12 +3,10 @@ import type { TemplateResult } from 'lit';
 
 import type { DashboardConfig, HomeAssistant, WeatherForecastDay } from '../types';
 import { getWeatherDisplayText, getWeatherTemperature } from '../ha';
-import { weatherIcon } from '../utils';
 
 export function renderWeather(
   config: DashboardConfig,
   hass: HomeAssistant,
-  weatherIconName: string,
   forecast: WeatherForecastDay[] | undefined,
   onMoreInfo: (entityId: string) => void,
 ): TemplateResult {
@@ -31,7 +29,7 @@ export function renderWeather(
   return html`
     <div class="weather-block" @click=${() => onMoreInfo(entityId)}>
       <div class="weather-current">
-        <div class="weather-state-icon"><ha-icon icon="${weatherIconName}"></ha-icon></div>
+        <div class="weather-state-icon"><ha-state-icon .stateObj=${hass.states[entityId]}></ha-state-icon></div>
         <div class="weather-current-info">
           <div class="weather-current-temp">${temp || '--'}${todayHigh && todayLow ? html` <span class="weather-current-hl">${todayHigh}/${todayLow}</span>` : ''}</div>
           <div class="weather-current-cond">${condition}${todayPrecip ? html` · ${todayPrecip}` : ''}</div>
@@ -47,7 +45,7 @@ export function renderWeather(
             return html`
               <div class="forecast-day">
                 <div class="forecast-weekday">${dayLabel}</div>
-                <div class="forecast-icon"><ha-icon icon="${weatherIcon(day.condition || '')}"></ha-icon></div>
+                <div class="forecast-icon"><ha-state-icon .stateObj=${{ entity_id: 'weather._', state: day.condition || '', attributes: {} } as any}></ha-state-icon></div>
                 <div class="forecast-temps"><span class="forecast-high">${high}</span><span class="forecast-low">${low}</span></div>
               </div>
             `;
