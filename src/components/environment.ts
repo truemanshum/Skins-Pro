@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import type { TemplateResult } from 'lit';
 
 import type {
@@ -35,8 +35,7 @@ export function renderEnvironment(
       const label = String(state?.attributes?.friendly_name || entityId);
       const unit = String(state?.attributes?.unit_of_measurement || '');
       const variant: EnvironmentMetricConfig['variant'] = deviceClass === 'temperature' ? 'temp' : (deviceClass === 'humidity' ? 'hum' : 'pm');
-      const icon = variant === 'temp' ? 'mdi:thermometer' : (variant === 'hum' ? 'mdi:water-percent' : 'mdi:leaf');
-      return { entity: entityId, label, unit, variant, icon };
+      return { entity: entityId, label, unit, variant };
     })
     : configuredMetrics).slice(0, config.home_limits?.environment || 5);
 
@@ -89,10 +88,12 @@ export function renderEnvironment(
 }
 
 function renderEnvRow(hass: HomeAssistant, metric: EnvironmentMetricConfig, language: Language): TemplateResult {
+  const state = hass.states[metric.entity];
+  const name = String(state?.attributes?.friendly_name || '') || metric.label || metric.entity;
   return html`
     <div class="env-row">
-      <div class="dot ${metric.variant || 'temp'}"><ha-icon icon=${metric.icon || 'mdi:circle'}></ha-icon></div>
-      <div class="muted">${hass.states[metric.entity]?.attributes?.friendly_name || metric.label || metric.entity}</div>
+      ${state ? html`<div class="dot ${metric.variant || 'temp'}">${metric.icon ? html`<ha-icon icon=${metric.icon}></ha-icon>` : html`<ha-state-icon .stateObj=${state}></ha-state-icon>`}</div>` : nothing}
+      <div class="muted">${name}</div>
       <div class="env-value">${stateValue(hass, metric.entity, language) || '--'}${metric.unit || ''}</div>
     </div>
   `;

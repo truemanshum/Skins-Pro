@@ -406,7 +406,7 @@ button { font:inherit; }
 .dot.temp { background:var(--sp-env-temp-bg); color:var(--sp-env-temp); }
 .dot.hum { background:var(--sp-env-hum-bg); color:var(--sp-env-hum); }
 .dot.pm { background:var(--sp-env-pm-bg); color:var(--sp-env-pm); }
-.env-value { min-width:0; max-width:100%; font-weight:700; text-align:right; overflow-wrap:anywhere; word-break:break-word; border-radius:var(--sp-radius-xs); padding:0 var(--sp-space-3xs); }
+.env-value { min-width:0; max-width:100%; width:fit-content; justify-self:end; font-weight:700; text-align:right; overflow-wrap:anywhere; word-break:break-word; border-radius:var(--sp-radius-xs); padding:0 var(--sp-space-3xs) 0 0; }
 .env-row .muted { width:fit-content; border-radius:var(--sp-radius-pill); padding:0 var(--sp-space-3xs); }
 .energy-value { font-size:var(--sp-font-xxl); line-height:1; font-weight:700; margin-top:var(--sp-space-3xs); color:var(--sp-accent); width:fit-content; border-radius:var(--sp-radius-sm); padding:0 var(--sp-space-xs); }
 .energy-value small { font-size:var(--sp-font-2xs); color:var(--sp-text-muted-dim); border-radius:var(--sp-radius-pill); padding:0 var(--sp-space-3xs); }
@@ -504,6 +504,8 @@ button { font:inherit; }
   .stage-grid { grid-template-columns:minmax(0,1fr); grid-template-areas:"welcome" "side" "bottom"; grid-template-rows:auto auto auto; }
   .welcome-group .weather-row { width:100%; margin-top:16px; }
   .weather-block { max-width:none; }
+  .weather-with-meta { flex-direction:column; align-items:stretch; gap:var(--sp-space-sm); }
+  .welcome-meta { margin-left:0; align-items:flex-start; text-align:left; }
   .side { height:auto; grid-template-rows:auto; overflow:visible; }
   .bottom-stack { gap:var(--sp-space-xs); }
   .mobile-nav { display:flex; flex-direction:row; flex-wrap:nowrap; position:fixed; bottom:0; left:0; right:0; width:100%; z-index:100; background:var(--sp-glass-bg); border-top:0; padding:var(--sp-space-xs) var(--sp-space-sm) calc(var(--sp-space-xs) + env(safe-area-inset-bottom)) var(--sp-space-sm); justify-content:space-around; box-shadow:0 -4px 12px rgba(0,0,0,.08); }

@@ -52,6 +52,10 @@ export interface EntityRegistryEntry {
   device_id?: string | null;
   hidden_by?: string | null;
   disabled_by?: string | null;
+  name?: string | null;
+  original_name?: string | null;
+  icon?: string | null;
+  original_icon?: string | null;
 }
 
 export interface DeviceRegistryEntry {
