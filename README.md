@@ -9,9 +9,9 @@ Skins Pro is a community Lovelace card with a multi-skin architecture. It ships 
 - Add via HACS custom repository
 - Switch between skins freely
 - Fullscreen Kiosk mode for immersive experience
-- Auto image processing on build (resize, JPG convert)
 - Area-based room display
-- Auto icon matching by entity domain
+- Auto icon resolution from Home Assistant
+- Force fullscreen lock for non-admin users
 
 > Note — We often create skins out of passion for the things we like, but this can inadvertently touch on copyright issues. We recommend using AI-generated images whenever possible. All current theme image assets are AI-generated, so some images may contain AI watermarks or similar generation artifacts. If you don't like the AI-generated images, you can freely upload your own background and room images in the settings. If you believe any skin infringes on your copyright, please open an issue and we will remove it promptly.
 
@@ -70,18 +70,20 @@ Download additional skins directly from the card editor. Clicking **Download** f
 - ☀️ Weather & greeting
 - 💬 Info display
 - 📱 Device controls (by area or by type) — lights, switches, covers, climate, water heater, fan, humidifier, vacuum
-- 🚪 Room snapshots
+- 🚪 Room snapshots with scene chips
 - 🎬 Scene buttons
 - 🤖 Automations page
 - ⚡ Energy dashboard (today vs yesterday)
 - 🛡️ Security page — cameras, locks, alarm control panel (auto-detected, click to arm/disarm)
 - 🎵 Media player card — album art, playback controls, skip tracks, volume bar
 - 📷 Camera snapshot on homepage
-- 🌡️ Environment sensors display
+- 🌡️ Environment sensors display — auto icon from HA
+- 🗺️ Device grouping by floor
 - 🌐 Auto CN/EN bilingual switching
 - 🌙 Dark mode — auto sunset/sunrise switching, or tap the clock to toggle manually (modern skin)
 - 🔍 Global search — fuzzy match devices, filter by type
 - ↔️ Fullscreen Kiosk mode
+- 🔒 Kiosk lock for non-admin users — force fullscreen, block right-click & dev tools
 - 🖼️ Use HA area pictures as room backgrounds
 - 🎨 Custom background image upload
 - 📱 Mobile responsive layout
@@ -91,7 +93,7 @@ On first add, it automatically scans your Home Assistant and organizes content b
 
 ## Development
 
-Skin development guide, build instructions, and contributing guide have been moved to the [Wiki](https://github.com/ha-china/Skins-Pro/wiki) (also available as [`DEVELOPMENT.md`](DEVELOPMENT.md)).
+Skin development guide, build instructions, and contributing guide have been moved to the [Wiki](https://github.com/ha-china/Skins-Pro/wiki).
 
 ## Credits
 
