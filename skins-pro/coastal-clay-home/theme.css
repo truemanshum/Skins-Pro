@@ -1142,14 +1142,14 @@ ha-control-slider {
   max-width: 100%;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .room {
   position: relative;
   min-width: 0;
-  min-height: 154px;
-  aspect-ratio: 16 / 10;
+  min-height: 142px;
+  aspect-ratio: 16 / 9;
   padding: 0;
   overflow: hidden;
   color: #F7F5EF;
@@ -1194,7 +1194,7 @@ ha-control-slider {
 .room-label {
   position: absolute;
   z-index: 2;
-  inset: auto 13px 12px;
+  inset: auto 11px 10px;
   min-width: 0;
   text-align: left;
 }
@@ -2582,6 +2582,77 @@ ha-control-slider:focus-within {
   }
 }
 
+/* Short landscape shells: keep rooms in the primary reading pane and scroll the rail independently. */
+@media (orientation: landscape) and (min-height: 600px) and (max-height: 850px) {
+  @container coastal-shell (min-width: 900px) and (max-width: 1399px) {
+    .stage-grid {
+      padding: 68px 16px 18px;
+      gap: 12px;
+    }
+
+    .welcome-group,
+    .bottom-stack {
+      gap: 12px;
+    }
+
+    .side {
+      max-height: calc(100dvh - 120px);
+      padding-inline-end: 2px;
+      gap: 10px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .device {
+      min-height: 154px;
+      padding: 12px;
+      gap: 7px;
+    }
+
+    .item-img,
+    .item-icon {
+      width: 52px;
+      height: 52px;
+    }
+
+    .rooms {
+      gap: 10px;
+    }
+
+    .room {
+      min-height: 120px;
+    }
+  }
+
+  @container coastal-shell (min-width: 1120px) and (max-width: 1399px) {
+    .welcome-group {
+      grid-template-columns: minmax(230px, 0.34fr) minmax(0, 0.66fr);
+    }
+
+    .welcome,
+    .weather-with-meta {
+      padding: 12px 14px;
+    }
+
+    .weather-block {
+      gap: 10px;
+    }
+
+    .weather-state-icon {
+      width: 52px;
+      height: 52px;
+      flex-basis: 52px;
+      border-radius: 17px;
+    }
+
+    .weather-state-icon > ha-icon {
+      --mdc-icon-size: 29px;
+      width: 29px;
+      height: 29px;
+    }
+  }
+}
+
 /* Wide desktop: structure follows width; height only scales decorative/profile art. */
 @container coastal-shell (min-width: 1400px) {
   .mc-app {
@@ -2920,14 +2991,14 @@ ha-control-slider:focus-within {
   .stage-grid {
     min-height: calc(100dvh - 16px);
     height: auto;
-    padding: 76px 14px calc(84px + env(safe-area-inset-bottom));
+    padding: 70px 12px calc(78px + env(safe-area-inset-bottom));
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: max-content max-content max-content;
     grid-template-areas:
       "welcome"
       "bottom"
       "side";
-    gap: 16px;
+    gap: 14px;
     overflow: visible;
     scrollbar-gutter: auto;
   }
@@ -2947,7 +3018,7 @@ ha-control-slider:focus-within {
 
   .welcome,
   .weather-with-meta {
-    padding: 14px;
+    padding: 12px;
   }
 
   .weather-with-meta,
@@ -2997,12 +3068,22 @@ ha-control-slider:focus-within {
 
   .rooms {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .room {
+    min-height: 120px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .room-label {
+    inset: auto 9px 8px;
   }
 
   .page-shell {
     min-height: calc(100dvh - 16px);
     height: auto;
-    padding: 76px 14px calc(84px + env(safe-area-inset-bottom));
+    padding: 70px 12px calc(78px + env(safe-area-inset-bottom));
     overflow: visible;
   }
 
@@ -3021,8 +3102,8 @@ ha-control-slider:focus-within {
     z-index: 100;
     inset: auto 0 0;
     width: 100%;
-    min-height: 68px;
-    padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+    min-height: 64px;
+    padding: 5px 7px calc(5px + env(safe-area-inset-bottom));
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: minmax(0, 1fr);
@@ -3037,7 +3118,7 @@ ha-control-slider:focus-within {
   .mobile-nav .nav-button {
     width: auto;
     min-width: 44px;
-    min-height: 52px;
+    min-height: 48px;
     margin: 0;
     padding: 4px;
     display: grid;
@@ -3079,7 +3160,6 @@ ha-control-slider:focus-within {
 }
 
 @media (max-width: 520px) and (orientation: portrait) {
-  .mc-app[data-view="home"] .devices,
   .devices-page-grid,
   .rooms-page,
   .rooms-page-medium,
@@ -3092,17 +3172,17 @@ ha-control-slider:focus-within {
   }
 
   .mc-app[data-view="home"] .rooms {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: min(82vw, 310px);
-    padding-bottom: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    padding-bottom: 0;
+    overflow: visible;
+    scroll-snap-type: none;
   }
 
   .mc-app[data-view="home"] .room {
-    min-height: 172px;
-    scroll-snap-align: start;
+    min-height: 120px;
+    scroll-snap-align: none;
   }
 
   .device {
