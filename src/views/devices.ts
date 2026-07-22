@@ -72,7 +72,13 @@ function renderRealDeviceGroups(ctx: RenderContext, devices: ReturnType<typeof g
     groups.set(groupKey, current);
   }
 
-  return html`${Array.from(groups.entries()).map(([group, items]) => {
+  const sortedGroups = Array.from(groups.entries()).sort(([a], [b]) => {
+    if (a === 'others' || a === t(ctx.language, 'otherGroup')) return 1;
+    if (b === 'others' || b === t(ctx.language, 'otherGroup')) return -1;
+    return a.localeCompare(b);
+  });
+
+  return html`${sortedGroups.map(([group, items]) => {
     const groupLabel = ctx.deviceGrouping === 'domain'
       ? items.length > 0 ? domainGroupLabel(deviceTypeGroupKey(items[0]!.detail), ctx.hass, ctx.language) : group
       : group;

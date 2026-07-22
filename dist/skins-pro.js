@@ -445,7 +445,7 @@ const e={base:"base-texture.jpg",stage:"background.jpg",theme_css:"theme.css",av
       `}
     `,X`
       <div class="page-scroll themed-scrollbar">
-        ${function(e,t){if(0===t.length)return X`<div class="empty-state">${e.translate("noDevices")}</div>`;const i=new Map;for(const n of t){const t="domain"===e.deviceGrouping?Bt(n.detail):n.subtitle||Ie(e.language,"otherGroup"),s=i.get(t)||[];s.push(n),i.set(t,s)}return X`${Array.from(i.entries()).map(([t,i])=>{const n="domain"===e.deviceGrouping&&i.length>0?Dt(Bt(i[0].detail),e.hass,e.language):t;return X`
+        ${function(e,t){if(0===t.length)return X`<div class="empty-state">${e.translate("noDevices")}</div>`;const i=new Map;for(const n of t){const t="domain"===e.deviceGrouping?Bt(n.detail):n.subtitle||Ie(e.language,"otherGroup"),s=i.get(t)||[];s.push(n),i.set(t,s)}const n=Array.from(i.entries()).sort(([t],[i])=>"others"===t||t===Ie(e.language,"otherGroup")?1:"others"===i||i===Ie(e.language,"otherGroup")?-1:t.localeCompare(i));return X`${n.map(([t,i])=>{const n="domain"===e.deviceGrouping&&i.length>0?Dt(Bt(i[0].detail),e.hass,e.language):t;return X`
       <section class="device-group">
         <div class="section-title"><h2>${n}</h2><p class="muted">${String(i.length)}</p></div>
         <div class="devices devices-page-grid">
