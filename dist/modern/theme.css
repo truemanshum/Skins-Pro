@@ -154,6 +154,8 @@ button { font:inherit; }
 .chip { min-height:36px; border:var(--sp-border-width) solid var(--sp-border-chip); border-radius:var(--sp-radius-pill); padding:0 14px; background:var(--sp-device-bg); color:var(--sp-text-main); font-size:var(--sp-font-xs); cursor:pointer; transition:all .2s ease; box-sizing:border-box; }
 .chip.active { background:var(--sp-device-bg); color:var(--sp-accent); box-shadow:inset 3px 3px 6px rgba(0,0,0,.08),inset -3px -3px 6px rgba(255,255,255,.9); }
 .filter-bar { display:flex; gap:var(--sp-space-sm); align-items:center; margin-bottom:var(--sp-space-md); flex-wrap:wrap; }
+.room-filter-bar { display:flex; gap:var(--sp-space-sm); align-items:center; margin-bottom:var(--sp-space-md); }
+.room-filter-label { font-size:var(--sp-font-sm); font-weight:600; color:var(--sp-text-muted); }
 .filter-select { min-height:36px; padding:0 var(--sp-space-lg) 0 var(--sp-space-sm); border:var(--sp-border-width) solid var(--sp-border-chip); border-radius:var(--sp-radius-pill); background-color:var(--sp-device-bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23888' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;background-size:14px; color:var(--sp-text-main); font:inherit; font-size:var(--sp-font-xs); outline:none; cursor:pointer; min-width:120px; -webkit-appearance:none; appearance:none; box-sizing:border-box; }
 .filter-select option { background:var(--sp-panel-bg); color:var(--sp-text-dark); }
 .action-btn { min-height:36px; box-sizing:border-box; border:var(--sp-border-width) solid var(--sp-border-chip); border-radius:var(--sp-radius-pill); padding:0 14px; background:var(--sp-device-bg); color:var(--sp-text-main); cursor:pointer; font:inherit; font-size:var(--sp-font-xs); transition:all .2s ease; }
@@ -636,6 +638,7 @@ button { font:inherit; }
   .page-controls { flex-shrink: 0; }
   .filter-bar { flex-wrap: wrap; gap: var(--sp-space-xs); }
   .chip, .filter-select, .action-btn { min-height: 26px; padding: 0 8px; font-size: var(--sp-font-2xs); }
+  .room-filter-bar .chip { min-height: 26px; padding: 0 8px; font-size: var(--sp-font-2xs); }
   .page-scroll { padding-right: 0; }
   .rooms-page-wrap { overflow: hidden; }
   .room-label { left: 6px; right: 6px; bottom: 4px; }

@@ -115,7 +115,7 @@ export function renderAreaRooms(
 
     if (showSummary) {
       return html`
-        <button class="room">
+        <button class="room" @click=${() => ctx.onRoomSelect(room.name)}>
           ${roomImg}
           ${sceneChips}
           <div class="room-label">
@@ -128,7 +128,7 @@ export function renderAreaRooms(
     }
     const countLabel = t(ctx.language, 'deviceEntityCount', { devices: room.counts.devices, entities: room.counts.entities });
     return html`
-      <button class="room">
+      <button class="room" @click=${() => ctx.onRoomSelect(room.name)}>
         ${roomImg}
         ${sceneChips}
         <div class="room-label">

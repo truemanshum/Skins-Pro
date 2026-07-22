@@ -20,9 +20,15 @@ export function renderDevicesView(ctx: RenderContext): TemplateResult {
   });
 
   return renderPageShell(
-    ctx.translate('devices'),
-    ctx.translate('quickControl'),
+    ctx.filterRoom ? ctx.filterRoom : ctx.translate('devices'),
+    ctx.filterRoom ? '' : ctx.translate('quickControl'),
     html`
+      ${ctx.filterRoom ? html`
+      <div class="filter-bar room-filter-bar">
+        <button class="chip active" @click=${() => ctx.setFilterRoom('')}>${ctx.translate('allRooms')}</button>
+        <span class="room-filter-label">${ctx.filterRoom}</span>
+      </div>
+      ` : html`
       <div class="filter-bar">
         <button class="chip${ctx.deviceGrouping === 'area' ? ' active' : ''}" @click=${() => ctx.setDeviceGrouping('area')}>${ctx.translate('byArea')}</button>
         <button class="chip${ctx.deviceGrouping === 'domain' ? ' active' : ''}" @click=${() => ctx.setDeviceGrouping('domain')}>${ctx.translate('byType')}</button>
@@ -41,6 +47,7 @@ export function renderDevicesView(ctx: RenderContext): TemplateResult {
         <button class="action-btn" @click=${() => ctx.onBatchControl('on')}>${ctx.translate('turnOnAll')}</button>
         <button class="action-btn" @click=${() => ctx.onBatchControl('off')}>${ctx.translate('turnOffAll')}</button>
       </div>
+      `}
     `,
     html`
       <div class="page-scroll themed-scrollbar">

@@ -50,6 +50,7 @@ export interface RenderContext {
   sidebarHidden: boolean;
   onMoreInfo: (entityId: string) => void;
   onTurnOffAreaType: (entityIds: string[]) => void;
+  onRoomSelect: (roomName: string) => void;
 
   searchOpen: boolean;
   onOpenSearch: () => void;

@@ -403,6 +403,7 @@ export class SkinsProCard extends LitElement {
       sidebarHidden: this._sidebarHidden,
       onMoreInfo: (entityId) => moreInfo(this, entityId),
       onTurnOffAreaType: (entityIds) => turnOffAreaTypeAction(this._hass, entityIds),
+      onRoomSelect: (roomName) => { this._filterRoom = roomName; this._deviceGrouping = 'domain'; this._view = 'devices'; },
       searchOpen: this._searchOpen,
       onOpenSearch: () => { this._searchOpen = true; },
       onCloseSearch: () => { this._searchOpen = false; this._searchQuery = ''; this._searchFilter = 'all'; },
