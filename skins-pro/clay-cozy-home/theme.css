@@ -9047,7 +9047,7 @@ ha-card {
 /* clay-cozy-home-20260722-v30 */
 
 /* ==========================================================================
-   R36 MOBILE GRID RELEASE LOCK — clay-cozy-home-20260723-v41
+   R36 MOBILE GRID RELEASE LOCK — clay-cozy-home-20260723-v42
    Final layer intentionally owns the home composition and responsive gates.
    ========================================================================== */
 
@@ -9481,7 +9481,7 @@ ha-card {
 }
 
 /* ==========================================================================
-   R37 RIGHT RAIL + NON-OCCLUDING TIME — clay-cozy-home-20260723-v41
+   R37 RIGHT RAIL + NON-OCCLUDING TIME — clay-cozy-home-20260723-v42
    The deployment keeps the home camera slot empty so time/environment stay
    in the right rail; cameras remain available on the Security page.
    ========================================================================== */
@@ -9904,10 +9904,10 @@ ha-card {
   }
 }
 
-/* clay-cozy-home-20260723-v41 */
+/* clay-cozy-home-20260723-v42 */
 
 /* ==========================================================================
-   R38 MOBILE FLOW + SEVEN-ITEM NAV — clay-cozy-home-20260723-v41
+   R38 MOBILE FLOW + SEVEN-ITEM NAV — clay-cozy-home-20260723-v42
    Keep time near the weather, preserve all 44px touch targets, and remove
    decorative scrollbars without disabling horizontal forecast gestures.
    ========================================================================== */
@@ -9999,5 +9999,204 @@ ha-card {
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     font-size: 10px !important;
+  }
+}
+
+/* ==========================================================================
+   R40 MATTE CLAY NAV + CONTROL OVERFLOW GUARD — 20260723-v42
+   Match the reference rail: transparent inactive items, one restrained
+   terracotta active relief, and no milky-white highlight. Keep dynamic
+   device labels and optional compact controls inside every card.
+   ========================================================================== */
+
+@media (min-width: 901px) {
+  .mc-app .sidebar {
+    border: 0 !important;
+    box-shadow:
+      7px 11px 24px rgba(82, 49, 38, .14),
+      inset 1px 1px 0 rgba(255, 244, 234, .12),
+      inset -3px -4px 10px rgba(85, 45, 34, .08) !important;
+  }
+
+  .mc-app .sidebar .menu .nav-button,
+  .mc-app .sidebar .menu button {
+    color: rgba(255, 246, 237, .9) !important;
+    background: transparent !important;
+    background-image: none !important;
+    border: 1px solid transparent !important;
+    box-shadow: none !important;
+    text-shadow: 0 1px 1px rgba(72, 34, 27, .14) !important;
+  }
+
+  .mc-app .sidebar .menu .nav-button ha-icon,
+  .mc-app .sidebar .menu button ha-icon {
+    color: inherit !important;
+    opacity: .94 !important;
+    filter: none !important;
+  }
+
+  .mc-app .sidebar .menu .nav-button:not(.active):hover,
+  .mc-app .sidebar .menu button:not(.active):hover {
+    color: #FFF7EF !important;
+    background: rgba(108, 51, 40, .1) !important;
+  }
+
+  .mc-app .sidebar .menu .nav-button.active,
+  .mc-app .sidebar .menu button.active {
+    color: #FFF7EF !important;
+    background:
+      linear-gradient(145deg, rgba(158, 79, 65, .42), rgba(221, 133, 111, .3)) !important;
+    border-color: rgba(255, 237, 223, .13) !important;
+    box-shadow:
+      0 5px 10px rgba(76, 35, 28, .18),
+      inset 1px 1px 2px rgba(255, 237, 222, .14),
+      inset -2px -2px 5px rgba(79, 36, 29, .12) !important;
+    text-shadow: 0 1px 1px rgba(65, 29, 23, .2) !important;
+  }
+}
+
+.mc-app .device,
+.mc-app .devices-page-grid .device {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.mc-app .device > *,
+.mc-app .device .device-top,
+.mc-app .device .device-copy,
+.mc-app .device .control-row,
+.mc-app .device .tag-stack {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.mc-app .device .device-copy,
+.mc-app .device .tag-stack {
+  overflow: hidden !important;
+}
+
+.mc-app .device .device-name {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  overflow-wrap: anywhere !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.mc-app .device .status,
+.mc-app .device .state-word,
+.mc-app .device .muted,
+.mc-app .device select,
+.mc-app .device option {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.mc-app .device .control-row {
+  display: flex !important;
+  width: 100% !important;
+  gap: 6px !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+
+.mc-app .device .control-row .state-word {
+  flex: 1 1 auto !important;
+}
+
+.mc-app .device .media-dev-voltrack {
+  flex: 1 1 36px !important;
+  width: auto !important;
+  min-width: 24px !important;
+  max-width: 64px !important;
+}
+
+.mc-app .device .media-toggle-icon,
+.mc-app .device .switch {
+  flex: 0 0 auto !important;
+}
+
+.mc-app .device :is(button, select, input, [role="button"]) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.mc-app .device :is(
+  .climate-controls,
+  .climate-control,
+  .temperature-controls,
+  .temperature-control,
+  .hvac-controls,
+  .device-controls,
+  [class*="climate"][class*="control"],
+  [class*="temperature"][class*="control"]
+) {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  gap: 4px !important;
+  flex-wrap: wrap !important;
+  overflow: hidden !important;
+}
+
+@media (min-width: 901px) and (max-width: 1400px) {
+  .mc-app .device .control-row {
+    gap: 4px !important;
+  }
+
+  .mc-app .device .status,
+  .mc-app .device .state-word,
+  .mc-app .device select {
+    font-size: 10px !important;
+  }
+
+  .mc-app .device .media-dev-voltrack {
+    max-width: 44px !important;
+  }
+}
+
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
+  .mc-app .mobile-nav .nav-button {
+    color: rgba(91, 58, 47, .78) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .mc-app .mobile-nav .nav-button.active {
+    color: #714236 !important;
+    background: rgba(190, 116, 96, .28) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(132, 70, 56, .1),
+      inset 1px 1px 2px rgba(255, 244, 235, .12) !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .mc-app .sidebar {
+    border: 0 !important;
+    box-shadow:
+      7px 11px 24px rgba(12, 8, 7, .24),
+      inset 1px 1px 0 rgba(255, 235, 220, .08),
+      inset -3px -4px 10px rgba(25, 13, 11, .16) !important;
+  }
+
+  .mc-app .sidebar .menu .nav-button.active,
+  .mc-app .sidebar .menu button.active,
+  .mc-app .mobile-nav .nav-button.active {
+    color: #F9EADF !important;
+    background:
+      linear-gradient(145deg, rgba(92, 45, 39, .68), rgba(145, 75, 64, .38)) !important;
+    border-color: rgba(248, 226, 211, .1) !important;
+    box-shadow:
+      0 4px 9px rgba(16, 9, 8, .22),
+      inset 1px 1px 2px rgba(255, 232, 216, .08) !important;
   }
 }
