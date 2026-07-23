@@ -13,116 +13,114 @@
 
   /* ---- Layout ---- */
   --sp-sidebar-width: 220px;
-  --sp-app-padding: 20px;
-  --sp-stage-radius: 32px;
+  --sp-app-padding: 24px;
+  --sp-stage-radius: 34px;
   --sp-runtime-height: 560px;
   --sp-runtime-min-height: 560px;
 
-  /* ---- Glass Materials - pure white, high translucency ---- */
-  --glass-thin:            rgba(255,255,255,0.45);
-  --glass-regular:         rgba(255,255,255,0.55);
-  --glass-thick:           rgba(255,255,255,0.42);
-  --glass-ultra-thick:     rgba(255,255,255,0.68);
+  /* ---- Ice Glass — translucent, crystalline, see-through ---- */
+  --glass-thin:            rgba(255,255,255,0.26);
+  --glass-regular:         rgba(255,255,255,0.40);
+  --glass-thick:           rgba(255,255,255,0.34);
+  --glass-ultra-thick:     rgba(255,255,255,0.52);
   --glass-knob:            #FFFFFF;
-  /* Fine glass edge: top-left specular highlight + subtle bottom dark + white rim */
+  /* Crystalline edge — icy rim that catches light */
   --glass-highlight:
-    inset 0 1px 1px rgba(255,255,255,0.90),
-    inset 0 -1px 1px rgba(0,0,0,0.03),
-    0px 0px 0px 1px rgba(255,255,255,0.50);
+    inset 0 1px 0.5px rgba(255,255,255,0.65),
+    inset 0 -0.5px 1px rgba(0,0,0,0.02),
+    0px 0px 0px 0.5px rgba(255,255,255,0.22);
 
-  /* ---- Background & Overlay ---- */
+  /* ---- Background — soft, calm, slightly cool, easy on the eyes ---- */
   --sp-stage-texture: none;
-  --sp-bg:            #F0F0F2;
-  --sp-app-overlay:   linear-gradient(rgba(248,248,250,0.78), rgba(240,240,244,0.78));
+  --sp-bg:            #D8DCE2;
+  --sp-app-overlay:   linear-gradient(180deg, rgba(232,236,242,0.30) 0%, rgba(220,224,230,0.22) 50%, rgba(212,216,224,0.16) 100%);
   --sp-stage-overlay: none;
-  /* Room cards keep a dark gradient overlay so white labels stay readable on photos */
   --sp-room-overlay:
-    linear-gradient(180deg, rgba(0,0,0,0.05) 10%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.55) 100%);
+    linear-gradient(180deg, rgba(0,0,0,0.02) 40%, rgba(0,0,0,0.20) 75%, rgba(0,0,0,0.40) 100%);
 
-  /* ---- Morandi Soft Accent ---- */
-  --sp-accent:          #A2C2D6;
-  --sp-accent-hover:    #8FB1C7;
-  --sp-accent-alpha:    rgba(162,194,214,0.15);
-  --sp-accent-border:   rgba(162,194,214,0.30);
-  --sp-accent-glow:     0 0 32px rgba(162,194,214,0.20);
+  /* ---- Accent — only for attention, never large areas ---- */
+  --sp-accent:          #A8C4D8;
+  --sp-accent-hover:    #94B4CC;
+  --sp-accent-alpha:    rgba(168,196,216,0.12);
+  --sp-accent-border:   rgba(168,196,216,0.25);
+  --sp-accent-glow:     0 0 24px rgba(168,196,216,0.12);
 
-  /* ---- Semantic Colors (neutral grey tones) ---- */
-  --sp-warning:         #B8B4AE;
-  --sp-error:           #A8A4A2;
-  --sp-red-alpha:       rgba(0,0,0,0.08);
+  /* ---- Semantic — whisper quiet ---- */
+  --sp-warning:         #C4B8AE;
+  --sp-error:           #D4A8AE;
+  --sp-red-alpha:       rgba(0,0,0,0.05);
 
-  /* ---- Text - dark graphite + refined grey ---- */
-  --sp-text-primary:      #2A2C30;
-  --sp-text-secondary:    #7E828A;
+  /* ---- Text — no pure black, hierarchy via weight/size ---- */
+  --sp-text-primary:      #3A3A3C;
+  --sp-text-secondary:    #8E8E93;
   --sp-text-muted:        var(--sp-text-secondary);
-  --sp-text-tertiary:     #B0B6C2;
-  --sp-text-quaternary:   rgba(58,61,68,0.20);
+  --sp-text-tertiary:     #AEAEB2;
+  --sp-text-quaternary:   rgba(60,60,67,0.12);
   --sp-text-on-accent:   #FFFFFF;
 
-  /* ---- Borders - edges via glass-highlight ring, not border property ---- */
+  /* ---- Borders — nearly invisible ---- */
   --sp-border-w:       0;
   --sp-border-glass:   transparent;
-  --sp-border-subtle:  rgba(0,0,0,0.06);
-  --sp-border-medium:  rgba(0,0,0,0.10);
+  --sp-border-subtle:  rgba(0,0,0,0.03);
+  --sp-border-medium:  rgba(0,0,0,0.05);
 
-  /* ---- Shadows: ultra-soft natural light, low opacity ---- */
+  /* ---- Shadows — ambient daylight, barely there ---- */
   --sp-shadow-sm:
-    0 2px 8px rgba(0,0,0,0.03);
+    0 2px 8px rgba(0,0,0,0.02);
   --sp-shadow-md:
-    0 8px 24px rgba(0,0,0,0.04),
-    0 2px 6px rgba(0,0,0,0.03);
+    0 8px 24px rgba(0,0,0,0.03);
   --sp-shadow-glass:
-    0 20px 40px rgba(0,0,0,0.05),
-    0 2px 6px rgba(0,0,0,0.03);
+    0 16px 40px rgba(0,0,0,0.035),
+    0 2px 6px rgba(0,0,0,0.02);
   --sp-shadow-card:    var(--sp-shadow-glass);
   --sp-shadow-lg:      var(--sp-shadow-glass);
   --sp-shadow-xl:
-    0 28px 56px rgba(0,0,0,0.07),
-    0 4px 10px rgba(0,0,0,0.03);
+    0 24px 56px rgba(0,0,0,0.05),
+    0 4px 10px rgba(0,0,0,0.02);
   --sp-shadow-switch:
-    0 1px 3px rgba(0,0,0,0.10);
+    0 1px 3px rgba(0,0,0,0.06);
 
-  /* ---- Radius System ---- */
+  /* ---- Radius — large, organic, friendly ---- */
   --sp-radius-infinite: 9999px;
-  --sp-radius-xl:       26px;
-  --sp-radius-lg:       22px;
-  --sp-radius-md:       16px;
-  --sp-radius-sm:       14px;    /* compact cards */
-  --sp-radius-xs:       12px;    /* inputs, tags */
-  --sp-radius-icon:     18px;    /* icon containers */
+  --sp-radius-xl:       28px;
+  --sp-radius-lg:       24px;
+  --sp-radius-md:       20px;
+  --sp-radius-sm:       18px;
+  --sp-radius-xs:       14px;
+  --sp-radius-icon:     18px;
   --sp-radius-pill:     var(--sp-radius-infinite);
-  --sp-radius-sidebar:  var(--sp-radius-xl);    /* 28px */
-  --sp-radius-room:     var(--sp-radius-xl);    /* 28px */
-  --sp-radius-device:   var(--sp-radius-lg);    /* 24px */
-  --sp-radius-camera:   var(--sp-radius-lg);    /* 24px */
-  --sp-radius-glass:    var(--sp-radius-lg);    /* 24px */
-  --sp-radius-empty:    var(--sp-radius-xl);    /* 28px */
-  --sp-radius-scene:    var(--sp-radius-sm);    /* 14px */
-  --sp-radius-weather:  var(--sp-radius-xs);    /* 12px */
-  --sp-radius-time:     var(--sp-radius-xs);    /* 12px */
-  --sp-radius-editor:   var(--sp-radius-xs);    /* 12px */
-  --sp-radius-input:    var(--sp-radius-xs);    /* 12px */
-  --sp-radius-btn:      var(--sp-radius-md);    /* 18px */
+  --sp-radius-sidebar:  var(--sp-radius-xl);
+  --sp-radius-room:     var(--sp-radius-xl);
+  --sp-radius-device:   var(--sp-radius-lg);
+  --sp-radius-camera:   var(--sp-radius-lg);
+  --sp-radius-glass:    var(--sp-radius-lg);
+  --sp-radius-empty:    var(--sp-radius-xl);
+  --sp-radius-scene:    var(--sp-radius-md);
+  --sp-radius-weather:  var(--sp-radius-sm);
+  --sp-radius-time:     var(--sp-radius-sm);
+  --sp-radius-editor:   var(--sp-radius-sm);
+  --sp-radius-input:    var(--sp-radius-sm);
+  --sp-radius-btn:      var(--sp-radius-md);
 
-  /* ---- Blur System - natural frost + high saturation ---- */
-  --sp-blur-lg:   blur(24px) saturate(180%);
-  --sp-blur-sm:   blur(16px) saturate(160%);
-  --sp-blur-2xs:  blur(8px) saturate(140%);
+  /* ---- Blur — gentle matte diffusion, minimal saturation ---- */
+  --sp-blur-lg:   blur(14px) saturate(108%);
+  --sp-blur-sm:   blur(10px) saturate(105%);
+  --sp-blur-2xs:  blur(6px) saturate(102%);
 
-  /* ---- Animation Curves ---- */
-  --sp-ease-out:       cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --sp-ease-glass:     cubic-bezier(0.25, 0.1, 0.25, 1);
-  --sp-duration-fast:  0.15s;
-  --sp-duration-base:  0.25s;
+  /* ---- Animation — slow, gliding, never snap ---- */
+  --sp-ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
+  --sp-ease-glass:     cubic-bezier(0.16, 1, 0.3, 1);
+  --sp-duration-fast:  0.25s;
+  --sp-duration-base:  0.4s;
 
-  /* ---- Spacing Scale ---- */
+  /* ---- Spacing — generous whitespace is part of the design ---- */
   --sp-space-3xs:  4px;
   --sp-space-2xs:  6px;
-  --sp-space-xs:   8px;
-  --sp-space-sm:   10px;
-  --sp-space-md:   14px;
-  --sp-space-lg:   20px;
-  --sp-space-xl:   28px;
+  --sp-space-xs:   10px;
+  --sp-space-sm:   14px;
+  --sp-space-md:   18px;
+  --sp-space-lg:   24px;
+  --sp-space-xl:   32px;
 
   /* ---- Typography ---- */
   --sp-font-xxl:   32px;
@@ -135,20 +133,20 @@
   --sp-font-3xs:   10px;
   --sp-font-4xs:   9px;
   --sp-font-weight-regular: 400;
-  --sp-font-weight-medium:  500;
-  --sp-font-weight-semibold: 600;
-  --sp-font-weight-bold:    700;
-  --sp-letter-spacing-tight:  -0.02em;
-  --sp-letter-spacing-wide:    0.01em;
+  --sp-font-weight-medium:  400;
+  --sp-font-weight-semibold: 500;
+  --sp-font-weight-bold:    600;
+  --sp-letter-spacing-tight:  -0.01em;
+  --sp-letter-spacing-wide:    0.06em;
 
   /* ---- Component-specific ---- */
   --sp-bar-gradient:
-    #B2D7E5;
+    #A8C4D8;
   --sp-bar-min:       12px;
-  --sp-switch-on-bg:  #B2D7E5;
-  --sp-switch-off-bg: rgba(0,0,0,0.08);
+  --sp-switch-on-bg:  #A8C4D8;
+  --sp-switch-off-bg: rgba(0,0,0,0.05);
   --sp-scrollbar-track: transparent;
-  --sp-scrollbar-thumb: rgba(0,0,0,0.12);
+  --sp-scrollbar-thumb: rgba(0,0,0,0.08);
   --sp-camera-bg:       rgba(0,0,0,0.04);
   --sp-card-min-width:  140px;
   --sp-room-min-width:  200px;
@@ -188,8 +186,8 @@
   --ha-button-border-radius: var(--sp-radius-infinite);
 }
 
-ha-control-switch{--control-switch-on-color:#B2D7E5!important;--control-switch-off-color:var(--sp-switch-off-bg)!important;--control-switch-background-opacity:0.35!important;--control-switch-thickness:24px!important;--control-switch-border-radius:var(--sp-radius-pill)!important;--control-switch-padding:3px!important}
-ha-control-slider{--control-slider-color:#B2D7E5!important;--control-slider-background:rgba(0,0,0,0.08)!important;--control-slider-background-opacity:1!important;--control-slider-thickness:32px!important;--control-slider-border-radius:var(--sp-radius-pill)!important}
+ha-control-switch{--control-switch-on-color:#A8C4D8!important;--control-switch-off-color:rgba(0,0,0,0.05)!important;--control-switch-background-opacity:0.5!important;--control-switch-thickness:24px!important;--control-switch-border-radius:var(--sp-radius-pill)!important;--control-switch-padding:3px!important}
+ha-control-slider{--control-slider-color:#A8C4D8!important;--control-slider-background:rgba(0,0,0,0.045)!important;--control-slider-background-opacity:1!important;--control-slider-thickness:30px!important;--control-slider-border-radius:var(--sp-radius-pill)!important;--control-slider-thumb-size:20px!important}
 
 /* ==========================================================================
    2. Base Resets
@@ -209,23 +207,24 @@ h1, h2, h3, p {
 }
 
 h1 {
-  font-size: var(--sp-font-lg);
-  font-weight: var(--sp-font-weight-semibold);
+  font-size: var(--sp-font-md);
+  font-weight: var(--sp-font-weight-medium);
   color: var(--sp-text-primary);
-  letter-spacing: var(--sp-letter-spacing-tight);
+  letter-spacing: var(--sp-letter-spacing-wide);
 }
 
 h2 {
   font-size: var(--sp-font-md);
-  font-weight: var(--sp-font-weight-semibold);
+  font-weight: var(--sp-font-weight-medium);
   color: var(--sp-text-primary);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--sp-letter-spacing-wide);
 }
 
 h3 {
   font-size: var(--sp-font-sm);
-  font-weight: var(--sp-font-weight-semibold);
+  font-weight: var(--sp-font-weight-medium);
   color: var(--sp-text-primary);
+  letter-spacing: var(--sp-letter-spacing-wide);
 }
 
 button {
@@ -283,7 +282,7 @@ button {
   border-radius: var(--sp-radius-xl);
   backdrop-filter: var(--sp-blur-lg);
   -webkit-backdrop-filter: var(--sp-blur-lg);
-  background: var(--glass-regular);
+  background: transparent;
   border: none;
   box-shadow: var(--sp-shadow-glass), var(--glass-highlight);
   box-sizing: border-box;
@@ -359,19 +358,26 @@ button {
 
 .nav-button:hover {
   color: var(--sp-text-primary);
-  background: rgba(0,0,0,0.04);
+  background: rgba(0,0,0,0.025);
   border-color: var(--sp-border-glass);
 }
 
 .nav-button.active {
-  color: var(--sp-text-primary);
+  color: var(--sp-accent);
   background: var(--glass-thin);
   border: none;
+  font-weight: var(--sp-font-weight-semibold);
   backdrop-filter: var(--sp-blur-sm);
   -webkit-backdrop-filter: var(--sp-blur-sm);
+  transform: translateY(-1px);
   box-shadow:
-    var(--glass-highlight),
-    var(--sp-shadow-glass);
+    inset 0 1px 0.5px rgba(255,255,255,0.65),
+    0 8px 20px rgba(0,0,0,0.08),
+    0 2px 6px rgba(0,0,0,0.05);
+}
+
+.nav-button.active ha-icon {
+  color: var(--sp-accent);
 }
 
 .nav-button ha-icon {
@@ -393,7 +399,7 @@ button {
 }
 
 .sidebar-art img {
-  opacity: 0.85;
+  opacity: 0.45;
   width: 100%;
   height: 100%;
 }
@@ -774,7 +780,7 @@ button {
 }
 
 .chip.active {
-  background: var(--glass-ultra-thick);
+  background: var(--sp-accent-alpha);
   border-color: var(--sp-border-glass);
   color: var(--sp-text-primary);
 }
@@ -909,9 +915,9 @@ button {
 }
 
 .device:hover {
-  transform: translateY(-2px) translateX(-1px);
+  transform: translateY(-2px);
   box-shadow: var(--sp-shadow-xl), var(--glass-highlight);
-  background: var(--glass-thin);
+  background: var(--glass-ultra-thick);
 }
 
 /* ---- Device State Colors (soft Apple tones) ---- */
@@ -1009,9 +1015,9 @@ button {
   display: grid;
   place-items: center;
   font-size: var(--sp-font-3xs);
-  font-weight: var(--sp-font-weight-semibold);
-  background: rgba(0,0,0,0.08);
-  color: var(--sp-text-primary);
+  font-weight: var(--sp-font-weight-medium);
+  background: rgba(0,0,0,0.045);
+  color: var(--sp-text-secondary);
   padding: 2px var(--sp-space-xs);
   max-width: 100%;
   overflow: hidden;
@@ -1043,7 +1049,7 @@ button {
 }
 
 .camera-card:hover {
-  transform: translateY(-2px) translateX(-1px);
+  transform: translateY(-2px);
   box-shadow: var(--sp-shadow-xl), var(--glass-highlight);
 }
 
@@ -1109,11 +1115,16 @@ button {
 }
 
 .mc-app:not([data-view="rooms"]) .room img {
-  opacity: 0.85;
+  opacity: 0.65;
 }
 
 .room::after {
-  content: none;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--sp-room-overlay);
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 .room-label {
@@ -1124,7 +1135,7 @@ button {
   bottom: 14px;
   text-align: left;
   min-width: 0;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.55), 0 0 8px rgba(0,0,0,0.35);
 }
 
 .room-label h3 {
@@ -1224,7 +1235,7 @@ button {
   border-radius: var(--sp-radius-xl);
   padding: var(--sp-space-lg);
   box-sizing: border-box;
-  background: var(--glass-regular);
+  background: transparent;
   backdrop-filter: var(--sp-blur-lg);
   -webkit-backdrop-filter: var(--sp-blur-lg);
   border: none;
@@ -1232,13 +1243,14 @@ button {
   color: var(--sp-text-primary);
   transition:
     transform var(--sp-duration-base) var(--sp-ease-glass),
-    box-shadow var(--sp-duration-base) var(--sp-ease-glass);
+    box-shadow var(--sp-duration-base) var(--sp-ease-glass),
+    background var(--sp-duration-base) var(--sp-ease-glass);
 }
 
 .glass-card:hover,
 .time-card:hover {
-  transform: translateY(-2px) translateX(-1px);
-  background: var(--glass-thin);
+  transform: translateY(-2px);
+  background: transparent;
   box-shadow: var(--sp-shadow-xl), var(--glass-highlight);
 }
 
@@ -1261,8 +1273,9 @@ button {
 
 .time-sub {
   margin-top: var(--sp-space-3xs);
-  color: var(--sp-text-tertiary);
-  font-size: var(--sp-font-3xs);
+  font-size: var(--sp-font-xs);
+  font-weight: var(--sp-font-weight-medium);
+  letter-spacing: var(--sp-letter-spacing-wide);
 }
 
 .time-icon {
@@ -1717,7 +1730,7 @@ button {
   border-radius: var(--sp-radius-md);
   color: var(--sp-text-primary);
   padding: var(--sp-space-md);
-  background: var(--glass-regular);
+  background: transparent;
   text-align: center;
   cursor: pointer;
   box-shadow: var(--sp-shadow-glass), var(--glass-highlight);
@@ -1743,8 +1756,8 @@ button {
 }
 
 .scene:hover {
-  transform: scale(1.02);
-  box-shadow: var(--sp-shadow-md), var(--glass-highlight);
+  transform: translateY(-2px);
+  box-shadow: var(--sp-shadow-xl), var(--glass-highlight);
 }
 
 
@@ -1801,12 +1814,13 @@ button {
 }
 
 .mc-app[data-view="rooms"] .rooms {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  align-content: center;
 }
 
 .mc-app[data-view="rooms"] .room {
-  min-height: 220px;
-  aspect-ratio: unset;
+  min-height: unset;
+  aspect-ratio: 1 / 1;
 }
 
 /* ---- Scenes View ---- */
@@ -1863,6 +1877,29 @@ button {
    ========================================================================== */
 
 @media (max-width: 1180px) {
+  .mc-app {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+  .profile {
+    justify-content: center;
+    padding: 0;
+  }
+  .profile .meta,
+  .nav-button span,
+  .sidebar-art {
+    display: none;
+  }
+  .profile-img {
+    width: 44px;
+    height: 44px;
+  }
+  .nav-button {
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+@media (max-width: 1024px) {
   .mc-app {
     grid-template-columns: 80px minmax(0, 1fr);
     height: auto;
@@ -2381,10 +2418,11 @@ button {
   color: var(--sp-text-secondary);
   font-size: var(--sp-font-3xs);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: var(--sp-font-weight-regular);
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration:0.01ms !important; animation-duration:0.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }

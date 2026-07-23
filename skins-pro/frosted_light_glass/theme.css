@@ -1814,8 +1814,7 @@ button {
 }
 
 .mc-app[data-view="rooms"] .rooms {
-  grid-template-columns: repeat(auto-fill, minmax(140px, 180px));
-  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   align-content: center;
 }
 
