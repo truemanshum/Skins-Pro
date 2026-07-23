@@ -480,6 +480,13 @@ button { font:inherit; }
 .mc-app[data-view="energy"] .side { justify-self:end; align-self:stretch; width:100%; max-width:360px; height:100%; grid-template-rows:max-content minmax(0,1fr); }
 .mc-app[data-view="energy"] .panel-energy { display:block; min-height:0; height:auto; }
 @media (max-width: 1180px) {
+  .mc-app { grid-template-columns:80px minmax(0,1fr); }
+  .profile { justify-content:center; padding:0; }
+  .profile .meta,.nav-button span,.sidebar-art { display:none; }
+  .profile-img { width:44px; height:44px; }
+  .nav-button { justify-content:center; padding:0; }
+}
+@media (max-width: 1024px) {
   .mc-app { grid-template-columns:80px minmax(0,1fr); height:auto; min-height:100vh; overflow:visible; }
   .profile { justify-content:center; padding:0; }
   .profile .meta,.nav-button span,.sidebar-art { display:none; }

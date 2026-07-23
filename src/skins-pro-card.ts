@@ -31,6 +31,8 @@ import {
   navigatePath,
   runScene,
   toggleEntity,
+  turnOnService,
+  turnOffService,
   turnOffAreaType as turnOffAreaTypeAction,
   loadSkinMetadata,
   BUNDLED_SKINS,
@@ -568,7 +570,6 @@ export class SkinsProCard extends LitElement {
     const controllable = devices.filter((d) => CONTROLLABLE_DOMAINS.has(d.detail));
     if (controllable.length === 0) return;
     if (!confirm(translate('confirmAction'))) return;
-    const service = state === 'on' ? 'turn_on' : 'turn_off';
-    await Promise.all(controllable.map((d) => this._hass?.callService(d.detail, service, { entity_id: d.entityId })));
+    await Promise.all(controllable.map((d) => this._hass?.callService(d.detail, state === 'on' ? turnOnService(d.detail) : turnOffService(d.detail), { entity_id: d.entityId })));
   }
 }

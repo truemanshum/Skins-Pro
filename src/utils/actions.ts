@@ -4,11 +4,38 @@ export async function runScene(hass: HomeAssistant | undefined, entityId: string
   await hass?.callService('scene', 'turn_on', { entity_id: entityId });
 }
 
+const TURN_ON_SERVICE: Record<string, string> = {
+  lock: 'unlock',
+  cover: 'open_cover',
+  valve: 'open_valve',
+  button: 'press',
+};
+const TURN_OFF_SERVICE: Record<string, string> = {
+  lock: 'lock',
+  cover: 'close_cover',
+  valve: 'close_valve',
+};
+const TOGGLE_SERVICE: Record<string, string> = {
+  lock: 'toggle',
+  cover: 'toggle',
+  valve: 'toggle',
+};
+
+export function turnOnService(domain: string): string {
+  return TURN_ON_SERVICE[domain] ?? 'turn_on';
+}
+export function turnOffService(domain: string): string {
+  return TURN_OFF_SERVICE[domain] ?? 'turn_off';
+}
+export function toggleService(domain: string): string {
+  return TOGGLE_SERVICE[domain] ?? 'toggle';
+}
+
 export async function toggleEntity(hass: HomeAssistant | undefined, entityId: string): Promise<void> {
   if (!hass) return;
   const [domain] = entityId.split('.');
   if (!domain) return;
-  await hass.callService(domain, 'toggle', { entity_id: entityId });
+  await hass.callService(domain, toggleService(domain), { entity_id: entityId });
 }
 
 export function moreInfo(element: HTMLElement, entityId: string): void {
@@ -35,7 +62,6 @@ export function turnOffAreaType(hass: HomeAssistant | undefined, entityIds: stri
     byDomain.set(domain, list);
   }
   for (const [domain, ids] of byDomain) {
-    const service = domain === 'lock' ? 'lock' : 'turn_off';
-    void hass.callService(domain, service, { entity_id: ids });
+    void hass.callService(domain, turnOffService(domain), { entity_id: ids });
   }
 }
